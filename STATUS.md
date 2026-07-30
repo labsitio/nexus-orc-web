@@ -27,7 +27,7 @@ Nenhuma feature de produto em desenvolvimento. O projeto está na **fase de prep
 
 ### Entregue e publicado
 
-Governança completa: `CLAUDE.md`, `STATUS.md`, os quatro documentos de frente, `team-responsibilities.md`, protocolo de integração, pauta do contrato, ADR-0001/0002/0003, backlog de 15 issues com labels, CODEOWNERS, template de PR, comandos `/minhas-tarefas` e `/implementar`, `check-docs` com CI, e hook de sincronização com a main.
+Governança completa: `CLAUDE.md`, `STATUS.md`, **`docs/quality.md` preenchido**, `team-responsibilities.md`, protocolo de integração, pauta do contrato, ADR-0001/0002/0003, backlog de 15 issues com labels, CODEOWNERS, template de PR, comandos `/minhas-tarefas` e `/implementar`, `check-docs` com CI, e hook de sincronização com a main.
 
 ### Feito por André, ainda NÃO no repositório
 
@@ -87,7 +87,7 @@ A estrutura documental deste repositório foi desenhada para um projeto de seman
 |---|---|---|
 | **Sex 31, primeira coisa** | Bruno | **Ativar o hook de proteção da branch:** `git config core.hooksPath .githooks` — e pedir aos outros dois que façam o mesmo antes de começarem. Combinado em 30/07 para não atrapalhar o trabalho da noite |
 | **Sex 31** | Bruno | **Pedir a prorrogação** (#13) — é a mitigação de maior impacto disponível |
-| **Sex 31** | Bruno | Preencher `quality.md` no mínimo viável, com teste automatizado obrigatório — depende do `engineering-principles.md` do André para saber a ferramenta de teste |
+| **Sex 31** | Bruno | Importar o agente de **Integração** que vem do backend, e conferir se as labels do `integracao-protocolo.md` batem com o padrão acordado por eles |
 | **Sex 31** | André | Publicar o commit retido, com o ADR renumerado para 0004. Criar o **Frontend Architect**. Arquitetura mínima do portal de upload e estratégia de mock (#3, #15) |
 | **Sex 31** | André | **Liberar as respostas às dúvidas do backend** — os agentes de integração deles seguem parados |
 | **Sex 31** | Kássio | Agente **Product Planner** e `planning.md` (#4) — não depende de ninguém |

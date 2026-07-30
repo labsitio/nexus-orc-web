@@ -25,7 +25,7 @@ Essas decisões pertencem à equipe e devem ser registradas em [docs/architectur
 - **Público / stakeholders:** gestores e times de compras de redes varejistas (usuários do Portal Web de Acompanhamento); fornecedores que enviam orçamentos (usuários dos canais de ingestão); áreas de auditoria e compliance (consumidoras dos relatórios).
 
 - **Critérios de sucesso do projeto:** conforme os documentos de escopo — reduzir o tempo entre o recebimento do orçamento e o dado disponível de horas/dias para **minutos**; eliminar a triagem manual como etapa obrigatória do caminho principal; **rastreabilidade completa** de cada orçamento (origem, canal, etapa, agente responsável, decisão) disponível em tempo real e exportável para auditoria; e busca semântica sobre todo o acervo processado.
-  > **Atenção:** os documentos de escopo não trazem metas numéricas verificáveis (ex: precisão mínima de extração, tempo-alvo em segundos, volume/mês). Definir esses números é pré-requisito para que Kássio escreva critérios de aceite que possam de fato ser verificados. Ver Bloqueios em [STATUS.md](STATUS.md).
+  > **Atenção:** os documentos de escopo não trazem metas numéricas verificáveis (ex: precisão mínima de extração, tempo-alvo em segundos, volume/mês). Definir esses números é pré-requisito para que Bruno escreva, em `docs/quality.md`, critérios de aceite que possam de fato ser verificados. Ver Bloqueios em [STATUS.md](STATUS.md).
 
 ---
 
