@@ -47,7 +47,9 @@ A fatia desta equipe são as **interfaces web** do Nexo:
 2. **Portal web de upload** — tela pela qual o fornecedor envia o orçamento manualmente, quando não tem integração automatizada. Roadmap: **Fase 01**.
    > **Ambas são desta equipe.** A divisão dos repositórios é por plataforma, não por feature: tudo que é web vive em `nexus-orc-web`. São, porém, dois produtos distintos dentro do mesmo repositório — públicos diferentes (fornecedor externo vs. gestor interno), fases diferentes (01 vs. 02/03) e provavelmente modelos de autenticação diferentes. Devem ser planejados e arquitetados como tal, não como "telas do mesmo sistema".
 
-- **Fora de escopo desta equipe (pertence a backend ou mobile):** o pipeline de processamento e sua orquestração; os agentes de IA do produto; os canais de ingestão por API REST e SFTP; o aplicativo mobile nativo e suas notificações push; a modelagem de dados e a camada de busca; a infraestrutura AWS, IaC e observabilidade de plataforma; e a definição dos contratos de API — que consumimos, mas não definimos (ver `docs/architecture.md`, seções 4 e 5).
+- **Fora de escopo desta equipe (pertence a backend ou mobile):** o pipeline de processamento e sua orquestração; os agentes de IA do produto; os canais de ingestão por API REST e SFTP; o aplicativo mobile nativo e suas notificações push; a modelagem de dados e a camada de busca; a infraestrutura e a observabilidade **do pipeline**; e a definição dos contratos de API — que consumimos, mas não definimos (ver `docs/architecture.md`, seções 4 e 5).
+
+- **Dentro do escopo desta equipe, e fácil de esquecer:** o **build, o deploy e a hospedagem das interfaces web** (CloudFront + S3, conforme o escopo sugere) são entrega nossa. A infraestrutura que é do backend é a do pipeline, não a do nosso artefato. Como o entregável final é o projeto **rodando** (ver seção 1.2), publicar o frontend em ambiente acessível faz parte da definição de pronto — não é etapa opcional de infraestrutura.
 
 ---
 
@@ -65,10 +67,40 @@ O Nexo é conduzido como exercício pós-treinamento de Claude Code. Além dos o
 | Criatividade para resolver problemas reais | Liberdade de stack (ver abaixo) e decisões registradas em ADR |
 | Aprendizado e troca de conhecimento | Governança documental: ADRs registram o *porquê*, não só o *quê* |
 
-Duas consequências diretas:
+Três consequências diretas:
 
 - **A equipe tem liberdade de stack.** As tecnologias sugeridas nos documentos de escopo (React/Next.js, AppSync/API Gateway, Cognito, CloudFront + S3) são **sugestões explícitas, não imposições** — a equipe pode alterá-las conforme julgar melhor. Mas *escolher* continua sendo decisão estrutural: seja adotando a sugestão, seja divergindo dela, a escolha precisa de ADR com a justificativa. Liberdade não dispensa registro.
 - **O exercício produz código, não apenas documentação.** "Código de qualidade" e "testes automatizados" só são avaliáveis sobre software que existe. As pessoas não escrevem esse código — os agentes escrevem, orientados pelos documentos desta pasta. Governança fraca aqui aparece como código ruim lá.
+- **O entregável final é o projeto rodando.** Ver a seção 1.2.1 abaixo. Este é o ponto que mais muda prioridades, e o que mais se perde de vista num exercício.
+
+---
+
+### 1.2.1. O Nexo é um projeto real, e o entregável é software em funcionamento
+
+Os organizadores têm **utilização prevista** para o Nexo. O exercício é praticar o desenvolvimento assistido por agentes, mas o resultado esperado ao final é **o projeto inteiro funcionando** — não um conjunto de documentos, especificações e agentes bem escritos.
+
+Isso reordena as prioridades de forma concreta:
+
+| Consequência | O que muda na prática |
+|---|---|
+| **Software tem que executar** | Build funcionando, aplicação acessível, fluxo principal navegável de ponta a ponta. Documento bem escrito não substitui tela que abre. |
+| **Deploy é parte da entrega** | Publicar as interfaces web em ambiente acessível é escopo desta equipe (ver seção 1.1), não etapa posterior de terceiros. |
+| **Mock é ponte, não destino** | A estratégia de mock existe para o frontend não ficar bloqueado pelo backend. Mas se a entrega final precisa funcionar de verdade, precisa haver **plano e data de troca do mock pela API real**, não apenas o mock. |
+| **Integração deixa de ser opcional** | As três equipes integram no final por necessidade, não por formalidade. Um frontend que só funciona contra mock não é entrega. |
+| **Dados de demonstração importam** | Um sistema vazio não é demonstrável. Precisa existir dado suficiente para o fluxo principal ser mostrado. |
+| **Escopo precisa caber** | O roadmap tem três fases. Entregar as três funcionando é improvável no prazo de um treinamento — **qual fase é esperada ao final é pergunta para os organizadores**, e a resposta define o que sequer entra no backlog. |
+
+**Risco central que isso cria:** o repositório do backend está em **fase de especificação, sem implementação**. Se a nossa entrega precisa funcionar integrada, dependemos de código que ainda não existe do outro lado. Isso é acompanhado como risco em [STATUS.md](STATUS.md) e é assunto obrigatório do alinhamento com o backend.
+
+**Definition of Done no nível do projeto** — soma-se à da seção 5, que é por task:
+
+- [ ] A aplicação **builda** sem erro a partir do repositório limpo.
+- [ ] A suíte de testes automatizados passa.
+- [ ] A aplicação está **publicada em ambiente acessível**, com URL registrada no README.
+- [ ] O fluxo principal é **navegável de ponta a ponta** por quem não desenvolveu.
+- [ ] A integração com o backend real está funcionando, **ou** a limitação está declarada explicitamente, com o que falta e de quem depende.
+- [ ] Existe dado suficiente para demonstrar o fluxo.
+- [ ] O README explica como rodar localmente, em passos que funcionam numa máquina limpa.
 
 ---
 

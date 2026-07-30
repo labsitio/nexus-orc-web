@@ -4,6 +4,10 @@ Repositório da equipe de **frontend** do projeto Nexo. Contém as interfaces we
 
 > **Nenhuma tecnologia ou stack foi definida ainda.** Essa é uma decisão da equipe, a ser registrada em ADR antes de qualquer implementação. Ver [docs/engineering-principles.md](docs/engineering-principles.md).
 
+> **O entregável é software funcionando.** O Nexo é um projeto real, com utilização prevista pelos organizadores. A prática com agentes é o método; o resultado esperado é a aplicação rodando, publicada e navegável — ver a Definition of Done de projeto no [CLAUDE.md](CLAUDE.md), seção 1.2.1.
+
+**URL do ambiente:** _(a definir — ver [#14](https://github.com/labsitio/nexus-orc-web/issues/14))_
+
 ---
 
 ## O que é o Nexo

@@ -50,7 +50,10 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 | [#9](https://github.com/labsitio/nexus-orc-web/issues/9) | Configurar o GitHub MCP nas máquinas de André e Kássio | André, Kássio |
 | [#10](https://github.com/labsitio/nexus-orc-web/issues/10) | Habilitar a proteção da branch `main` com Require review from Code Owners | Bruno |
 | [#11](https://github.com/labsitio/nexus-orc-web/issues/11) | Alinhar as datas de referência de cada entrega | Bruno |
-| [#12](https://github.com/labsitio/nexus-orc-web/issues/12) | Estruturar o backlog de implementação das 3 fases — **portão da fase de código**; depende de #1, #2 e #3 | Kássio |
+| [#13](https://github.com/labsitio/nexus-orc-web/issues/13) | **Confirmar com os organizadores o que "rodando" significa e qual fase é esperada** — bloqueia o backlog | Bruno |
+| [#12](https://github.com/labsitio/nexus-orc-web/issues/12) | Estruturar o backlog de implementação das 3 fases — **portão da fase de código**; depende de #1, #2, #3 e #13 | Kássio |
+| [#14](https://github.com/labsitio/nexus-orc-web/issues/14) | Build, deploy e hospedagem das interfaces web — parte da definição de pronto | André |
+| [#15](https://github.com/labsitio/nexus-orc-web/issues/15) | Plano de troca do mock pela API real, com data | André |
 
 ---
 
@@ -66,6 +69,8 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 ## Riscos
 
+- **O entregável final é software rodando, e o backend não tem implementação.** Os organizadores têm utilização prevista para o Nexo — é projeto real, e ao final esperam o projeto funcionando, não só documentação e agentes. Mas o repositório do backend está em **fase de especificação**: contrato publicado, zero código. Se a nossa entrega precisa funcionar integrada, dependemos de algo que ainda não existe do outro lado. **É o risco de maior impacto do projeto.** Mitigações: mock como ponte com data de troca (#15), e a pergunta sobre o que "rodando" significa levada aos organizadores (#13). Definition of Done de projeto em CLAUDE.md, seção 1.2.1.
+- **Escopo pode não caber no prazo.** O roadmap tem três fases e nenhuma data foi acordada. Planejar as três é desperdício se apenas uma será entregue; entregar as três é improvável. Depende de #13.
 - **Divergência entre frentes.** Três pessoas preenchendo documentos em paralelo (arquitetura, stack, qualidade, planejamento) podem produzir decisões incompatíveis. Mitigação prevista: coordenação do Tech Lead, CODEOWNERS por documento e registro de conflitos em ADR (CLAUDE.md, seção 3).
 - **Disponibilidade desigual entre as frentes.** A disponibilidade dos integrantes varia ao longo do treinamento, e a de Kássio é reduzida. O desenho absorve isso: a frente de planejamento é autocontida e não é caminho único — o backlog é operado por Bruno desde o início, independente do agente Product Planner existir. Suplência de cada documento registrada em `docs/team-responsibilities.md` ("Suplência e Continuidade"). **Risco residual:** Bruno concentra governança, qualidade, alinhamento externo e execução, sem folga para imprevisto — se algo precisar ceder, considerar mover `quality.md` para André.
 - **Caminho crítico concentrado em André.** Arquitetura e stack destravam a qualidade (Bruno não escreve critério de teste sem saber qual ferramenta a stack traz) e o planejamento. Atraso aqui propaga para todas as frentes.
