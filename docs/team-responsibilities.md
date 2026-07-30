@@ -2,7 +2,7 @@
 
 > Define a distribuição de responsabilidades da equipe de frontend (repositório [nexus-orc-web](https://github.com/labsitio/nexus-orc-web)) do projeto Nexo: quem é dono de qual documento, quais agentes cada integrante desenvolve e em que ordem o trabalho converge.
 
-A equipe tem **3 integrantes** e produz **5 agentes de desenvolvimento**. Os números são diferentes por decisão de desenho: a quantidade de agentes vem do trabalho a ser feito, não do tamanho do time. Criar e operar agentes é o objetivo central do treinamento, então cada integrante desenvolve pelo menos um, e nenhuma frente fica sem dono.
+A equipe tem **3 integrantes** e produz **6 agentes de desenvolvimento**. Os números são diferentes por decisão de desenho: a quantidade de agentes vem do trabalho a ser feito, não do tamanho do time. Criar e operar agentes é o objetivo central do treinamento, então cada integrante desenvolve pelo menos um, e nenhuma frente fica sem dono.
 
 Referência de fluxo geral: [CLAUDE.md](../CLAUDE.md).
 
@@ -68,6 +68,7 @@ Três regras orientaram como o trabalho foi distribuído. Elas valem para todas 
 **Agentes a desenvolver:**
 - `Tech Lead` — governança, coordenação entre frentes e guarda das regras de processo do CLAUDE.md.
 - `QA & Reviewer` — critérios de aceite, revisão de qualidade técnica e verificação do Definition of Done.
+- `Integração` — varre os repositórios de backend e mobile por perguntas direcionadas ao frontend, responde o que já está registrado citando a fonte, e **escala o resto para a pessoa certa** em vez de decidir. Protocolo em [integracao-protocolo.md](integracao-protocolo.md).
 
 ---
 
@@ -169,6 +170,7 @@ Convenção obrigatória, para que os agentes das três frentes sejam encontráv
 | Frontend Architect | `.claude/agents/frontend-architect.md` | André |
 | Frontend Developer | `.claude/agents/frontend-developer.md` | André |
 | Product Planner | `.claude/agents/product-planner.md` | Kássio |
+| Integração | `.claude/agents/integracao.md` | Bruno |
 
 ---
 

@@ -28,6 +28,7 @@
 /docs/quality.md                    @brunomartins-labsit
 /docs/team-responsibilities.md      @brunomartins-labsit
 /docs/contrato-integracao-pauta.md   @brunomartins-labsit
+/docs/integracao-protocolo.md        @brunomartins-labsit
 /.github/                           @brunomartins-labsit
 
 # ---------------------------------------------------------------------------
@@ -56,6 +57,7 @@
 /.claude/agents/frontend-architect.md   @dehlferreira @brunomartins-labsit
 /.claude/agents/frontend-developer.md   @dehlferreira @brunomartins-labsit
 /.claude/agents/product-planner.md      @kassiosa @brunomartins-labsit
+/.claude/agents/integracao.md           @brunomartins-labsit
 
 # Comandos compartilhados da equipe
 /.claude/commands/                       @brunomartins-labsit
