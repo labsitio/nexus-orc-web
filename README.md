@@ -107,6 +107,7 @@ Todas já enfrentadas e resolvidas — se você travar, provavelmente é uma des
 | [docs/engineering-principles.md](docs/engineering-principles.md) | Stack, bibliotecas e convenções de código |
 | [docs/quality.md](docs/quality.md) | Critérios de aceite, Definition of Done técnica e checklist de revisão |
 | [docs/planning.md](docs/planning.md) | Processo de planejamento e fluxo do backlog |
+| [docs/contrato-integracao-pauta.md](docs/contrato-integracao-pauta.md) | Pauta e registro do contrato acordado com a equipe de backend |
 | [docs/adr/](docs/adr/) | Architecture Decision Records |
 | [escopo/](escopo/) | Documentos de escopo recebidos dos organizadores — fonte do escopo |
 
