@@ -35,6 +35,18 @@ Item que não se aplica deve ser marcado e justificado — não apagado.
 - [ ] Documentos afetados foram atualizados (architecture, engineering-principles, quality, planning).
 - [ ] O que precisa entrar no `STATUS.md` foi reportado a Bruno — **escritor único** do arquivo (não edite direto).
 
+## Para o STATUS.md
+
+<!-- Bruno é o escritor único do STATUS.md e consolida a partir daqui. Preencha só as
+     linhas que se aplicam e apague as demais — cada uma mapeia para uma seção do
+     arquivo, então a consolidação é transcrição, não adivinhação.
+     Se não há nada a registrar, escreva "nada a registrar". -->
+
+- **Concluído:**
+- **Bloqueado:**
+- **Decisão tomada:**
+- **Risco novo:**
+
 ## Observações
 
 <!-- Desvios de escopo, itens do checklist que não se aplicam e por quê, pontos de

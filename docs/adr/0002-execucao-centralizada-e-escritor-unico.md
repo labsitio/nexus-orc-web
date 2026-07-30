@@ -40,7 +40,7 @@ Ambas as decisões já estão descritas em `docs/team-responsibilities.md` e em 
 
 **2. O STATUS.md tem escritor único: Bruno.**
 
-- André e Kássio não editam o arquivo. Reportam o que precisa ser registrado na descrição do Pull Request ou na issue, e Bruno consolida.
+- André e Kássio não editam o arquivo. Reportam pelo bloco **"Para o STATUS.md"** da descrição do Pull Request quando há mudança associada, ou por **comentário na issue correspondente mencionando @brunomartins-labsit** quando não há. Nenhum dos dois casos cria issue nova. O formato e a cadência de consolidação estão em `docs/team-responsibilities.md`, seção "Escritor Único do STATUS.md — e como reportar".
 
 ---
 

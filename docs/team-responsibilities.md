@@ -190,11 +190,41 @@ Base do `.github/CODEOWNERS`: o GitHub passa a exigir a revisão do dono quando 
 
 ---
 
-## Escritor Único do STATUS.md
+## Escritor Único do STATUS.md — e como reportar
 
-Apenas a **Bruno** edita o [STATUS.md](../STATUS.md). André e Kássio reportam o que precisa ser registrado — na descrição do PR ou na issue — e Bruno consolida.
+Apenas **Bruno** edita o [STATUS.md](../STATUS.md).
 
-**Motivo:** o STATUS.md é o único arquivo que todos atualizariam ao fim de cada sessão de trabalho. Arquivo único com múltiplos escritores simultâneos gera conflito de merge de forma recorrente. Escritor único elimina essa classe de conflito ao custo de uma pessoa consolidando.
+**Motivo:** é o único arquivo que todos atualizariam ao fim de cada sessão de trabalho. Arquivo único com múltiplos escritores simultâneos gera conflito de merge de forma recorrente. Escritor único elimina essa classe de conflito ao custo de uma pessoa consolidando.
+
+### Ninguém abre issue nova para reportar status
+
+Reportar status **não** cria artefato novo. Use o que já existe, conforme o caso:
+
+| Situação | Onde reportar | Como Bruno fica sabendo |
+|---|---|---|
+| Terminei algo, ou minha mudança altera o estado do projeto | **Bloco "Para o STATUS.md" na descrição do Pull Request** | Ele revisa o PR de qualquer forma — é CODEOWNER |
+| Estou bloqueado, tomei uma decisão, ou recebi informação externa relevante — **sem PR associado** | **Comentário na issue correspondente**, mencionando **@brunomartins-labsit** | A menção gera notificação |
+| É urgente e afeta o prazo | Mensagem direta no grupo, **e** um dos dois acima | O canal informal não substitui o registro |
+
+A menção explícita ao @brunomartins-labsit no comentário de issue **não é formalidade**: sem ela, o comentário pode passar batido em meio às notificações, e o STATUS fica desatualizado sem ninguém perceber.
+
+### O que reportar
+
+Não precisa de texto corrido. Quatro linhas, e só as que se aplicam:
+
+```
+Para o STATUS.md:
+- Concluído: <o que ficou pronto>
+- Bloqueado: <o que impede, e de quem/o quê depende>
+- Decisão: <o que foi decidido — e se precisa de ADR>
+- Risco novo: <o que pode dar errado, e por quê>
+```
+
+Os quatro campos mapeiam direto para as seções do STATUS.md, então a consolidação é transcrição, não interpretação. Escrever "avancei bastante hoje" obriga Bruno a adivinhar em qual seção isso entra — e ele vai perguntar.
+
+### Cadência
+
+Bruno consolida o STATUS.md **ao menos uma vez por dia**, não a cada report. Entre consolidações, a fonte da verdade é o PR ou a issue — que é onde o registro já está, com autor e data. O STATUS.md é o retrato consolidado, não o log em tempo real.
 
 ---
 
