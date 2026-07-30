@@ -13,7 +13,7 @@ allowed-tools: Bash(git config:*), Bash(whoami), Read, Glob, Grep
 
 Descobrir qual frente a pessoa que está usando esta sessão ocupa, e dizer a ela exatamente o que precisa fazer.
 
-**1. Identificar a frente.** Compare a identidade acima com a **Tabela de Identidades** em `docs/team-responsibilities.md`. Compare **por primeiro nome, ignorando acentos e diferença de maiúsculas** (`Andre`, `andré` e `André Luiz Ferreira` são a mesma pessoa). Se o `user.name` do Git não resolver, tente o e-mail e o usuário do sistema.
+**1. Identificar a frente.** Compare a identidade acima com a **Tabela de Identidades** em `docs/team-responsibilities.md`. A coluna "Sinais de identificação" lista, para cada frente, variantes de nome, e-mails e o usuário do GitHub — **basta um sinal casar**. Compare ignorando acentos e diferença de maiúsculas (`Andre`, `andré` e `André Luiz Ferreira` são a mesma pessoa). Se o `user.name` do Git não resolver, tente o e-mail e o usuário do sistema.
 
 Se ainda assim não houver correspondência clara, **não escolha por eliminação nem assuma**: mostre a identidade encontrada, liste as frentes disponíveis e pergunte qual é a dela.
 

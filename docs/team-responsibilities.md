@@ -10,15 +10,17 @@ Referência de fluxo geral: [CLAUDE.md](../CLAUDE.md).
 
 ## Tabela de Identidades
 
-Mapeia a identidade configurada no Git de cada máquina para a frente correspondente. É o que permite ao comando `/minhas-tarefas` descobrir automaticamente quem está usando o Claude Code, sem ninguém precisar se apresentar.
+Mapeia a identidade de cada integrante para a frente correspondente. É o que permite ao comando `/minhas-tarefas` descobrir automaticamente quem está usando o Claude Code, sem ninguém precisar se apresentar.
 
-| Identidade no Git (`user.name`) | Frente |
-|---|---|
-| Bruno Martins | Tech Lead, Integração & Qualidade |
-| André Luiz Ferreira | Frontend Architect & Stack |
-| Kássio Sá | Product Planner |
+| Frente | Nome | Sinais de identificação (nome no Git, e-mail, usuário do GitHub) |
+|---|---|---|
+| Tech Lead, Integração & Qualidade | Bruno Martins | `Bruno Martins` · `bruno.seibert@labsit.io` · `brunomartins-labsit` |
+| Frontend Architect & Stack | André Luiz Ferreira | `André Luiz Ferreira`, `Andre`, `Deh`, `dehlferreira` · `andre.ferreira@labsit.io`, `deh.lferreira@gmail.com` · `dehlferreira` |
+| Product Planner | Kássio Sá | `Kássio Sá`, `Kassio` · `kassio@labsit.io` · `kassiosa` |
 
-A comparação é feita **por primeiro nome, ignorando acentos e maiúsculas** — então `Andre Ferreira`, `andré luiz` ou `André Luiz Ferreira` casam todos com a mesma frente. Se a sua identidade no Git for muito diferente do nome acima, há duas saídas: ajustar o Git (`git config user.name "Seu Nome"`) ou acrescentar sua variante nesta tabela.
+A comparação **ignora acentos e diferença de maiúsculas**, e vale para qualquer um dos sinais da linha — nome, e-mail ou usuário do GitHub. Por isso a coluna lista variantes: o nome configurado no Git de alguém não necessariamente é o nome completo.
+
+Se nenhum sinal casar, o comando **pergunta** em vez de adivinhar. Nesse caso, a correção é acrescentar sua variante nesta tabela — ou ajustar o Git com `git config user.name "Seu Nome"`.
 
 Para conferir a identidade configurada na sua máquina:
 

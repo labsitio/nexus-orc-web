@@ -29,7 +29,7 @@ Criação da documentação base de governança — **concluída, aguardando apr
 - **Responsável:** Tech Lead
 - **Status:** em revisão
 - **Entregue:** `README.md`, `CLAUDE.md`, `STATUS.md`, os quatro documentos de frente em `docs/`, `docs/team-responsibilities.md`, `docs/adr/TEMPLATE.md`, ADR-0001 e ADR-0002, `.gitignore`, `.gitattributes`, `.mcp.json`, `.github/CODEOWNERS`, `.github/PULL_REQUEST_TEMPLATE.md` e o comando `.claude/commands/minhas-tarefas.md`
-- **Repositório:** vinculado a [nexus-orc-web](https://github.com/labsitio/nexus-orc-web), branch `main`, aguardando o push inicial
+- **Repositório:** publicado em [nexus-orc-web](https://github.com/labsitio/nexus-orc-web), branch `main`
 
 ---
 
@@ -38,14 +38,14 @@ Criação da documentação base de governança — **concluída, aguardando apr
 Todas dependem da aprovação da estrutura atual e da resolução dos bloqueios abaixo. Cada item deverá virar issue no GitHub antes de ser iniciado.
 
 1. Aceitar (ou revisar) o [ADR-0001](docs/adr/0001-adocao-do-modelo-de-governanca.md), formalizando o modelo de governança — pré-requisito de processo para as demais.
-2. Fazer o **push inicial** para [nexus-orc-web](https://github.com/labsitio/nexus-orc-web) e habilitar a proteção da branch `main` com "Require review from Code Owners" (Bruno).
+2. Criar as issues das tasks abaixo no GitHub, agora que o MCP está operacional (Bruno).
 3. **Abrir a negociação do contrato base com a equipe de backend** (Bruno) — maior tempo de espera externo, deve começar imediatamente.
 4. Alinhar com a equipe as **datas de referência de cada entrega** e confirmar a suplência registrada em `docs/team-responsibilities.md` (Bruno).
 5. Criar o agente **Tech Lead** e finalizar o CLAUDE.md (Bruno).
 6. Decidir a stack em ADR, criar os agentes **Frontend Architect** e **Frontend Developer** e preencher `docs/architecture.md` e `docs/engineering-principles.md` (André) — caminho crítico.
 7. Criar o agente **QA & Reviewer** e preencher `docs/quality.md` — com teste automatizado obrigatório no DoD (Bruno).
 8. Criar o agente **Product Planner**, preencher `docs/planning.md` e estruturar o backlog das 3 fases (Kássio, com Bruno como suplente).
-9. Coletar os handles do GitHub de André e Kássio e substituir os placeholders restantes no `.github/CODEOWNERS` (Bruno).
+9. Habilitar a proteção da branch `main` com "Require review from Code Owners" nas configurações do repositório (Bruno).
 
 ---
 
@@ -53,7 +53,7 @@ Todas dependem da aprovação da estrutura atual e da resolução dos bloqueios 
 
 1. **Critérios de sucesso sem números.** O escopo define os objetivos qualitativamente ("de horas para minutos", "rastreabilidade completa") mas não traz metas verificáveis. Sem elas, Bruno não consegue escrever critérios de aceite que possam ser de fato verificados em `docs/quality.md`.
 2. **GitHub MCP pendente para André e Kássio.** Funcionando na máquina de Bruno — validado com leitura autenticada no repositório privado. Cada integrante precisa repetir o procedimento do README ("Integração com o GitHub via MCP"): criar um token clássico próprio e definir `GITHUB_MCP_PAT`. Até que cada um faça isso, os agentes daquela pessoa não operam issues nem PRs.
-3. **Handles do GitHub incompletos no CODEOWNERS.** O de Bruno (`@brunomartins-labsit`) já está configurado; faltam os de André e Kássio. Enquanto houver placeholder, o GitHub **ignora aquelas regras em silêncio** — não falha, apenas não exige revisão.
+3. **Proteção da branch `main` não configurada.** O `.github/CODEOWNERS` está completo com os três handles, mas o GitHub só **exige** a revisão do dono se "Require review from Code Owners" estiver habilitado na proteção da branch. Sem isso, o arquivo apenas sugere revisores e o mapa de donos segue valendo como acordo.
 4. **Nenhum agente de desenvolvimento criado.** Os cinco agentes descritos em `docs/team-responsibilities.md` existem apenas como especificação; nenhum foi implementado. (Não confundir com os 5 agentes de IA do produto, que são do backend — ver CLAUDE.md, seção 1.3.)
 5. **Contrato base com o backend não iniciado.** Nenhum contato com a equipe de backend até o momento. Como o frontend depende desse contrato para mockar dados e as três equipes trabalham em paralelo, atrasar isso comprime o prazo de todas as frentes.
 

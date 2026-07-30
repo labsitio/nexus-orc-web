@@ -3,15 +3,9 @@
 # Torna o mapa de donos de docs/team-responsibilities.md uma restrição real:
 # o GitHub passa a exigir a revisão do dono quando o arquivo dele é alterado.
 #
-# ┌──────────────────────────────────────────────────────────────────────────┐
-# │ AÇÃO NECESSÁRIA — substituir os placeholders abaixo pelos usuários reais │
-# │ do GitHub, no formato @usuario. Enquanto forem placeholders, o GitHub    │
-# │ ignora as regras silenciosamente e nada é exigido no Pull Request.       │
-# └──────────────────────────────────────────────────────────────────────────┘
-#
 #   @brunomartins-labsit  →  Bruno Martins        — Tech Lead, Integração & Qualidade
-#   @usuario-andre   →  André Luiz Ferreira  — Frontend Architect & Stack
-#   @usuario-kassio  →  Kássio Sá            — Product Planner
+#   @dehlferreira         →  André Luiz Ferreira  — Frontend Architect & Stack
+#   @kassiosa             →  Kássio Sá            — Product Planner
 #
 # Para que a exigência de revisão seja efetiva, é preciso também habilitar
 # "Require review from Code Owners" na proteção da branch main, nas configurações
@@ -38,13 +32,13 @@
 # ---------------------------------------------------------------------------
 # Arquitetura e stack — André, com Bruno como suplente
 # ---------------------------------------------------------------------------
-/docs/architecture.md               @usuario-andre @brunomartins-labsit
-/docs/engineering-principles.md     @usuario-andre @brunomartins-labsit
+/docs/architecture.md               @dehlferreira @brunomartins-labsit
+/docs/engineering-principles.md     @dehlferreira @brunomartins-labsit
 
 # ---------------------------------------------------------------------------
 # Planejamento — Kássio, com Bruno como suplente
 # ---------------------------------------------------------------------------
-/docs/planning.md                   @usuario-kassio @brunomartins-labsit
+/docs/planning.md                   @kassiosa @brunomartins-labsit
 
 # ---------------------------------------------------------------------------
 # ADRs — qualquer frente propõe; revisão de Bruno é obrigatória
@@ -58,9 +52,9 @@
 # ---------------------------------------------------------------------------
 /.claude/agents/tech-lead.md            @brunomartins-labsit
 /.claude/agents/qa-reviewer.md          @brunomartins-labsit
-/.claude/agents/frontend-architect.md   @usuario-andre @brunomartins-labsit
-/.claude/agents/frontend-developer.md   @usuario-andre @brunomartins-labsit
-/.claude/agents/product-planner.md      @usuario-kassio @brunomartins-labsit
+/.claude/agents/frontend-architect.md   @dehlferreira @brunomartins-labsit
+/.claude/agents/frontend-developer.md   @dehlferreira @brunomartins-labsit
+/.claude/agents/product-planner.md      @kassiosa @brunomartins-labsit
 
 # Comandos compartilhados da equipe
 /.claude/commands/                       @brunomartins-labsit
