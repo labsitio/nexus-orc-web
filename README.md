@@ -37,6 +37,15 @@ São dois produtos distintos no mesmo repositório: públicos diferentes, fases 
 2. Leia o [STATUS.md](STATUS.md) para saber o estado presente, os bloqueios e os riscos.
 3. Rode `/minhas-tarefas` — o comando identifica você pela identidade do Git e lista sua frente, próxima ação, documentos, agentes a criar e tasks. Ver [docs/team-responsibilities.md](docs/team-responsibilities.md).
 
+## Comandos da equipe
+
+| Comando | O que faz |
+|---|---|
+| `/minhas-tarefas` | Identifica você pela identidade do Git e lista sua frente, próxima ação, documentos, agentes a criar e tasks |
+| `/implementar <nº da issue>` | Leva uma issue de descrição a Pull Request seguindo as convenções: carrega o contexto necessário, exige plano antes do código, obriga teste automatizado e preenche o template de PR |
+
+Os dois são versionados em `.claude/commands/`, então valem para todo mundo depois de um `git pull`.
+
 ## Integração com o GitHub via MCP
 
 Não é necessária para começar a trabalhar — só para os agentes operarem issues e pull requests sozinhos. Enquanto não estiver configurada, o backlog é mantido manualmente pelo navegador.
