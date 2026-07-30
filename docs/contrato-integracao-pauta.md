@@ -4,7 +4,9 @@
 
 > **Como usar.** Cada item tem o que precisa ser decidido, a proposta do frontend e por que importa. Preencha a linha **Acordado** durante a conversa. O que sair daqui é transcrito para a seção 5 de [architecture.md](architecture.md) com status `acordado`; o que não fechar volta como `premissa` **com nome e data**, nunca em branco.
 >
-> As propostas abaixo são rascunho para agilizar a conversa — o conteúdo técnico do contrato é responsabilidade de André (Frontend Architect), e devem ser confirmadas com ele.
+> **Participam pelo frontend:** Bruno Martins (Tech Lead) e André Luiz Ferreira (Frontend Architect). As propostas abaixo são ponto de partida para agilizar a conversa — André é o responsável técnico pelo contrato e pode confirmá-las ou substituí-las na própria reunião.
+>
+> **Divisão sugerida na sala:** Bruno conduz a pauta e André decide o conteúdo técnico. Uma pessoa fala, a outra preenche as linhas **Acordado** — se as duas conduzirem, o registro é o que se perde. Ao final, quem registrou envia o documento preenchido para os dois lados.
 
 ---
 
@@ -151,7 +153,15 @@ Para não alongar a reunião — são decisões de outra equipe ou de outro mome
 
 ## O que sai daqui
 
-1. Itens fechados → transcritos para a seção 5 de [architecture.md](architecture.md) com status `acordado`.
-2. Itens abertos → registrados como `premissa`, **com responsável e data**.
-3. Data do item 15 → registrada em [STATUS.md](../STATUS.md) e usada para as datas de referência da [#11](https://github.com/labsitio/nexus-orc-web/issues/11).
-4. Resumo comentado na issue [#1](https://github.com/labsitio/nexus-orc-web/issues/1), com link para onde o backend registrou do lado deles.
+Com atenção a quem faz cada coisa, porque os documentos têm donos distintos:
+
+| O quê | Onde | Quem |
+|---|---|---|
+| Itens fechados, com status `acordado` | seção 5 de [architecture.md](architecture.md) | **André** — é dono do documento |
+| Itens abertos, como `premissa` com responsável e data | seção 5 de [architecture.md](architecture.md) | **André** |
+| Decisões estruturais que saírem da conversa | ADR novo, a partir de `0003` | **André** |
+| Data do item 15 e riscos que surgirem | [STATUS.md](../STATUS.md) | **Bruno** — escritor único (ADR-0002) |
+| Datas de referência das entregas | issue [#11](https://github.com/labsitio/nexus-orc-web/issues/11) | **Bruno** |
+| Resumo comentado, com link para o registro do lado do backend | issue [#1](https://github.com/labsitio/nexus-orc-web/issues/1) | **Bruno** |
+
+**Uma ressalva sobre a stack.** Se o backend confirmar AppSync/GraphQL, isso passa a ser **entrada** para a decisão de stack do frontend ([#2](https://github.com/labsitio/nexus-orc-web/issues/2)) — não a decide. A escolha continua sendo nossa e exige ADR próprio, com as alternativas consideradas. Evitar sair da reunião com stack "decidida de fato" sem registro.
