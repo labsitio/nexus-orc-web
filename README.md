@@ -46,6 +46,14 @@ São dois produtos distintos no mesmo repositório: públicos diferentes, fases 
 
 Os dois são versionados em `.claude/commands/`, então valem para todo mundo depois de um `git pull`.
 
+E uma verificação, que roda no CI a cada Pull Request:
+
+```bash
+node scripts/check-docs.mjs
+```
+
+Acusa link quebrado, referência a seção inexistente do CLAUDE.md, termo legado de renomeação e segredo versionado. Avisa — sem bloquear — sobre campos ainda `a preencher` e ADRs em estado *Proposto*.
+
 ## Integração com o GitHub via MCP
 
 Não é necessária para começar a trabalhar — só para os agentes operarem issues e pull requests sozinhos. Enquanto não estiver configurada, o backlog é mantido manualmente pelo navegador.

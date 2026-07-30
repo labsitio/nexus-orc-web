@@ -1,0 +1,23 @@
+name: Consistência da documentação
+
+# Roda a cada Pull Request e push na main. Não depende da stack do projeto —
+# usa apenas Node, sem dependências, então continua válido depois que a stack
+# for decidida (ver issue #2).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verificar consistência da documentação
+        run: node scripts/check-docs.mjs

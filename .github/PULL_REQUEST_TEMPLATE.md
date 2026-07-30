@@ -27,6 +27,7 @@ Item que não se aplica deve ser marcado e justificado — não apagado.
 - [ ] O escopo definido na issue foi integralmente atendido (ou o desvio está documentado abaixo).
 - [ ] **Existe teste automatizado cobrindo a mudança.** Requisito de avaliação do exercício, não opcional — ver CLAUDE.md, seção 1.2. Se não se aplica (ex: mudança só de documentação), justifique em "Observações".
 - [ ] A suíte de testes passa localmente.
+- [ ] `node scripts/check-docs.mjs` passa (o CI também roda, mas rodar antes evita ida e volta).
 - [ ] Os critérios de aceite de `docs/quality.md` foram verificados.
 - [ ] Decisões estruturais tomadas neste trabalho estão registradas em ADR (CLAUDE.md, seção 7).
 - [ ] Nenhuma mudança contradiz um ADR aceito. Se contradiz, há um novo ADR que o revisa ou supera.
