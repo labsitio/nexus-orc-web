@@ -33,6 +33,69 @@ São dois produtos distintos no mesmo repositório: públicos diferentes, fases 
 2. Leia o [STATUS.md](STATUS.md) para saber o estado presente, os bloqueios e os riscos.
 3. Rode `/minhas-tarefas` — o comando identifica você pela identidade do Git e lista sua frente, próxima ação, documentos, agentes a criar e tasks. Ver [docs/team-responsibilities.md](docs/team-responsibilities.md).
 
+## Integração com o GitHub via MCP
+
+Não é necessária para começar a trabalhar — só para os agentes operarem issues e pull requests sozinhos. Enquanto não estiver configurada, o backlog é mantido manualmente pelo navegador.
+
+O `.mcp.json` deste repositório já define o servidor. O que falta é **cada integrante criar o seu próprio token**, porque o OAuth automático não funciona com este servidor: ele não suporta *dynamic client registration*, e a autenticação falha com `Incompatible auth server: does not support dynamic client registration`.
+
+**1. Criar um Personal Access Token (classic)** em GitHub → Settings → Developer settings → Personal access tokens → **Tokens (classic)** → Generate new token (classic):
+
+| Campo | Valor |
+|---|---|
+| Note | `nexo-mcp` (ou outro nome que você reconheça depois) |
+| Expiration | até o fim do exercício — evite "No expiration" |
+| Escopo `repo` | **marcar** — é o único obrigatório; cobre issues e pull requests em repositório privado |
+| Escopo `read:project` | marcar **se** o backlog usar GitHub Projects (ver CLAUDE.md, seção 9). Fica aninhado sob `project` |
+
+Nenhum outro escopo é necessário. Em particular:
+
+- **`read:org` não é preciso** para o nosso uso. Ele só habilita ferramentas que leem membros e equipes da organização. Está aninhado sob `admin:org` → `write:org` → `read:org`, caso venha a ser necessário.
+- **Não marque** `delete_repo`, `admin:*`, `workflow` nem `admin:repo_hook`. O MCP não usa e são escopos destrutivos ou de alto privilégio.
+
+> **Por que classic e não fine-grained.** O token fine-grained é mais restrito e seria preferível, mas sobre repositório de organização ele costuma exigir **aprovação de um admin** da `labsitio` antes de funcionar, o que travaria o onboarding. O custo de usar classic é que o escopo `repo` dá acesso a **todos** os repositórios que a sua conta alcança, não só ao `nexus-orc-web` — então trate o token como credencial sensível e defina uma data de expiração. Se preferir o caminho restrito, o fine-grained equivalente é: Resource owner `labsitio`, apenas o repo `nexus-orc-web`, com Metadata (read), Contents (read), Issues (read/write) e Pull requests (read/write).
+
+**2. Definir a variável de ambiente** no seu terminal (Windows):
+
+```
+setx GITHUB_MCP_PAT "cole-seu-token-aqui"
+```
+
+Feche e reabra o terminal e o Claude Code — variáveis definidas com `setx` só valem para processos novos.
+
+**Nunca** cole o token em chat, issue, PR ou arquivo do repositório. A variável de ambiente existe exatamente para ele não precisar ser escrito em lugar nenhum versionado.
+
+**3. Aprovar o servidor do projeto.** Na primeira vez, o servidor definido pelo `.mcp.json` fica como `Pending approval` — é proteção do Claude Code contra repositório injetar servidor arbitrário. A aprovação só acontece numa **sessão interativa de terminal**, não pelo painel do app. Em um terminal do Windows, na pasta do repositório:
+
+```
+claude
+```
+
+Aprove o servidor quando ele perguntar, e feche.
+
+**4. Verificar:**
+
+```
+claude mcp list
+```
+
+A linha do `github` deve aparecer como `√ Connected`.
+
+### Armadilhas conhecidas
+
+Todas já enfrentadas e resolvidas — se você travar, provavelmente é uma destas:
+
+| Sintoma | Causa | Solução |
+|---|---|---|
+| `SDK auth failed: Incompatible auth server: does not support dynamic client registration` | O servidor não suporta o OAuth automático do Claude Code | É esperado. Use token, como descrito acima — não insista no OAuth |
+| `Connected` no terminal, mas as ferramentas não aparecem no app | `setx` só afeta processos criados depois dele | Feche e reabra o Claude Code |
+| `Pending approval` que não sai | O painel de MCP do app não consegue aprovar servidor de projeto | Rode `claude` num terminal interativo e aprove por lá |
+| Existem dois `/mcp` no menu | Um é para **connectors** da conta claude.ai, outro para **servers** de projeto | O nosso é o de **servers** |
+| `/mcp reconnect github` responde que o comando não existe | Fora do terminal, o `/mcp` não aceita nome de servidor | Use `/mcp` sem argumento, ou o terminal |
+| `remote: Repository not found` no `git push` | O Git está usando outra conta sua que ficou em cache no Windows Credential Manager. O GitHub responde 404 (não 403) para repo privado sem permissão, o que engana | `git config credential.https://github.com.username SEU-USUARIO` |
+
+---
+
 ## Mapa da documentação
 
 | Documento | Conteúdo |
