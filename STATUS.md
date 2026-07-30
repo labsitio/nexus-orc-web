@@ -33,6 +33,57 @@ Criação da documentação base de governança — **concluída, aguardando apr
 
 ---
 
+## Prazo e plano até a entrega
+
+**Entrega: segunda-feira, 03/08/2026, 17:30 (Brasília).** Hoje é quinta 30/07 — restam **4 dias, dois deles de fim de semana**.
+
+Isso obriga corte de escopo. O que segue é a recomendação do Tech Lead, a confirmar com a equipe.
+
+### Escopo recomendado: Fase 01 — Portal web de upload
+
+**Entregar o portal de upload do fornecedor, funcionando, publicado e testado.**
+
+O argumento não é só de prazo — é de viabilidade técnica:
+
+| | Portal de upload (Fase 01) | Painel do gestor (Fase 02) |
+|---|---|---|
+| Endpoints necessários | 2, ambos **firmes** no contrato do backend (`POST /orcamentos/upload-url`, `POST /orcamentos/{id}/confirmar-upload`) | Precisa de **listagem de orçamentos**, que **não existe** no contrato |
+| BC no backend | spec 001, especificado | **não existe** BC de Acompanhamento |
+| Fluxo | linear e demonstrável | depende de dado em vários estados |
+
+O painel do gestor **não é construível conforme o escopo** enquanto o backend não tiver endpoint de listagem. Insistir nele gastaria o prazo em algo que não fecha.
+
+**Se sobrar tempo:** esqueleto do painel em leitura apenas, contra mock, exibindo o status de um orçamento por id — usando os 5 endpoints de status, que são firmes. Entregável parcial honesto, declarado como tal.
+
+### Governança aplicada com proporção
+
+A estrutura documental deste repositório foi desenhada para um projeto de semanas. Em 4 dias, parte dela é custo sem retorno. Para este prazo:
+
+- **Mantém:** os 5 agentes (é o objetivo do treinamento), testes automatizados (critério de avaliação), PR com revisão, STATUS atualizado.
+- **Reduz:** ADR apenas para stack e estratégia de mock. Os demais documentos preenchidos no mínimo necessário para orientar os agentes — não em versão final.
+- **Adia:** issues #6, #10, #11 e o backlog completo das 3 fases (#12). Backlog só da Fase 01.
+
+### Plano por dia
+
+| Quando | Quem | O quê |
+|---|---|---|
+| **Qui 30, hoje** | Bruno | Reunião com o backend (#1). Levar também as perguntas de #13. Responder o que der na hora |
+| **Qui 30, hoje** | André | **Decidir a stack** e registrar ADR curto (#2). É o que destrava todo o resto — não pode passar de hoje |
+| **Qui 30, hoje** | Bruno + André | Criar os 5 agentes. Prioridade: Frontend Developer e Frontend Architect, que são os que produzem código |
+| **Sex 31** | André | Arquitetura mínima do portal de upload + estratégia de mock (#3, #15) |
+| **Sex 31** | Bruno | `quality.md` no mínimo viável, com teste automatizado obrigatório. Pipeline de deploy (#14) |
+| **Sáb 01 – Dom 02** | agentes, execução por Bruno | Implementação do portal de upload, com testes |
+| **Seg 03, manhã** | Bruno + André | Deploy final, README que funciona em máquina limpa, dado de demonstração |
+| **Seg 03, até 17:30** | Bruno | Verificar a Definition of Done de projeto (CLAUDE.md, 1.2.1) e entregar |
+
+### O que precisa ser decidido hoje, sem exceção
+
+1. **Stack** (#2) — bloqueia todo o resto
+2. **Escopo: Fase 01 apenas** — confirmar com a equipe e com os organizadores
+3. **Mock ou integração real** — depende da resposta do backend na reunião; se não houver API até domingo, é mock com a limitação declarada
+
+---
+
 ## Próximas tasks
 
 Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labsitio/nexus-orc-web/issues), conforme a seção 9 do CLAUDE.md. A ordem abaixo é por dependência, não por importância.
@@ -70,7 +121,7 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 ## Riscos
 
 - **O entregável final é software rodando, e o backend não tem implementação.** Os organizadores têm utilização prevista para o Nexo — é projeto real, e ao final esperam o projeto funcionando, não só documentação e agentes. Mas o repositório do backend está em **fase de especificação**: contrato publicado, zero código. Se a nossa entrega precisa funcionar integrada, dependemos de algo que ainda não existe do outro lado. **É o risco de maior impacto do projeto.** Mitigações: mock como ponte com data de troca (#15), e a pergunta sobre o que "rodando" significa levada aos organizadores (#13). Definition of Done de projeto em CLAUDE.md, seção 1.2.1.
-- **Escopo pode não caber no prazo.** O roadmap tem três fases e nenhuma data foi acordada. Planejar as três é desperdício se apenas uma será entregue; entregar as três é improvável. Depende de #13.
+- **Prazo de 4 dias, dois de fim de semana.** Entrega em 03/08 às 17:30. Com 2 pessoas ativas, nenhum agente criado e zero código, só há espaço para **uma** fase do roadmap. Recomendação registrada em "Prazo e plano até a entrega": Fase 01, portal de upload. O painel do gestor não é construível conforme o escopo enquanto o backend não tiver endpoint de listagem — o corte é técnico, não só de tempo.
 - **Divergência entre frentes.** Três pessoas preenchendo documentos em paralelo (arquitetura, stack, qualidade, planejamento) podem produzir decisões incompatíveis. Mitigação prevista: coordenação do Tech Lead, CODEOWNERS por documento e registro de conflitos em ADR (CLAUDE.md, seção 3).
 - **Disponibilidade desigual entre as frentes.** A disponibilidade dos integrantes varia ao longo do treinamento, e a de Kássio é reduzida. O desenho absorve isso: a frente de planejamento é autocontida e não é caminho único — o backlog é operado por Bruno desde o início, independente do agente Product Planner existir. Suplência de cada documento registrada em `docs/team-responsibilities.md` ("Suplência e Continuidade"). **Risco residual:** Bruno concentra governança, qualidade, alinhamento externo e execução, sem folga para imprevisto — se algo precisar ceder, considerar mover `quality.md` para André.
 - **Caminho crítico concentrado em André.** Arquitetura e stack destravam a qualidade (Bruno não escreve critério de teste sem saber qual ferramenta a stack traz) e o planejamento. Atraso aqui propaga para todas as frentes.
