@@ -46,7 +46,21 @@ São dois produtos distintos no mesmo repositório: públicos diferentes, fases 
 
 Os dois são versionados em `.claude/commands/`, então valem para todo mundo depois de um `git pull`.
 
-E uma verificação, que roda no CI a cada Pull Request:
+### Sincronização com a main
+
+Ao abrir o Claude Code na pasta do repositório, um hook verifica se a `main` do remoto tem commit novo e avisa. **Não altera nada por conta própria** — oferece atualizar.
+
+Se você quiser que a atualização seja automática, defina uma variável de ambiente uma única vez:
+
+```
+setx NEXO_AUTO_SYNC sempre
+```
+
+Mesmo nesse modo, a atualização só acontece quando é **segura**: estando na `main`, com a árvore de trabalho limpa e sendo fast-forward. Numa branch de trabalho o hook sempre só avisa, porque trazer a main para dentro dela é merge ou rebase — pode dar conflito ou reescrever commit, e isso exige sua decisão.
+
+### Verificação de consistência
+
+Roda no CI a cada Pull Request:
 
 ```bash
 node scripts/check-docs.mjs
