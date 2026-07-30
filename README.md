@@ -58,6 +58,19 @@ setx NEXO_AUTO_SYNC sempre
 
 Mesmo nesse modo, a atualização só acontece quando é **segura**: estando na `main`, com a árvore de trabalho limpa e sendo fast-forward. Numa branch de trabalho o hook sempre só avisa, porque trazer a main para dentro dela é merge ou rebase — pode dar conflito ou reescrever commit, e isso exige sua decisão.
 
+### Proteção da branch main
+
+Todo trabalho entra por Pull Request. Além da regra no [CLAUDE.md](CLAUDE.md) (seção 2), há duas camadas:
+
+1. **Proteção no GitHub** — bloqueio no servidor, exige `admin` no repositório para ser configurada. Ver [#10](https://github.com/labsitio/nexus-orc-web/issues/10).
+2. **Hook local `pre-push`** — versionado em `.githooks/`, funciona sem permissão nenhuma. **Ative uma vez por máquina:**
+
+```bash
+git config core.hooksPath .githooks
+```
+
+O hook recusa push direto na `main` e mostra os comandos para mover o trabalho para uma branch. É proteção do lado do cliente, contornável com `--no-verify` — e isso é intencional: o objetivo é impedir quem empurra na main **sem perceber**, não quem decide fazê-lo.
+
 ### Verificação de consistência
 
 Roda no CI a cada Pull Request:

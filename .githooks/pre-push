@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Recusa push direto na `main`.
+#
+# Substituto local da proteção de branch do GitHub, para quando ela não puder
+# ser habilitada por falta de permissão de admin no repositório.
+#
+# É proteção do lado do cliente: dá para contornar com `--no-verify`, e isso é
+# intencional. O objetivo não é impedir quem decide empurrar na main — é impedir
+# quem empurra na main sem perceber. Transforma um acidente em uma escolha.
+#
+# Para ativar, uma vez por máquina:
+#     git config core.hooksPath .githooks
+#
+# Ver CLAUDE.md, seção 2, e a issue #10.
+
+remoto="$1"
+protegida="main"
+
+while read -r _ref_local _sha_local ref_remoto _sha_remoto; do
+  case "$ref_remoto" in
+    "refs/heads/$protegida")
+      branch_atual=$(git rev-parse --abbrev-ref HEAD)
+
+      cat >&2 <<MSG
+
+  Push direto na branch '$protegida' recusado.
+
+  Todo trabalho entra por Pull Request — é onde a revisão acontece
+  (CLAUDE.md, seção 2). Você está em: $branch_atual
+
+  Para seguir o fluxo, mova o trabalho para uma branch:
+
+      git branch <tipo>/<nº da issue>-<descrição-curta>
+      git reset --hard $remoto/$protegida
+      git checkout <tipo>/<nº da issue>-<descrição-curta>
+      git push -u $remoto <tipo>/<nº da issue>-<descrição-curta>
+
+  'tipo' é um de: feat, fix, docs, chore, test
+
+  Se você precisa mesmo empurrar direto — e é uma decisão, não um
+  descuido — repita o comando com --no-verify.
+
+MSG
+      exit 1
+      ;;
+  esac
+done
+
+exit 0

@@ -136,7 +136,7 @@ O projeto é conduzido por uma equipe de agentes de IA especializados, cada um r
 
    `tipo` é um de `feat`, `fix`, `docs`, `chore` ou `test`. Exemplos: `feat/17-formulario-upload`, `docs/2-adr-stack`, `test/19-cobertura-upload`.
 
-   O comando `/implementar` cria a branch com essa convenção automaticamente. Fora dele, é manual — e a trava real é a proteção da branch no GitHub.
+   O comando `/implementar` cria a branch com essa convenção automaticamente. Fora dele, é manual — e há duas travas: a proteção da branch no GitHub, que exige `admin` no repositório, e o hook `pre-push` versionado em `.githooks/`, que funciona sem permissão alguma e é ativado com `git config core.hooksPath .githooks`. Ver o README.
 5. **Atualização de estado** — ao final de qualquer sessão de trabalho relevante, o [STATUS.md](STATUS.md) é atualizado (ver seção 8).
 
 Nenhuma etapa deve ser pulada para "economizar tempo". Se uma etapa não se aplica (ex: mudança trivial sem impacto arquitetural), isso deve ser justificado explicitamente, não simplesmente omitido.
