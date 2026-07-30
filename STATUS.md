@@ -23,7 +23,25 @@ Nenhuma feature de produto em desenvolvimento. O projeto está na **fase de prep
 
 ## Task atual
 
-Criação da documentação base de governança — **concluída, aguardando aprovação do responsável humano**.
+**Fim do dia 30/07.** A estrutura de governança está concluída e os três ADRs aceitos. O trabalho de produto começou, mas parte dele está **retida fora do repositório**.
+
+### Entregue e publicado
+
+Governança completa: `CLAUDE.md`, `STATUS.md`, os quatro documentos de frente, `team-responsibilities.md`, protocolo de integração, pauta do contrato, ADR-0001/0002/0003, backlog de 15 issues com labels, CODEOWNERS, template de PR, comandos `/minhas-tarefas` e `/implementar`, `check-docs` com CI, e hook de sincronização com a main.
+
+### Feito por André, ainda NÃO no repositório
+
+Commit `b027530`, retido na máquina dele por falta de acesso de escrita:
+
+- **Stack decidida:** React/Next.js + API Gateway REST (em vez de AppSync)
+- **Primeiro agente:** `.claude/agents/frontend-developer.md`
+- **`engineering-principles.md`** preenchido
+
+Precisa renumerar o ADR dele de 0003 para **0004** — colisão com o ADR-0003 já publicado.
+
+### Ainda inexistente
+
+**Nenhum agente no repositório. Nenhuma linha de código de aplicação.**
 
 - **Issue:** —  (estrutura anterior à abertura do backlog)
 - **Responsável:** Tech Lead
@@ -125,6 +143,8 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 ## Riscos
 
 - **O entregável final é software rodando, e o backend não tem implementação.** Os organizadores têm utilização prevista para o Nexo — é projeto real, e ao final esperam o projeto funcionando, não só documentação e agentes. Mas o repositório do backend está em **fase de especificação**: contrato publicado, zero código. Se a nossa entrega precisa funcionar integrada, dependemos de algo que ainda não existe do outro lado. **É o risco de maior impacto do projeto.** Mitigações: mock como ponte com data de troca (#15), e a pergunta sobre o que "rodando" significa levada aos organizadores (#13). Definition of Done de projeto em CLAUDE.md, seção 1.2.1.
+- **Acesso ao repositório concedido apenas a Bruno.** Consulta aos collaborators em 30/07: só `brunomartins-labsit`, com papel `maintain`. André e Kássio **não conseguem fazer push**, e o trabalho do André está retido na máquina dele. Solicitado aos admins da organização. **Consequência colateral:** as entradas `@dehlferreira` e `@kassiosa` do CODEOWNERS estão sendo ignoradas em silêncio pelo GitHub, porque apontam para quem não tem acesso. E o papel `maintain` pode não permitir configurar a proteção da branch (#10).
+- **Um dia perdido na janela de quatro.** André encerrou o expediente de 30/07 sem conseguir publicar, e retoma em 31/07. Restam então sexta, o fim de semana de disponibilidade incerta, e a manhã de segunda. **Isso reforça o pedido de prorrogação (#13) como a mitigação de maior impacto disponível.**
 - **Disponibilidade de Bruno no fim de semana é incerta.** O fim de semana é a maior janela contínua de implementação, e o plano original dependia dele para a execução oficial. Mitigado pelo [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md): cada um executa a própria frente. **Risco residual:** se ninguém produzir sábado e domingo, resta apenas a manhã de segunda.
 - **Prorrogação do prazo a ser pedida.** A equipe avalia pedir uma semana. Deve ser solicitada **hoje** — pedir na quinta dá aos organizadores tempo de replanejar; pedir na segunda à tarde não. Não substitui o plano atual, corre em paralelo (#13).
 - **Prazo de 4 dias, dois de fim de semana.** Entrega em 03/08 às 17:30. Com 2 pessoas ativas, nenhum agente criado e zero código, só há espaço para **uma** fase do roadmap. Recomendação registrada em "Prazo e plano até a entrega": Fase 01, portal de upload. O painel do gestor não é construível conforme o escopo enquanto o backend não tiver endpoint de listagem — o corte é técnico, não só de tempo.
