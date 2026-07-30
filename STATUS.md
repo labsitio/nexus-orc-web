@@ -43,19 +43,12 @@ Precisa renumerar o ADR dele de 0003 para **0004** — colisão com o ADR-0003 j
 
 **Nenhum agente no repositório. Nenhuma linha de código de aplicação.**
 
-- **Issue:** —  (estrutura anterior à abertura do backlog)
-- **Responsável:** Tech Lead
-- **Status:** em revisão
-- **Entregue:** `README.md`, `CLAUDE.md`, `STATUS.md`, os quatro documentos de frente em `docs/`, `docs/team-responsibilities.md`, `docs/adr/TEMPLATE.md`, ADR-0001 e ADR-0002, `.gitignore`, `.gitattributes`, `.mcp.json`, `.github/CODEOWNERS`, `.github/PULL_REQUEST_TEMPLATE.md` e o comando `.claude/commands/minhas-tarefas.md`
-- **Repositório:** publicado em [nexus-orc-web](https://github.com/labsitio/nexus-orc-web), branch `main`
 
 ---
 
 ## Prazo e plano até a entrega
 
-**Entrega: segunda-feira, 03/08/2026, 17:30 (Brasília).** Hoje é quinta 30/07 — restam **4 dias, dois deles de fim de semana**.
-
-Isso obriga corte de escopo. O que segue é a recomendação do Tech Lead, a confirmar com a equipe.
+**Entrega: segunda-feira, 03/08/2026, 17:30 (Brasília).** Restam sexta 31/07, o fim de semana de disponibilidade incerta, e a manhã de segunda.
 
 ### Escopo: implementar o máximo possível, em ordem de entregabilidade
 
@@ -84,27 +77,33 @@ A estrutura documental deste repositório foi desenhada para um projeto de seman
 
 ### Plano por dia
 
+**Quinta 30/07 — feito:** governança concluída, 3 ADRs aceitos, backlog com labels, MCP operacional, reunião com o backend realizada (sem respostas ainda), acesso ao repositório solicitado aos admins. E, fora do repositório, André decidiu a stack e criou o primeiro agente.
+
+**Quinta 30/07 — não feito, rolou para sexta:** criar os agentes de Bruno; publicar o trabalho do André; liberar as respostas às dúvidas do backend; pedir a prorrogação.
+
 | Quando | Quem | O quê |
 |---|---|---|
-| **Qui 30, hoje** | Bruno | Reunião com o backend (#1). Levar também as perguntas de #13 |
-| **Qui 30, hoje** | Bruno | **Pedir a prorrogação do prazo aos organizadores** — hoje, não segunda |
-| **Qui 30, hoje** | Bruno + André | **Criar os agentes** — nada existe ainda, e o fim de semana depende deles |
-| **Qui 30, hoje** | André | **Decidir a stack** e registrar ADR curto (#2). É o que destrava todo o resto — **não pode passar de hoje** |
-| **Qui 30, hoje** | André | **Liberar as respostas pré-escritas às dúvidas do backend.** Os agentes de integração deles estão **parados esperando** — resposta parcial hoje vale mais que resposta completa amanhã |
-| **Qui 30, hoje** | Bruno + André | Criar os 5 agentes. Prioridade: Frontend Developer e Frontend Architect, que são os que produzem código |
-| **Sex 31** | André | Arquitetura mínima do portal de upload + estratégia de mock (#3, #15) |
-| **Sex 31** | Bruno | `quality.md` no mínimo viável, com teste automatizado obrigatório. Pipeline de deploy (#14) |
-| **Sáb 01 – Dom 02** | cada um executa a própria frente (ADR-0003) | Implementação, com testes. Sem dependência da disponibilidade de Bruno |
-| **Seg 03, manhã** | Bruno + André | Deploy final, README que funciona em máquina limpa, dado de demonstração |
+| **Sex 31** | Bruno | **Pedir a prorrogação** (#13) — é a mitigação de maior impacto disponível |
+| **Sex 31** | Bruno | Criar os agentes **Tech Lead** e **QA & Reviewer**; preencher `quality.md` no mínimo viável, com teste automatizado obrigatório |
+| **Sex 31** | André | Publicar o commit retido, com o ADR renumerado para 0004. Criar o **Frontend Architect**. Arquitetura mínima do portal de upload e estratégia de mock (#3, #15) |
+| **Sex 31** | André | **Liberar as respostas às dúvidas do backend** — os agentes de integração deles seguem parados |
+| **Sex 31** | Kássio | Agente **Product Planner** e `planning.md` (#4) — não depende de ninguém |
+| **Sáb 01 – Dom 02** | cada um executa a própria frente (ADR-0003) | Implementação do portal de upload, com testes. Sem dependência de disponibilidade de terceiros |
+| **Seg 03, manhã** | Bruno + André | Deploy, README que funciona em máquina limpa, dado de demonstração |
 | **Seg 03, até 17:30** | Bruno | Verificar a Definition of Done de projeto (CLAUDE.md, 1.2.1) e entregar |
 
-### O que precisa ser decidido hoje, sem exceção
+### O que está travado e por quem
 
-1. **Stack** (#2) — bloqueia todo o resto
-2. **Escopo: Fase 01 apenas** — confirmar com a equipe e com os organizadores
-3. **Mock ou integração real** — depende da resposta do backend na reunião; se não houver API até domingo, é mock com a limitação declarada
+| O quê | Depende de |
+|---|---|
+| Publicar o trabalho do André | admins da organização darem acesso de escrita |
+| Proteção da branch (#10) | possivelmente papel `admin`, que Bruno talvez não tenha |
+| Mock ou integração real | resposta do backend sobre quando existe API |
+| Escopo e prorrogação | organizadores (#13) |
 
----
+Bruno |
+| **Seg 03, manhã** | Bruno + André | Deploy final, README que funciona em máquina limpa, dado de demonstração |
+| **Seg 03, até 17:30** | Bruno | Verificar a Definition of Done de projeto (CLAUDE.md, 1.2.1) e entregar |
 
 ## Próximas tasks
 
@@ -112,7 +111,6 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 | Issue | Task | Responsável |
 |---|---|---|
-| [#8](https://github.com/labsitio/nexus-orc-web/issues/8) | Aceitar ou revisar o ADR-0001 e o ADR-0002 — pré-requisito de processo | Bruno |
 | [#1](https://github.com/labsitio/nexus-orc-web/issues/1) | **Acordar o contrato base de integração com o backend** — maior espera externa, começar já | Bruno |
 | [#6](https://github.com/labsitio/nexus-orc-web/issues/6) | Obter dos organizadores as metas numéricas dos critérios de sucesso | Bruno |
 | [#2](https://github.com/labsitio/nexus-orc-web/issues/2) | **Decidir a stack em ADR** e preencher `engineering-principles.md` — caminho crítico | André |
