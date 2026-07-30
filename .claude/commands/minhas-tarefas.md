@@ -18,8 +18,9 @@ Descobrir qual frente a pessoa que está usando esta sessão ocupa, e dizer a el
 Se ainda assim não houver correspondência clara, **não escolha por eliminação nem assuma**: mostre a identidade encontrada, liste as frentes disponíveis e pergunte qual é a dela.
 
 **2. Ler o necessário.** Da frente identificada, leia:
-- `docs/team-responsibilities.md` — a seção dela, mais "Onde os Agentes Vivem", "Mapa de Donos por Documento" e "Kickoff"
+- `STATUS.md`, seção **"Prazo e plano até a entrega"** — **leia primeiro.** Traz a data de entrega e o plano por dia. É o que define urgência; sem isso a resposta fica com aparência de que há tempo.
 - `STATUS.md` — próximas tasks, bloqueios e riscos
+- `docs/team-responsibilities.md` — a seção dela, mais "Onde os Agentes Vivem", "Mapa de Donos por Documento" e "Kickoff"
 - `CLAUDE.md` — seções 1 a 1.3 e 3.1, se precisar de contexto de escopo
 
 **2.1. Buscar perguntas de outras equipes direcionadas a esta pessoa.** Liste as issues abertas de `labsitio/nexus-orc-web` com a label da frente identificada — `para:bruno`, `para:andre` ou `para:kassio`. São perguntas que o agente de Integração não conseguiu responder com o que está registrado e escalou para decisão humana (ver `docs/integracao-protocolo.md`).
@@ -28,14 +29,15 @@ Se a consulta ao GitHub falhar por falta de MCP configurado, **diga isso explici
 
 **3. Responder nesta ordem**, de forma direta e sem repetir os documentos por extenso:
 
-1. **Quem você é e qual é sua frente** — uma linha, confirmando a identificação e como ela foi feita.
-2. **Perguntas de outras equipes esperando você** — se houver alguma do passo 2.1, vem **antes de tudo**. Cada uma com: a pergunta, quem perguntou, o link da issue de origem e o que falta decidir. São bloqueio do outro lado: enquanto não respondidas, outra equipe está parada ou avançando com premissa errada. Se não houver, uma linha dizendo isso.
-3. **Sua próxima ação concreta** — a primeira entrega do Kickoff da frente. Comece por aqui: é o que a pessoa quer saber.
-4. **Seus documentos** — de quais arquivos ela é dona e de quais é suplente.
-5. **Agentes que ela precisa criar** — nome, caminho do arquivo em `.claude/agents/` e o propósito de cada um.
-6. **Tasks do STATUS.md que são dela** — apenas as da frente identificada, na ordem de prioridade do arquivo.
-7. **Bloqueios e riscos que afetam a frente dela** — só os relevantes, dizendo se dependem dela ou de outra pessoa.
-8. **O que NÃO é dela** — os documentos de outras frentes que ela não deve alterar, e a quem recorrer. Uma linha.
+1. **Quanto tempo resta e o que é seu para hoje** — abra com isto. Diga a data e a hora da entrega, quantos dias restam, e **o que o plano por dia atribui a esta pessoa para hoje**, em uma linha. Se há item marcado como "não pode passar de hoje", diga com essas palavras.
+2. **Quem você é e qual é sua frente** — uma linha, confirmando a identificação e como ela foi feita.
+3. **Perguntas de outras equipes esperando você** — se houver alguma do passo 2.1, vem antes das tasks de rotina. Cada uma com: a pergunta, quem perguntou, o link da issue de origem e o que falta decidir. São bloqueio do outro lado: enquanto não respondidas, outra equipe está parada ou avançando com premissa errada. Se não houver, uma linha dizendo isso.
+4. **Sua próxima ação concreta** — a primeira entrega do Kickoff da frente, ou o item de hoje se houver.
+5. **Seus documentos** — de quais arquivos ela é dona e de quais é suplente.
+6. **Agentes que ela precisa criar** — nome, caminho do arquivo em `.claude/agents/` e o propósito de cada um.
+7. **Tasks do STATUS.md que são dela** — apenas as da frente identificada, na ordem de prioridade do arquivo.
+8. **Bloqueios e riscos que afetam a frente dela** — só os relevantes, dizendo se dependem dela ou de outra pessoa.
+9. **O que NÃO é dela** — os documentos de outras frentes que ela não deve alterar, e a quem recorrer. Uma linha.
 
 **4. Encerrar oferecendo o próximo passo.** Pergunte se quer começar pela próxima ação identificada.
 

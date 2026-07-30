@@ -39,21 +39,22 @@ Criação da documentação base de governança — **concluída, aguardando apr
 
 Isso obriga corte de escopo. O que segue é a recomendação do Tech Lead, a confirmar com a equipe.
 
-### Escopo recomendado: Fase 01 — Portal web de upload
+### Escopo: implementar o máximo possível, em ordem de entregabilidade
 
-**Entregar o portal de upload do fornecedor, funcionando, publicado e testado.**
+**Decisão da equipe (30/07): tentar as três fases, acompanhando o avanço.** A recomendação anterior de cortar para a Fase 01 foi substituída — a aposta é que a assistência de agentes muda a produtividade o suficiente.
 
-O argumento não é só de prazo — é de viabilidade técnica:
+Para que "o máximo possível" não vire "nada terminado", vale uma regra de sequenciamento: **cada fase precisa ser demonstrável por si.** O prazo pode cortar em qualquer ponto, e o que estiver pronto tem de funcionar sozinho.
 
-| | Portal de upload (Fase 01) | Painel do gestor (Fase 02) |
+Ordem, por dependência real e não por preferência:
+
+| Ordem | O quê | Viabilidade |
 |---|---|---|
-| Endpoints necessários | 2, ambos **firmes** no contrato do backend (`POST /orcamentos/upload-url`, `POST /orcamentos/{id}/confirmar-upload`) | Precisa de **listagem de orçamentos**, que **não existe** no contrato |
-| BC no backend | spec 001, especificado | **não existe** BC de Acompanhamento |
-| Fluxo | linear e demonstrável | depende de dado em vários estados |
+| 1º | **Portal de upload (Fase 01)** | Alta. Depende de 2 endpoints **firmes** no contrato do backend |
+| 2º | **Painel do gestor — detalhe de um orçamento** | Média. Os 5 endpoints de status por BC são firmes; dá para montar a tela de um orçamento por id |
+| 3º | **Painel do gestor — lista** | **Bloqueada por fora.** Não existe endpoint de listagem no contrato do backend, e eles declaram não ter BC de Acompanhamento especificado |
+| 4º | **Multi-tenant (Fase 03)** | Improvável no prazo, e depende do isolamento do lado deles |
 
-O painel do gestor **não é construível conforme o escopo** enquanto o backend não tiver endpoint de listagem. Insistir nele gastaria o prazo em algo que não fecha.
-
-**Se sobrar tempo:** esqueleto do painel em leitura apenas, contra mock, exibindo o status de um orçamento por id — usando os 5 endpoints de status, que são firmes. Entregável parcial honesto, declarado como tal.
+**O gargalo do item 3 não é nosso e não é de prazo:** é ausência de endpoint. Nenhuma quantidade de agentes constrói uma lista sem fonte de dados. Ou o backend especifica e implementa a listagem, ou essa tela sai da entrega — decisão a acompanhar, não a assumir.
 
 ### Governança aplicada com proporção
 
@@ -61,14 +62,15 @@ A estrutura documental deste repositório foi desenhada para um projeto de seman
 
 - **Mantém:** os 5 agentes (é o objetivo do treinamento), testes automatizados (critério de avaliação), PR com revisão, STATUS atualizado.
 - **Reduz:** ADR apenas para stack e estratégia de mock. Os demais documentos preenchidos no mínimo necessário para orientar os agentes — não em versão final.
-- **Adia:** issues #6, #10, #11 e o backlog completo das 3 fases (#12). Backlog só da Fase 01.
+- **Adia:** #6 (metas numéricas) e #11 (datas intermediárias — o prazo é único). O backlog (#12) acompanha a ordem de entregabilidade acima, começando pela Fase 01.
 
 ### Plano por dia
 
 | Quando | Quem | O quê |
 |---|---|---|
 | **Qui 30, hoje** | Bruno | Reunião com o backend (#1). Levar também as perguntas de #13. Responder o que der na hora |
-| **Qui 30, hoje** | André | **Decidir a stack** e registrar ADR curto (#2). É o que destrava todo o resto — não pode passar de hoje |
+| **Qui 30, hoje** | André | **Decidir a stack** e registrar ADR curto (#2). É o que destrava todo o resto — **não pode passar de hoje** |
+| **Qui 30, hoje** | André | **Liberar as respostas pré-escritas às dúvidas do backend.** Os agentes de integração deles estão **parados esperando** — resposta parcial hoje vale mais que resposta completa amanhã |
 | **Qui 30, hoje** | Bruno + André | Criar os 5 agentes. Prioridade: Frontend Developer e Frontend Architect, que são os que produzem código |
 | **Sex 31** | André | Arquitetura mínima do portal de upload + estratégia de mock (#3, #15) |
 | **Sex 31** | Bruno | `quality.md` no mínimo viável, com teste automatizado obrigatório. Pipeline de deploy (#14) |
