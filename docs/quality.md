@@ -1,6 +1,6 @@
 # Qualidade e Critérios de Aceite — Projeto Nexo
 
-> Documento vivo, de responsabilidade do agente **QA & Reviewer** (Pessoa 1 — ver [team-responsibilities.md](team-responsibilities.md)). Deve definir critérios de aceite, Definition of Done específica de qualidade técnica e o checklist de revisão usado antes de qualquer entrega ser considerada concluída.
+> Documento vivo, de responsabilidade do agente **QA & Reviewer** (Bruno — ver [team-responsibilities.md](team-responsibilities.md)). Deve definir critérios de aceite, Definition of Done específica de qualidade técnica e o checklist de revisão usado antes de qualquer entrega ser considerada concluída.
 
 Este documento **complementa** a Definition of Done geral definida em [CLAUDE.md](../CLAUDE.md#5-definition-of-done) — não a substitui.
 

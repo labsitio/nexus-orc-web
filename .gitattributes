@@ -1,0 +1,22 @@
+# Normaliza quebras de linha para LF no repositório, independente do sistema
+# operacional de quem commita. Evita diffs fantasma entre integrantes em
+# Windows, macOS e Linux — definido antes de existir código, que é a hora certa.
+* text=auto eol=lf
+
+# Arquivos binários: nunca normalizar
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Scripts que exigem terminação específica
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf

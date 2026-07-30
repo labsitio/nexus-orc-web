@@ -1,6 +1,6 @@
 # Planejamento — Projeto Nexo
 
-> Documento vivo, de responsabilidade do agente **Product Planner** (Pessoa 3, com a Pessoa 1 como suplente em contingência — ver [team-responsibilities.md](team-responsibilities.md)). Deve definir o processo de planejamento do projeto: como o trabalho é quebrado em épicos e tasks, como prioridades e dependências são geridas, e como o backlog flui dentro do GitHub.
+> Documento vivo, de responsabilidade do agente **Product Planner** (Kássio, com Bruno como suplente — ver [team-responsibilities.md](team-responsibilities.md)). Deve definir o processo de planejamento do projeto: como o trabalho é quebrado em épicos e tasks, como prioridades e dependências são geridas, e como o backlog flui dentro do GitHub.
 
 Este documento operacionaliza a filosofia de planejamento definida em [CLAUDE.md](../CLAUDE.md#10-filosofia-de-planejamento-antes-da-implementação) e as regras de uso do GitHub como backlog oficial ([CLAUDE.md, seção 9](../CLAUDE.md#9-utilização-do-github-via-mcp-como-backlog-oficial)).
 

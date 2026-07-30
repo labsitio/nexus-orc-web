@@ -4,15 +4,15 @@
 
 Proposto
 
-> Depende da aprovação do responsável humano pela estrutura de governança criada em 2026-07-24. Ao ser aceito, atualizar este campo para **Aceito** e refletir a mudança na seção "ADRs recentes" do [STATUS.md](../../STATUS.md).
+> Depende da aprovação do responsável humano pela estrutura de governança criada em 2026-07-30. Ao ser aceito, atualizar este campo para **Aceito** e refletir a mudança na seção "ADRs recentes" do [STATUS.md](../../STATUS.md).
 
 ## Data
 
-2026-07-24
+2026-07-30
 
 ## Autor(es)
 
-Claude, atuando como Tech Lead (o agente Tech Lead formal ainda não foi criado — ver [docs/team-responsibilities.md](../team-responsibilities.md), Pessoa 1). Solicitado por bruno.seibert@labsit.io.
+Claude, atuando como Tech Lead (o agente Tech Lead formal ainda não foi criado — ver [docs/team-responsibilities.md](../team-responsibilities.md), Bruno). Solicitado por bruno.seibert@labsit.io.
 
 ---
 
@@ -84,10 +84,10 @@ O ciclo pretendido é fechado: **decisão → ADR → STATUS.md → próxima tas
 - [x] `CLAUDE.md` — é o artefato central desta decisão; já criado
 - [x] `docs/team-responsibilities.md` — define os donos de cada documento; já criado
 - [x] `STATUS.md` — registrar este ADR na seção "ADRs recentes"
-- [ ] `docs/architecture.md` — sem impacto de conteúdo; permanece a preencher pela Pessoa 2
-- [ ] `docs/engineering-principles.md` — sem impacto de conteúdo; permanece a preencher pela Pessoa 2
-- [ ] `docs/quality.md` — sem impacto de conteúdo; permanece a preencher pela Pessoa 3
-- [ ] `docs/planning.md` — sem impacto de conteúdo; permanece a preencher pela Pessoa 3
+- [ ] `docs/architecture.md` — sem impacto de conteúdo; permanece a preencher por André
+- [ ] `docs/engineering-principles.md` — sem impacto de conteúdo; permanece a preencher por André
+- [ ] `docs/quality.md` — sem impacto de conteúdo; permanece a preencher por Kássio
+- [ ] `docs/planning.md` — sem impacto de conteúdo; permanece a preencher por Kássio
 
 ---
 

@@ -1,6 +1,6 @@
 # Arquitetura do Projeto Nexo
 
-> Documento vivo, de responsabilidade do agente **Frontend Architect** (Pessoa 2 — ver [team-responsibilities.md](team-responsibilities.md)). Deve ser preenchido e mantido atualizado à medida que decisões de arquitetura são tomadas. Decisões estruturais registradas aqui **devem** ter um ADR correspondente em `docs/adr/`.
+> Documento vivo, de responsabilidade do agente **Frontend Architect** (André — ver [team-responsibilities.md](team-responsibilities.md)). Deve ser preenchido e mantido atualizado à medida que decisões de arquitetura são tomadas. Decisões estruturais registradas aqui **devem** ter um ADR correspondente em `docs/adr/`.
 
 Este documento **não deve** conter escolhas de stack, bibliotecas ou convenções de código — isso pertence a [engineering-principles.md](engineering-principles.md). Aqui vive a arquitetura da solução: como os componentes se relacionam, como os dados fluem, quais fronteiras existem.
 
@@ -42,7 +42,7 @@ _(O que **não** é decisão desta equipe. Para cada item, registrar de quem é 
 
 ## 5. Contrato de Integração e Estratégia de Mock
 
-_(O contrato de dados que o frontend consome, e como ele é mockado enquanto o backend não entrega. O mock é a **proposta de contrato** levada ao backend, não uma suposição privada — ver [team-responsibilities.md](team-responsibilities.md), Pessoa 1 e Pessoa 2.)_
+_(O contrato de dados que o frontend consome, e como ele é mockado enquanto o backend não entrega. O mock é a **proposta de contrato** levada ao backend, não uma suposição privada — ver [team-responsibilities.md](team-responsibilities.md), Bruno e André.)_
 
 Itens que **precisam** estar pinados explicitamente, porque escopo idêntico não impede divergência neles:
 

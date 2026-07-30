@@ -1,0 +1,72 @@
+# CODEOWNERS — Projeto Nexo (frontend)
+#
+# Torna o mapa de donos de docs/team-responsibilities.md uma restrição real:
+# o GitHub passa a exigir a revisão do dono quando o arquivo dele é alterado.
+#
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ AÇÃO NECESSÁRIA — substituir os placeholders abaixo pelos usuários reais │
+# │ do GitHub, no formato @usuario. Enquanto forem placeholders, o GitHub    │
+# │ ignora as regras silenciosamente e nada é exigido no Pull Request.       │
+# └──────────────────────────────────────────────────────────────────────────┘
+#
+#   @brunomartins-labsit  →  Bruno Martins        — Tech Lead, Integração & Qualidade
+#   @usuario-andre   →  André Luiz Ferreira  — Frontend Architect & Stack
+#   @usuario-kassio  →  Kássio Sá            — Product Planner
+#
+# Para que a exigência de revisão seja efetiva, é preciso também habilitar
+# "Require review from Code Owners" na proteção da branch main, nas configurações
+# do repositório. Sem isso, o CODEOWNERS apenas sugere revisores.
+#
+# Sintaxe: o último padrão que casa com o arquivo é o que vale. Por isso a regra
+# geral vem primeiro e as específicas depois.
+
+# ---------------------------------------------------------------------------
+# Padrão: qualquer arquivo sem dono específico é revisado por Bruno Martins
+# ---------------------------------------------------------------------------
+*                                   @brunomartins-labsit
+
+# ---------------------------------------------------------------------------
+# Governança — Bruno Martins
+# ---------------------------------------------------------------------------
+/CLAUDE.md                          @brunomartins-labsit
+/STATUS.md                          @brunomartins-labsit
+/README.md                          @brunomartins-labsit
+/docs/quality.md                    @brunomartins-labsit
+/docs/team-responsibilities.md      @brunomartins-labsit
+/.github/                           @brunomartins-labsit
+
+# ---------------------------------------------------------------------------
+# Arquitetura e stack — André, com Bruno como suplente
+# ---------------------------------------------------------------------------
+/docs/architecture.md               @usuario-andre @brunomartins-labsit
+/docs/engineering-principles.md     @usuario-andre @brunomartins-labsit
+
+# ---------------------------------------------------------------------------
+# Planejamento — Kássio, com Bruno como suplente
+# ---------------------------------------------------------------------------
+/docs/planning.md                   @usuario-kassio @brunomartins-labsit
+
+# ---------------------------------------------------------------------------
+# ADRs — qualquer frente propõe; revisão de Bruno é obrigatória
+# (CLAUDE.md, seção 7)
+# ---------------------------------------------------------------------------
+/docs/adr/                          @brunomartins-labsit
+
+# ---------------------------------------------------------------------------
+# Agentes de desenvolvimento — cada frente é dona dos seus
+# (convenção em docs/team-responsibilities.md, "Onde os Agentes Vivem")
+# ---------------------------------------------------------------------------
+/.claude/agents/tech-lead.md            @brunomartins-labsit
+/.claude/agents/qa-reviewer.md          @brunomartins-labsit
+/.claude/agents/frontend-architect.md   @usuario-andre @brunomartins-labsit
+/.claude/agents/frontend-developer.md   @usuario-andre @brunomartins-labsit
+/.claude/agents/product-planner.md      @usuario-kassio @brunomartins-labsit
+
+# Comandos compartilhados da equipe
+/.claude/commands/                       @brunomartins-labsit
+
+# ---------------------------------------------------------------------------
+# Escopo recebido dos organizadores — não deve ser alterado por ninguém.
+# É material de referência, não documento vivo da equipe.
+# ---------------------------------------------------------------------------
+/escopo/                            @brunomartins-labsit

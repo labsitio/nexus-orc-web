@@ -25,7 +25,7 @@ Essas decisões pertencem à equipe e devem ser registradas em [docs/architectur
 - **Público / stakeholders:** gestores e times de compras de redes varejistas (usuários do Portal Web de Acompanhamento); fornecedores que enviam orçamentos (usuários dos canais de ingestão); áreas de auditoria e compliance (consumidoras dos relatórios).
 
 - **Critérios de sucesso do projeto:** conforme os documentos de escopo — reduzir o tempo entre o recebimento do orçamento e o dado disponível de horas/dias para **minutos**; eliminar a triagem manual como etapa obrigatória do caminho principal; **rastreabilidade completa** de cada orçamento (origem, canal, etapa, agente responsável, decisão) disponível em tempo real e exportável para auditoria; e busca semântica sobre todo o acervo processado.
-  > **Atenção:** os documentos de escopo não trazem metas numéricas verificáveis (ex: precisão mínima de extração, tempo-alvo em segundos, volume/mês). Definir esses números é pré-requisito para que a Pessoa 3 escreva critérios de aceite que possam de fato ser verificados. Ver Bloqueios em [STATUS.md](STATUS.md).
+  > **Atenção:** os documentos de escopo não trazem metas numéricas verificáveis (ex: precisão mínima de extração, tempo-alvo em segundos, volume/mês). Definir esses números é pré-requisito para que Kássio escreva critérios de aceite que possam de fato ser verificados. Ver Bloqueios em [STATUS.md](STATUS.md).
 
 ---
 
@@ -57,7 +57,7 @@ O Nexo é conduzido como exercício pós-treinamento de Claude Code. Além dos o
 
 | Expectativa | Onde isso é endereçado neste projeto |
 |---|---|
-| Colaboração entre os times | Contrato base negociado com o backend no início (Pessoa 1) — ver `docs/architecture.md`, seção 5 |
+| Colaboração entre os times | Contrato base negociado com o backend no início (Bruno) — ver `docs/architecture.md`, seção 5 |
 | Uso de IA e agentes para acelerar o desenvolvimento | Os 5 agentes de desenvolvimento de `docs/team-responsibilities.md`; execução centralizada |
 | Arquitetura bem definida | `docs/architecture.md` + ADRs em `docs/adr/` |
 | Código de qualidade | `docs/engineering-principles.md` (convenções) + `docs/quality.md` (checklist de revisão) |
@@ -107,6 +107,42 @@ Nenhuma etapa deve ser pulada para "economizar tempo". Se uma etapa não se apli
 - Decisões que alteram significativamente arquitetura, stack, processo ou critérios de qualidade **exigem um ADR**, mesmo que o autor tenha certeza da decisão.
 - Conflitos entre frentes (ex: arquitetura vs. stack proposta) são resolvidos pelo Tech Lead, com a decisão registrada em ADR.
 - Nenhum agente deve alterar o documento de outra frente sem coordenação explícita do Tech Lead.
+
+### 3.1. Identificação do integrante e escopo de atuação
+
+Cada integrante trabalha na sua própria máquina, com sua própria sessão do Claude Code. Duas coisas garantem que o escopo de cada um seja respeitado sem custo recorrente de contexto:
+
+**1. Identificação automática pela identidade do Git.** O integrante não precisa se apresentar. Basta rodar:
+
+```
+/minhas-tarefas
+```
+
+O comando (definido em `.claude/commands/minhas-tarefas.md`, versionado no repositório) lê o `git config user.name` da máquina, cruza com a **Tabela de Identidades** de [docs/team-responsibilities.md](docs/team-responsibilities.md) e responde com a frente, a próxima ação concreta, os documentos de que a pessoa é dona, os agentes que precisa criar e as tasks do STATUS.md que são dela.
+
+A mesma coisa funciona em linguagem natural — **"o que eu preciso fazer?"**, "quais são minhas responsabilidades?" ou equivalente. Nesse caso, o assistente deve seguir o mesmo procedimento: ler a identidade do Git, cruzar com a Tabela de Identidades e responder. **Não presumir a frente por eliminação**: se a identidade não casar com nenhuma linha da tabela, mostrar o que foi encontrado e perguntar.
+
+É uma leitura de onboarding e não precisa ser repetida a cada sessão — entendido o escopo, a pessoa atua a partir dele, sem gasto recorrente de tokens e contexto.
+
+**2. O mapa de donos vive neste arquivo.** Como o CLAUDE.md é carregado em toda sessão, a tabela abaixo está sempre disponível, sem custo adicional e sem depender de abrir outros documentos. A partir dela, o assistente deve:
+
+- Restringir as alterações aos documentos da frente em que está atuando.
+- Ao receber um pedido que toque documento de outra frente, **não executar silenciosamente**: avisar de quem é o documento e sugerir encaminhar ao dono ou ao Tech Lead. Se a pessoa for a **suplente** daquele documento e confirmar que está assumindo, pode prosseguir — registrando o motivo no PR.
+
+| Frente | Documentos de que é dona |
+|---|---|
+| **Bruno** — Tech Lead, Integração & Qualidade | `CLAUDE.md`, `STATUS.md`, `docs/quality.md`, `docs/team-responsibilities.md`, `.github/` |
+| **André** — Frontend Architect & Stack | `docs/architecture.md`, `docs/engineering-principles.md` |
+| **Kássio** — Product Planner | `docs/planning.md` |
+| Qualquer frente | `docs/adr/` — quem propõe o ADR o escreve; revisão de Bruno |
+
+**Quando a frente não estiver clara** e o pedido implicar alterar um documento com dono definido, o assistente pergunta antes — em vez de assumir. É uma pergunta curta e pontual, não uma rotina de abertura.
+
+Três ressalvas honestas sobre o alcance desta regra:
+
+- É **instrução, não trava**. Ela funciona porque este arquivo é carregado em toda sessão, mas pode ser contornada por quem insistir. A trava real é o `.github/CODEOWNERS`, que atua no momento do Pull Request.
+- **A pessoa retém o briefing entre sessões; o assistente não.** Cada sessão nova começa sem histórico da anterior. Isso não afeta a produtividade de quem já conhece o próprio escopo — apenas significa que a checagem de escopo se apoia na tabela acima, e não em memória de conversa.
+- Quando os agentes de desenvolvimento existirem, **eles passam a ser o mecanismo principal**: cada agente carrega o escopo da sua frente na própria definição. Invocar o agente certo é mais confiável e mais barato que declarar quem se é, porque não depende de ninguém lembrar.
 
 ---
 
@@ -220,7 +256,7 @@ Antes de iniciar qualquer trabalho, todo agente (independente da frente) deve ve
 - [ ] O escopo e os critérios de aceite desta solicitação estão claros?
 - [ ] Esta solicitação envolve uma decisão estrutural que deveria virar ADR?
 - [ ] Existe algum ADR existente que já decide (ou restringe) este assunto?
-- [ ] Esta solicitação é responsabilidade da minha frente de trabalho (ver [docs/team-responsibilities.md](docs/team-responsibilities.md)), ou deveria ser encaminhada a outro agente/à coordenação do Tech Lead?
+- [ ] A frente de trabalho desta sessão foi declarada (ver seção 3.1)? Esta solicitação é responsabilidade dela, ou deveria ser encaminhada ao dono do documento / à coordenação do Tech Lead?
 - [ ] Alguma Stop Condition (seção 6) se aplica aqui?
 - [ ] Ao final do trabalho, o que precisa ser atualizado em STATUS.md e/ou no GitHub?
 

@@ -1,6 +1,6 @@
 # Princípios de Engenharia — Projeto Nexo
 
-> Documento vivo, de responsabilidade do agente **Frontend Developer** (Pessoa 2 — ver [team-responsibilities.md](team-responsibilities.md)). Deve definir stack, bibliotecas e convenções de código. Decisões amplas e dificilmente reversíveis registradas aqui **devem** ter um ADR correspondente em `docs/adr/`.
+> Documento vivo, de responsabilidade do agente **Frontend Developer** (André — ver [team-responsibilities.md](team-responsibilities.md)). Deve definir stack, bibliotecas e convenções de código. Decisões amplas e dificilmente reversíveis registradas aqui **devem** ter um ADR correspondente em `docs/adr/`.
 
 Este documento **não deve** conter decisões de arquitetura de sistema (isso pertence a [architecture.md](architecture.md)) nem critérios de qualidade/aceite (isso pertence a [quality.md](quality.md)).
 
