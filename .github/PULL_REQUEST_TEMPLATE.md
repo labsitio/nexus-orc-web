@@ -48,6 +48,12 @@ Item que não se aplica deve ser marcado e justificado — não apagado.
 - **Decisão tomada:**
 - **Risco novo:**
 
+## Agente que gerou esta mudança
+
+<!-- Obrigatório quando o conteúdo foi produzido por agente (ADR-0003). É o que
+     preserva a atribuição enquanto a execução está distribuída. Se foi escrito
+     à mão, escreva "manual". -->
+
 ## Observações
 
 <!-- Desvios de escopo, itens do checklist que não se aplicam e por quê, pontos de

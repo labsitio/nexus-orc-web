@@ -68,13 +68,15 @@ A estrutura documental deste repositório foi desenhada para um projeto de seman
 
 | Quando | Quem | O quê |
 |---|---|---|
-| **Qui 30, hoje** | Bruno | Reunião com o backend (#1). Levar também as perguntas de #13. Responder o que der na hora |
+| **Qui 30, hoje** | Bruno | Reunião com o backend (#1). Levar também as perguntas de #13 |
+| **Qui 30, hoje** | Bruno | **Pedir a prorrogação do prazo aos organizadores** — hoje, não segunda |
+| **Qui 30, hoje** | Bruno + André | **Criar os agentes** — nada existe ainda, e o fim de semana depende deles |
 | **Qui 30, hoje** | André | **Decidir a stack** e registrar ADR curto (#2). É o que destrava todo o resto — **não pode passar de hoje** |
 | **Qui 30, hoje** | André | **Liberar as respostas pré-escritas às dúvidas do backend.** Os agentes de integração deles estão **parados esperando** — resposta parcial hoje vale mais que resposta completa amanhã |
 | **Qui 30, hoje** | Bruno + André | Criar os 5 agentes. Prioridade: Frontend Developer e Frontend Architect, que são os que produzem código |
 | **Sex 31** | André | Arquitetura mínima do portal de upload + estratégia de mock (#3, #15) |
 | **Sex 31** | Bruno | `quality.md` no mínimo viável, com teste automatizado obrigatório. Pipeline de deploy (#14) |
-| **Sáb 01 – Dom 02** | agentes, execução por Bruno | Implementação do portal de upload, com testes |
+| **Sáb 01 – Dom 02** | cada um executa a própria frente (ADR-0003) | Implementação, com testes. Sem dependência da disponibilidade de Bruno |
 | **Seg 03, manhã** | Bruno + André | Deploy final, README que funciona em máquina limpa, dado de demonstração |
 | **Seg 03, até 17:30** | Bruno | Verificar a Definition of Done de projeto (CLAUDE.md, 1.2.1) e entregar |
 
@@ -123,6 +125,8 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 ## Riscos
 
 - **O entregável final é software rodando, e o backend não tem implementação.** Os organizadores têm utilização prevista para o Nexo — é projeto real, e ao final esperam o projeto funcionando, não só documentação e agentes. Mas o repositório do backend está em **fase de especificação**: contrato publicado, zero código. Se a nossa entrega precisa funcionar integrada, dependemos de algo que ainda não existe do outro lado. **É o risco de maior impacto do projeto.** Mitigações: mock como ponte com data de troca (#15), e a pergunta sobre o que "rodando" significa levada aos organizadores (#13). Definition of Done de projeto em CLAUDE.md, seção 1.2.1.
+- **Disponibilidade de Bruno no fim de semana é incerta.** O fim de semana é a maior janela contínua de implementação, e o plano original dependia dele para a execução oficial. Mitigado pelo [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md): cada um executa a própria frente. **Risco residual:** se ninguém produzir sábado e domingo, resta apenas a manhã de segunda.
+- **Prorrogação do prazo a ser pedida.** A equipe avalia pedir uma semana. Deve ser solicitada **hoje** — pedir na quinta dá aos organizadores tempo de replanejar; pedir na segunda à tarde não. Não substitui o plano atual, corre em paralelo (#13).
 - **Prazo de 4 dias, dois de fim de semana.** Entrega em 03/08 às 17:30. Com 2 pessoas ativas, nenhum agente criado e zero código, só há espaço para **uma** fase do roadmap. Recomendação registrada em "Prazo e plano até a entrega": Fase 01, portal de upload. O painel do gestor não é construível conforme o escopo enquanto o backend não tiver endpoint de listagem — o corte é técnico, não só de tempo.
 - **Divergência entre frentes.** Três pessoas preenchendo documentos em paralelo (arquitetura, stack, qualidade, planejamento) podem produzir decisões incompatíveis. Mitigação prevista: coordenação do Tech Lead, CODEOWNERS por documento e registro de conflitos em ADR (CLAUDE.md, seção 3).
 - **Disponibilidade desigual entre as frentes.** A disponibilidade dos integrantes varia ao longo do treinamento, e a de Kássio é reduzida. O desenho absorve isso: a frente de planejamento é autocontida e não é caminho único — o backlog é operado por Bruno desde o início, independente do agente Product Planner existir. Suplência de cada documento registrada em `docs/team-responsibilities.md` ("Suplência e Continuidade"). **Risco residual:** Bruno concentra governança, qualidade, alinhamento externo e execução, sem folga para imprevisto — se algo precisar ceder, considerar mover `quality.md` para André.
@@ -142,8 +146,9 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 ## ADRs recentes
 
-- [ADR-0001](docs/adr/0001-adocao-do-modelo-de-governanca.md) — Adoção do modelo de governança documental com ADRs, STATUS e backlog no GitHub — **Proposto** (aguardando aceite do responsável humano).
-- [ADR-0002](docs/adr/0002-execucao-centralizada-e-escritor-unico.md) — Execução centralizada dos agentes e escritor único do STATUS.md — **Proposto**.
+- [ADR-0001](docs/adr/0001-adocao-do-modelo-de-governanca.md) — Modelo de governança documental com ADRs, STATUS e backlog no GitHub — **Aceito** (30/07).
+- [ADR-0002](docs/adr/0002-execucao-centralizada-e-escritor-unico.md) — Execução centralizada dos agentes e escritor único do STATUS.md — **Aceito** (30/07), com a execução centralizada **emendada pelo ADR-0003**.
+- [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md) — Execução distribuída na janela até a entrega — **Aceito** (30/07). Expira em 03/08.
 
 Template para novos ADRs: [docs/adr/TEMPLATE.md](docs/adr/TEMPLATE.md).
 

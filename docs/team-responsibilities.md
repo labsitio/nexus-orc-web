@@ -235,7 +235,7 @@ Bruno consolida o STATUS.md **ao menos uma vez por dia**, não a cada report. En
 A execução oficial é **centralizada**, para que o resultado entregue seja reproduzível e não varie conforme a máquina de origem.
 
 - Cada pessoa **entrega** as definições dos seus agentes e as diretrizes da sua frente.
-- **Bruno conduz a execução oficial** — a que gera o resultado entregue.
+- **Até 03/08, cada integrante executa oficialmente os agentes da própria frente** ([ADR-0003](adr/0003-execucao-distribuida-na-janela-de-entrega.md)) — não é preciso aguardar Bruno. Em troca, todo PR gerado por agente declara **qual agente o gerou**. Depois da entrega, a centralização do ADR-0002 volta a valer.
 - **Validação local é permitida e recomendada.** Cada autor pode e deve rodar o próprio agente na própria máquina para verificar que funciona, antes de entregar.
 
 **Motivo da distinção:** centralizar a execução oficial mantém o resultado consistente. Mas se nenhum agente fosse executado antes do final, todos chegariam à integração sem nunca ter rodado, e a primeira execução seria o momento de maior risco do projeto. Validar localmente e executar oficialmente são atividades diferentes, e ambas são necessárias.

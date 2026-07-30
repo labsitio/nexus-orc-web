@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposto
-
-> Depende da aprovação do responsável humano pela estrutura de governança criada em 2026-07-30. Ao ser aceito, atualizar este campo para **Aceito** e refletir a mudança na seção "ADRs recentes" do [STATUS.md](../../STATUS.md).
+**Aceito** em 2026-07-30 por Bruno Martins (Tech Lead).
 
 ## Data
 

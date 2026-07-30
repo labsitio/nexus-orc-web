@@ -2,9 +2,9 @@
 
 ## Status
 
-Proposto
+**Aceito** em 2026-07-30 por Bruno Martins (Tech Lead).
 
-> Ao ser aceito, atualizar este campo e refletir a mudança na seção "ADRs recentes" do [STATUS.md](../../STATUS.md).
+> **Emendado pelo [ADR-0003](0003-execucao-distribuida-na-janela-de-entrega.md)**, que suspende temporariamente a centralização da execução oficial durante a janela até 03/08. A decisão 2 deste ADR — escritor único do STATUS.md — permanece integralmente em vigor.
 
 ## Data
 
