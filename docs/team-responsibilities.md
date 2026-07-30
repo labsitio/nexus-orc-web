@@ -103,15 +103,22 @@ Três regras orientaram como o trabalho foi distribuído. Elas valem para todas 
 
 **Objetivo:** Estruturar o processo de planejamento da equipe e transformar o roadmap de três fases do escopo em um backlog navegável no GitHub.
 
+A frente tem **duas partes com naturezas diferentes**, e vale tratá-las como tal:
+
+| Parte | Depende de | Issue |
+|---|---|---|
+| **Processo** — o agente e o `planning.md` | nada; pode começar já | [#4](https://github.com/labsitio/nexus-orc-web/issues/4) |
+| **Backlog de implementação** — épicos e tasks das 3 fases | arquitetura, stack e o contrato com o backend | [#12](https://github.com/labsitio/nexus-orc-web/issues/12) |
+
 **Entregáveis:**
 - Agente **Product Planner** criado e operacional.
 - [docs/planning.md](planning.md) preenchido.
-- Backlog estruturado no GitHub — épicos e tasks das três fases do roadmap.
+- Backlog de implementação das três fases estruturado no GitHub.
 
 **Responsabilidades:**
 - Criar o agente **Product Planner**.
 - Preencher `docs/planning.md`: processo de planejamento, critérios de quebra em épicos e tasks, priorização, gestão de dependências e fluxo do backlog no GitHub.
-- Traduzir as três fases do roadmap descritas nos documentos de escopo em épicos e tasks com escopo e critérios de aceite mínimos.
+- Traduzir as três fases do roadmap em épicos e tasks com escopo e critérios de aceite.
 - Reportar a Bruno o que precisa entrar no STATUS.md.
 
 **Documentos:** [docs/planning.md](planning.md) · estrutura de épicos e issues no GitHub
@@ -119,7 +126,17 @@ Três regras orientaram como o trabalho foi distribuído. Elas valem para todas 
 **Agentes a desenvolver:**
 - `Product Planner` — quebra de trabalho em épicos/tasks, priorização, dependências e organização do backlog no GitHub.
 
-**Característica desta frente:** é a mais autocontida das três. O insumo necessário — os documentos em [`escopo/`](../escopo/) — já está disponível, e nenhuma entrega aqui depende de decisão de Bruno ou de André. Na prática isso significa **horário flexível**: pode ser executada em blocos, fora de sincronia com as outras frentes, sem que ninguém fique esperando. Bruno mantém o backlog operando em paralelo, então o trabalho de planejamento entra para dar estrutura ao que existe, sem pressão de ser o caminho por onde o projeto passa.
+**Fronteiras na criação de tasks.** Três frentes tocam o mesmo artefato, então convém explicitar:
+
+- O **Product Planner** decide **o que** será feito e em que ordem, e escreve o critério de aceite de cada task.
+- O **Frontend Architect / Developer** decide **como** — componentes, rotas, estado — dentro de cada task. Não fatia o backlog.
+- O **QA & Reviewer** define **o que conta como pronto**, no framework de `quality.md`, contra o qual o Planner escreve os critérios específicos.
+
+**Sobre a autonomia desta frente.** A parte de **processo** é a mais autocontida da equipe: o insumo são os documentos em [`escopo/`](../escopo/), já disponíveis, e nada depende de decisão de Bruno ou de André. Na prática, **horário flexível** — pode ser feita em blocos, fora de sincronia com as outras frentes.
+
+O **backlog de implementação** é diferente: é o portão da fase de código, porque pela seção 4 do CLAUDE.md nenhuma feature é implementada sem task. Mas ele vem naturalmente depois da arquitetura e da stack, então não é o primeiro item a travar. Enquanto não existir, Bruno mantém as issues manualmente, e a #12 tem gatilho de suplência explícito.
+
+**O agente é o que dá continuidade.** Como a execução oficial é centralizada (ver [ADR-0002](adr/0002-execucao-centralizada-e-escritor-unico.md)), um agente Product Planner bem definido permite que o backlog seja gerado por quem estiver executando, sem depender de disponibilidade contínua de quem o escreveu. Por isso o agente da #4 importa mais que a operação manual do backlog: é ele que preserva a capacidade.
 
 ---
 
@@ -225,7 +242,7 @@ Depois disso não é necessário repetir o briefing a cada sessão — o mapa de
 |---|---|---|
 | **Bruno** | `apresentacao-time.html` (componentes e stack) + `arquitetura-macro.html` | Abrir a conversa com a equipe de backend sobre o contrato, usando a tabela da seção 5 de `architecture.md` como pauta. É a entrega com maior tempo de espera externo — convém ser a primeira. |
 | **André** | `apresentacao-time.html`, seções 01, 02 e 04 | ADR da decisão de stack: adotar a sugestão do escopo ou divergir, com justificativa. Sem necessidade de preencher os documentos inteiros ainda. |
-| **Kássio** | `briefing-projeto.html` (roadmap das 3 fases) | Épicos das três fases abertos como issues no GitHub. |
+| **Kássio** | `briefing-projeto.html` (roadmap das 3 fases) | O agente Product Planner e o `planning.md` ([#4](https://github.com/labsitio/nexus-orc-web/issues/4)) — não depende de ninguém. O backlog de implementação ([#12](https://github.com/labsitio/nexus-orc-web/issues/12)) vem depois da arquitetura. |
 
 ---
 
@@ -235,7 +252,8 @@ Depois disso não é necessário repetir o briefing a cada sessão — o mapa de
 2. **André** decide e registra a stack, depois avança na arquitetura. É o caminho crítico: Bruno depende dessas decisões para escrever critérios de qualidade aplicáveis.
 3. **Bruno** cria o template de PR e o CODEOWNERS — não depende de ninguém e pode ocorrer em paralelo.
 4. **Bruno** preenche `quality.md` após a stack estar decidida, porque o critério de teste depende da ferramenta que a stack traz.
-5. **Kássio** estrutura o backlog a partir do roadmap, em paralelo às demais frentes.
+5. **Kássio** entrega o agente Product Planner e o `planning.md` em paralelo às demais frentes — não depende de ninguém.
+6. **Kássio** estrutura o backlog de implementação depois que a stack e a arquitetura fecharem. Se não estiver em andamento nesse momento, Bruno assume, rodando o agente ou redigindo.
 6. **Bruno** finaliza o CLAUDE.md e revisa a coerência entre os documentos antes de qualquer implementação ser autorizada.
 7. **Bruno** conduz a execução oficial dos agentes.
 

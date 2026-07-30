@@ -44,12 +44,13 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 | [#6](https://github.com/labsitio/nexus-orc-web/issues/6) | Obter dos organizadores as metas numéricas dos critérios de sucesso | Bruno |
 | [#2](https://github.com/labsitio/nexus-orc-web/issues/2) | **Decidir a stack em ADR** e preencher `engineering-principles.md` — caminho crítico | André |
 | [#3](https://github.com/labsitio/nexus-orc-web/issues/3) | Preencher `architecture.md`: arquitetura, fronteiras e estratégia de mock | André |
-| [#4](https://github.com/labsitio/nexus-orc-web/issues/4) | Criar o agente Product Planner, preencher `planning.md` e estruturar o backlog | Kássio |
+| [#4](https://github.com/labsitio/nexus-orc-web/issues/4) | Criar o agente Product Planner e preencher `planning.md` — sem dependência | Kássio |
 | [#7](https://github.com/labsitio/nexus-orc-web/issues/7) | Criar o agente Tech Lead e finalizar o CLAUDE.md | Bruno |
 | [#5](https://github.com/labsitio/nexus-orc-web/issues/5) | Criar o agente QA & Reviewer e preencher `quality.md` — depende de #2 e #6 | Bruno |
 | [#9](https://github.com/labsitio/nexus-orc-web/issues/9) | Configurar o GitHub MCP nas máquinas de André e Kássio | André, Kássio |
 | [#10](https://github.com/labsitio/nexus-orc-web/issues/10) | Habilitar a proteção da branch `main` com Require review from Code Owners | Bruno |
 | [#11](https://github.com/labsitio/nexus-orc-web/issues/11) | Alinhar as datas de referência de cada entrega | Bruno |
+| [#12](https://github.com/labsitio/nexus-orc-web/issues/12) | Estruturar o backlog de implementação das 3 fases — **portão da fase de código**; depende de #1, #2 e #3 | Kássio |
 
 ---
 
