@@ -15,7 +15,7 @@
 
 Nenhuma feature de produto em desenvolvimento. O projeto está na **fase de preparação de governança**: montagem da estrutura de documentação e definição de responsabilidades, anterior a qualquer implementação.
 
-- **Epic/Issue:** _(a criar — backlog no GitHub ainda não existe, ver Bloqueios)_
+- **Epic/Issue:** backlog aberto em [issues #1 a #11](https://github.com/labsitio/nexus-orc-web/issues)
 - **Descrição:** Estabelecer a estrutura de governança, planejamento e qualidade que orientará a equipe de agentes antes do início do desenvolvimento.
 - **Escopo do produto:** recebido em 2026-07-30, em [`escopo/`](escopo/) (5 arquivos HTML). Resumo e delimitação da fatia de frontend registrados no [CLAUDE.md](CLAUDE.md), seções 1, 1.1 e 1.2.
 
@@ -25,7 +25,7 @@ Nenhuma feature de produto em desenvolvimento. O projeto está na **fase de prep
 
 Criação da documentação base de governança — **concluída, aguardando aprovação do responsável humano**.
 
-- **Issue:** _(a criar)_
+- **Issue:** —  (estrutura anterior à abertura do backlog)
 - **Responsável:** Tech Lead
 - **Status:** em revisão
 - **Entregue:** `README.md`, `CLAUDE.md`, `STATUS.md`, os quatro documentos de frente em `docs/`, `docs/team-responsibilities.md`, `docs/adr/TEMPLATE.md`, ADR-0001 e ADR-0002, `.gitignore`, `.gitattributes`, `.mcp.json`, `.github/CODEOWNERS`, `.github/PULL_REQUEST_TEMPLATE.md` e o comando `.claude/commands/minhas-tarefas.md`
@@ -35,17 +35,21 @@ Criação da documentação base de governança — **concluída, aguardando apr
 
 ## Próximas tasks
 
-Todas dependem da aprovação da estrutura atual e da resolução dos bloqueios abaixo. Cada item deverá virar issue no GitHub antes de ser iniciado.
+Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labsitio/nexus-orc-web/issues), conforme a seção 9 do CLAUDE.md. A ordem abaixo é por dependência, não por importância.
 
-1. Aceitar (ou revisar) o [ADR-0001](docs/adr/0001-adocao-do-modelo-de-governanca.md), formalizando o modelo de governança — pré-requisito de processo para as demais.
-2. Criar as issues das tasks abaixo no GitHub, agora que o MCP está operacional (Bruno).
-3. **Abrir a negociação do contrato base com a equipe de backend** (Bruno) — maior tempo de espera externo, deve começar imediatamente.
-4. Alinhar com a equipe as **datas de referência de cada entrega** e confirmar a suplência registrada em `docs/team-responsibilities.md` (Bruno).
-5. Criar o agente **Tech Lead** e finalizar o CLAUDE.md (Bruno).
-6. Decidir a stack em ADR, criar os agentes **Frontend Architect** e **Frontend Developer** e preencher `docs/architecture.md` e `docs/engineering-principles.md` (André) — caminho crítico.
-7. Criar o agente **QA & Reviewer** e preencher `docs/quality.md` — com teste automatizado obrigatório no DoD (Bruno).
-8. Criar o agente **Product Planner**, preencher `docs/planning.md` e estruturar o backlog das 3 fases (Kássio, com Bruno como suplente).
-9. Habilitar a proteção da branch `main` com "Require review from Code Owners" nas configurações do repositório (Bruno).
+| Issue | Task | Responsável |
+|---|---|---|
+| [#8](https://github.com/labsitio/nexus-orc-web/issues/8) | Aceitar ou revisar o ADR-0001 e o ADR-0002 — pré-requisito de processo | Bruno |
+| [#1](https://github.com/labsitio/nexus-orc-web/issues/1) | **Acordar o contrato base de integração com o backend** — maior espera externa, começar já | Bruno |
+| [#6](https://github.com/labsitio/nexus-orc-web/issues/6) | Obter dos organizadores as metas numéricas dos critérios de sucesso | Bruno |
+| [#2](https://github.com/labsitio/nexus-orc-web/issues/2) | **Decidir a stack em ADR** e preencher `engineering-principles.md` — caminho crítico | André |
+| [#3](https://github.com/labsitio/nexus-orc-web/issues/3) | Preencher `architecture.md`: arquitetura, fronteiras e estratégia de mock | André |
+| [#4](https://github.com/labsitio/nexus-orc-web/issues/4) | Criar o agente Product Planner, preencher `planning.md` e estruturar o backlog | Kássio |
+| [#7](https://github.com/labsitio/nexus-orc-web/issues/7) | Criar o agente Tech Lead e finalizar o CLAUDE.md | Bruno |
+| [#5](https://github.com/labsitio/nexus-orc-web/issues/5) | Criar o agente QA & Reviewer e preencher `quality.md` — depende de #2 e #6 | Bruno |
+| [#9](https://github.com/labsitio/nexus-orc-web/issues/9) | Configurar o GitHub MCP nas máquinas de André e Kássio | André, Kássio |
+| [#10](https://github.com/labsitio/nexus-orc-web/issues/10) | Habilitar a proteção da branch `main` com Require review from Code Owners | Bruno |
+| [#11](https://github.com/labsitio/nexus-orc-web/issues/11) | Alinhar as datas de referência de cada entrega | Bruno |
 
 ---
 
