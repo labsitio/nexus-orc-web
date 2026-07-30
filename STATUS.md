@@ -41,7 +41,7 @@ Precisa renumerar o ADR dele de 0003 para **0004** — colisão com o ADR-0003 j
 
 ### Ainda inexistente
 
-**Primeiro agente publicado:** `.claude/agents/qa-reviewer.md` (30/07). Ainda faltam Tech Lead, Frontend Architect, Frontend Developer (feito por André, retido), Product Planner e Integração.
+**Dois agentes publicados** (30/07): `qa-reviewer.md` e `tech-lead.md`. Faltam Frontend Architect e Frontend Developer (o Developer está feito, retido na máquina de André), Product Planner e Integração.
 
 **Nenhuma linha de código de aplicação ainda.**
 
@@ -87,7 +87,7 @@ A estrutura documental deste repositório foi desenhada para um projeto de seman
 |---|---|---|
 | **Sex 31, primeira coisa** | Bruno | **Ativar o hook de proteção da branch:** `git config core.hooksPath .githooks` — e pedir aos outros dois que façam o mesmo antes de começarem. Combinado em 30/07 para não atrapalhar o trabalho da noite |
 | **Sex 31** | Bruno | **Pedir a prorrogação** (#13) — é a mitigação de maior impacto disponível |
-| **Sex 31** | Bruno | Criar o agente **Tech Lead**. Preencher `quality.md` no mínimo viável, com teste automatizado obrigatório — depende do `engineering-principles.md` do André para saber a ferramenta de teste |
+| **Sex 31** | Bruno | Preencher `quality.md` no mínimo viável, com teste automatizado obrigatório — depende do `engineering-principles.md` do André para saber a ferramenta de teste |
 | **Sex 31** | André | Publicar o commit retido, com o ADR renumerado para 0004. Criar o **Frontend Architect**. Arquitetura mínima do portal de upload e estratégia de mock (#3, #15) |
 | **Sex 31** | André | **Liberar as respostas às dúvidas do backend** — os agentes de integração deles seguem parados |
 | **Sex 31** | Kássio | Agente **Product Planner** e `planning.md` (#4) — não depende de ninguém |
