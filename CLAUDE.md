@@ -125,6 +125,18 @@ O projeto é conduzido por uma equipe de agentes de IA especializados, cada um r
 2. **Decisão** — decisões estruturais (arquitetura, stack, convenções, critérios de qualidade) são registradas como ADR antes de serem implementadas.
 3. **Implementação** — só ocorre depois que a task está clara, o escopo está definido e (quando aplicável) o ADR correspondente foi aceito. O caminho de issue até Pull Request é padronizado pelo comando **`/implementar <número da issue>`** (definido em `.claude/commands/implementar.md`): ele carrega as convenções, exige plano antes do código, obriga teste automatizado e preenche o template de PR. Usar o comando em vez de improvisar é o que mantém a implementação consistente entre pessoas e entre sessões.
 4. **Revisão** — toda entrega passa pelo agente QA & Reviewer contra os critérios definidos em [docs/quality.md](docs/quality.md) antes de ser considerada concluída.
+
+   **Nunca commite direto na `main`.** Todo trabalho vai em branch e entra por Pull Request — é o PR que dá lugar físico à revisão. Sem ele, esta etapa 4 não tem onde acontecer.
+
+   Convenção de nome de branch, para o histórico ficar legível com três pessoas e agentes trabalhando em paralelo:
+
+   ```
+   <tipo>/<nº da issue>-<descrição-curta>
+   ```
+
+   `tipo` é um de `feat`, `fix`, `docs`, `chore` ou `test`. Exemplos: `feat/17-formulario-upload`, `docs/2-adr-stack`, `test/19-cobertura-upload`.
+
+   O comando `/implementar` cria a branch com essa convenção automaticamente. Fora dele, é manual — e a trava real é a proteção da branch no GitHub.
 5. **Atualização de estado** — ao final de qualquer sessão de trabalho relevante, o [STATUS.md](STATUS.md) é atualizado (ver seção 8).
 
 Nenhuma etapa deve ser pulada para "economizar tempo". Se uma etapa não se aplica (ex: mudança trivial sem impacto arquitetural), isso deve ser justificado explicitamente, não simplesmente omitido.

@@ -54,7 +54,7 @@ Confira, item por item:
 
 ### 5. Abrir o Pull Request
 
-- **Branch a partir da `main`**, nome descrevendo a mudança. Nunca commitar direto na `main`.
+- **Branch a partir da `main`**, seguindo a convenção do CLAUDE.md (seção 2): `<tipo>/<nº da issue>-<descrição-curta>`, com `tipo` em `feat|fix|docs|chore|test`. Exemplo: `feat/17-formulario-upload`. **Nunca commitar direto na `main`.**
 - Preencha o `.github/PULL_REQUEST_TEMPLATE.md`, **inclusive o bloco "Para o STATUS.md"** — é como Bruno consolida o estado do projeto. Se não houver nada a registrar, escreva "nada a registrar".
 - Referencie a issue com `Closes #N`.
 - Se o PR toca documento de outra frente, diga isso em "Observações" — o CODEOWNERS vai exigir a revisão do dono.
