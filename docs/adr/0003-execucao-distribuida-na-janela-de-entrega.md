@@ -2,9 +2,19 @@
 
 ## Status
 
-**Aceito** em 2026-07-30 por Bruno Martins (Tech Lead).
+**Aceito** em 2026-07-30 por Bruno Martins (Tech Lead), **com emenda em 2026-07-31**.
 
 > Emenda o [ADR-0002](0002-execucao-centralizada-e-escritor-unico.md), suspendendo a decisão 1 (execução oficial centralizada) durante a janela até 03/08. A decisão 2 daquele ADR — escritor único do STATUS.md — **permanece em vigor**.
+
+### Emenda de 2026-07-31 — a execução volta a ser concentrada, por escolha de quem estava liberado
+
+A atribuição nominal registrada na decisão abaixo ("André executa Frontend Architect e Frontend Developer; Kássio executa Product Planner") **deixa de valer como obrigação**. Bruno passa a executar os agentes de todas as frentes na própria máquina, com **uma exceção**: o `frontend-developer` continua sendo executado por André, conforme o critério de aceite da [#21](https://github.com/labsitio/nexus-orc-web/issues/21) e a seção 2 de `docs/quality.md`, que exige que quem entrega uma definição de agente a tenha executado.
+
+Isto **não restaura** o ADR-0002 nem revoga esta permissão: quem quiser executar a própria frente segue autorizado a fazê-lo até 03/08. O que muda é o padrão — a execução deixa de ser distribuída por atribuição e passa a ser concentrada por conveniência, recuperando de graça a reprodutibilidade que motivou o ADR-0002.
+
+Registrado como emenda, e não como ADR novo, por proporção: este ADR expira em 03/08, e abrir um ADR-0005 para uma mudança com três dias de vida seria cerimônia sem retorno (ver "Governança aplicada com proporção" no [STATUS.md](../../STATUS.md)).
+
+**Risco que a emenda cria, e que está registrado no STATUS:** com a execução numa única máquina e conta, o limite de sessão da ferramenta passa a ser recurso compartilhado por todas as frentes — e já interrompeu uma revisão em 31/07.
 
 ## Data
 
