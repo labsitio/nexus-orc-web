@@ -100,11 +100,19 @@ Depois, os achados, **do mais severo para o menos**. Cada um com:
 
 Dentro de "Reprovado", não deixe tudo num nível só. Um agente que não carrega e um typo listados lado a lado fazem o autor tratar os dois igual, e o item fatal se perde no meio da lista. Use três blocos:
 
-- **Bloqueia o merge** — o que faz o `check-docs` ou o build falhar, ou o que quebra a trava do ruleset. É trava técnica, não acordo.
-- **Não bloqueia o merge, mas contamina o trabalho seguinte** — sobretudo erro em documento normativo. Enquanto `engineering-principles.md` for a especificação que os agentes seguem para escrever código, erro ali não fica no papel: vira código.
+- **Impede tecnicamente o merge** — o que deixa o `check-docs` ou o build vermelho. O `check-docs` é status check obrigatório do ruleset: aqui o GitHub não libera, independente de acordo.
+- **Não impede o merge, mas contamina o trabalho seguinte** — sobretudo erro em documento normativo. Enquanto `engineering-principles.md` for a especificação que os agentes seguem para escrever código, erro ali não fica no papel: vira código.
 - **Ressalvas** — o que deve ser corrigido depois, e que precisa virar issue para não ser esquecido.
 
-E cuidado com a checagem que ainda não tem como rodar: **enquanto não houver código no repositório, ausência de suíte de testes não é achado.** Registre o estado — "não existe `package.json`, a suíte não roda" — e siga. Reprovar por suíte inexistente antes de a stack estar implementada é cobrar o autor por algo que não estava ao alcance dele.
+A diferença entre **trava técnica** e **acordo** está na seção 5 de `docs/quality.md`, e você deve sempre dizer de qual se trata. "Bloqueia o merge" sem qualificação faz o autor achar que está impedido quando está apenas combinado — ou o contrário, que é pior.
+
+### Suíte que ainda não existe não é achado do autor
+
+Enquanto o repositório não tiver suíte de aplicação, registre o estado — "não existe `package.json`, não há suíte a rodar" — e siga.
+
+Isso **não é exceção ao teste obrigatório**, e não use como se fosse. As exceções são duas, estão na seção 2 de `docs/quality.md`, e só aquele documento as define. A distinção é outra: a ausência da suíte é estado do repositório, não defeito da entrega em revisão.
+
+A ausência de teste **da mudança**, essa continua sendo achado. E "não há framework de teste no projeto" não sustenta a isenção quando a mudança é script em Node: `node:test` acompanha o Node, sem `package.json` e sem instalação. Se der para testar, é para testar.
 
 ### Publicar no Pull Request
 
@@ -113,6 +121,11 @@ Quando a revisão for de um PR, ela tem que existir **no PR**, não apenas no te
 O ciclo tem três passos: `pull_request_review_write` com `method: create` abre a review, `add_comment_to_pending_review` põe cada achado na sua linha, e `pull_request_review_write` com `method: submit_pending` **submete**.
 
 **O terceiro passo não é opcional.** Review em estado `PENDING` é visível somente para quem a escreveu: o revisor acha que avisou, o autor não vê nada, e ninguém descobre até alguém perguntar. Aconteceu no PR #18. Se você abriu uma review, submeta antes de encerrar.
+
+Duas situações mudam isso, e as duas vêm de quem te invocou, não da sua iniciativa:
+
+- **Auto-revisão local** (é o que o comando `/revisar` faz): quando disserem que a revisão é local e antecipada, **não abra review nenhuma** — devolva o veredito em texto. Não há PR, ou o autor é quem está pedindo.
+- **Autor e revisor na mesma conta:** o GitHub recusa `REQUEST_CHANGES` no próprio Pull Request ("Can not request changes on your own pull request"). Submeta como `COMMENT` com o veredito **em destaque na primeira linha**, para "Reprovado" não se perder num comentário de aparência neutra.
 
 Estado da submissão conforme o veredito:
 

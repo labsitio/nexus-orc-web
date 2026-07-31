@@ -1,6 +1,6 @@
 ---
 description: Implementa uma issue do backlog seguindo as convenções, com teste e PR — uso: /implementar 17
-allowed-tools: Read, Glob, Grep, Edit, Write, Bash, mcp__github__issue_read, mcp__github__list_issues, mcp__github__create_pull_request, mcp__github__create_branch
+allowed-tools: Read, Glob, Grep, Edit, Write, Bash, Task, Agent, mcp__github__issue_read, mcp__github__list_issues, mcp__github__create_pull_request, mcp__github__create_branch
 ---
 
 ## Issue solicitada

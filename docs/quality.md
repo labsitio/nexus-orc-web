@@ -37,7 +37,9 @@ O critério é outro, e é verificável:
 
 É o que separa teste que cobre a mudança de teste que apenas existe. Teste que passaria com a implementação vazia não conta como cobertura, e o revisor deve dizer isso explicitamente quando encontrar.
 
-A ferramenta e o comando de teste são definidos em [engineering-principles.md](engineering-principles.md) — este documento não os fixa, para não divergir dele.
+A ferramenta e o comando de teste **da aplicação** são definidos em [engineering-principles.md](engineering-principles.md) — este documento não os fixa, para não divergir dele.
+
+Os **scripts de governança** do repositório (`scripts/`) são a exceção deliberada: eles rodam antes de a aplicação existir, então usam `node:test`, que acompanha o Node e não depende de `package.json` nem de instalação. "Ainda não há framework de teste no projeto" não serve como justificativa para script em Node — testável é testável.
 
 ### Duas exceções, e apenas estas
 
@@ -121,7 +123,16 @@ O agente `qa-reviewer` emite um de três:
 
 O passo 3 não é formalidade: sem pedido explícito de nova validação, ninguém sabe se o autor terminou de mexer, e o PR fica num limbo em que cada lado espera o outro.
 
-**Ser honesto sobre o alcance disso:** não há bloqueio técnico. A proteção da branch está configurada com **0 aprovações exigidas** ([#10](https://github.com/labsitio/nexus-orc-web/issues/10)), justamente para não depender de alguém estar disponível durante a janela de entrega. Então "não deve ser mergeado" é **acordo da equipe**, não trava. Quem mergear um PR reprovado consegue — e assume a escolha.
+**Ser honesto sobre o alcance disso.** Existem duas travas, de naturezas diferentes, e confundi-las gera discussão inútil sobre o que "bloqueante" significa:
+
+| Trava | Natureza |
+|---|---|
+| `check-docs` como **status check obrigatório** do ruleset | **Técnica.** Vermelho, o GitHub não libera o merge. Ninguém contorna sem querer |
+| O **veredito do revisor** | **Acordo.** A proteção exige **0 aprovações** ([#10](https://github.com/labsitio/nexus-orc-web/issues/10)), para ninguém depender da disponibilidade de terceiros na janela de entrega |
+
+Então "PR reprovado não deve ser mergeado" vale como compromisso da equipe, não como impedimento: quem mergear um PR reprovado consegue, e assume a escolha. O que ninguém consegue é mergear com o `check-docs` vermelho.
+
+Ao classificar um achado, diga de qual das duas se trata. "Bloqueia o merge" sem qualificação leva o autor a achar que está impedido quando está apenas combinado — ou o contrário.
 
 ### Quem revisa
 

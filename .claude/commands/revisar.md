@@ -34,6 +34,8 @@ Se não houver issue identificável, diga — pela seção 9 do `CLAUDE.md` toda
 
 Chame o agente **`qa-reviewer`**, informando: o alvo (diff local ou número do PR), o número da issue, e que a revisão é **local e antecipada**.
 
+**Diga a ele, explicitamente, que não deve publicar nem submeter review no GitHub.** A definição dele manda submeter toda review que abrir — é regra dela, e existe porque rascunho em `PENDING` é falha silenciosa. Sem instrução em contrário no seu pedido, ele vai publicar. A regra do passo 4 abaixo é sua, não chega ao agente sozinha.
+
 Não reimplemente a revisão aqui. O agente carrega `docs/quality.md`, o Definition of Done e os ADRs; duplicar esse critério neste comando é criar uma segunda fonte da verdade que vai divergir da primeira.
 
 ### 4. Regra que muda em relação à revisão de PR

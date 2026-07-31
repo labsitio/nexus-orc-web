@@ -161,32 +161,70 @@ for (const arquivo of arquivosVarredura) {
 //    Nenhuma outra checagem daqui pega isso: não é link, nem termo, nem seção.
 // ---------------------------------------------------------------------------
 
+/**
+ * Extrai o frontmatter do início do arquivo, ou null se não houver um válido.
+ *
+ * A checagem de *forma* do bloco não é preciosismo: um frontmatter aberto e
+ * nunca fechado faz a primeira régua `---` do corpo passar por fechamento, e o
+ * bloco "capturado" é prosa, não YAML. O agente não carrega, mas olhar só os
+ * delimitadores diria que está tudo bem.
+ */
+function extrairFrontmatter(texto) {
+  const m = texto.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
+  if (!m) return null;
+
+  const linhas = m[1].split(/\r?\n/).filter((l) => l.trim() !== '');
+  if (!linhas.length) return null;
+
+  const pareceYaml = linhas.every(
+    (l) => /^\s+\S/.test(l) || /^-\s/.test(l) || /^[A-Za-z_][\w-]*[ \t]*:/.test(l),
+  );
+  return pareceYaml ? m[1] : null;
+}
+
+/** Valor escalar de uma chave do frontmatter, sem aspas nem comentário inline. */
+function valorFrontmatter(frontmatter, chave) {
+  const m = frontmatter.match(new RegExp(`^${chave}[ \\t]*:[ \\t]*(.*)$`, 'm'));
+  if (!m) return null;
+
+  // Comentário inline só conta depois de espaço: `#` colado ao valor é conteúdo.
+  let valor = m[1].replace(/\s+#.*$/, '').trim();
+
+  const entreAspas = valor.match(/^(['"])([\s\S]*)\1$/);
+  if (entreAspas) valor = entreAspas[2];
+
+  return valor;
+}
+
 const dirAgentes = join(RAIZ, '.claude/agents');
 if (existsSync(dirAgentes)) {
-  for (const nome of readdirSync(dirAgentes).filter((n) => n.endsWith('.md'))) {
-    const texto = readFileSync(join(dirAgentes, nome), 'utf8');
-    const ref = `.claude/agents/${nome}`;
+  // Recursivo, como o resto do script. `README.md` fica de fora: o Claude Code
+  // não o trata como agente, e reprová-lo quebraria o push de todo mundo.
+  const agentes = listar(dirAgentes, (n) => n.endsWith('.md') && n.toLowerCase() !== 'readme.md');
 
-    const delimitado = texto.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-    if (!delimitado) {
-      erros.push(`${ref}: sem frontmatter delimitado por --- — o Claude Code não registra o agente, ele não carrega`);
+  for (const caminho of agentes) {
+    const ref = rel(caminho);
+    const frontmatter = extrairFrontmatter(readFileSync(caminho, 'utf8'));
+
+    if (frontmatter === null) {
+      erros.push(
+        `${ref}: sem frontmatter YAML no início do arquivo — o Claude Code não registra o agente, ele não carrega`,
+      );
       continue;
     }
-
-    const frontmatter = delimitado[1];
 
     // `name` e `description` são exigência da plataforma. `tools` é convenção
     // deste projeto: sem ele o agente herda todas as ferramentas, e o escopo
     // deixa de ser explícito — ver "Onde os Agentes Vivem" em
     // docs/team-responsibilities.md.
     for (const campo of ['name', 'description', 'tools']) {
-      if (!new RegExp(`^${campo}\\s*:`, 'm').test(frontmatter)) {
-        erros.push(`${ref}: frontmatter sem "${campo}:"`);
-      }
+      const valor = valorFrontmatter(frontmatter, campo);
+      if (valor === null) erros.push(`${ref}: frontmatter sem "${campo}:"`);
+      else if (valor === '') erros.push(`${ref}: frontmatter com "${campo}:" vazio`);
     }
 
-    const declarado = frontmatter.match(/^name\s*:\s*(.+)$/m)?.[1].trim();
-    const esperado = basename(nome, '.md');
+    const declarado = valorFrontmatter(frontmatter, 'name');
+    const esperado = basename(caminho, '.md');
     if (declarado && declarado !== esperado) {
       erros.push(
         `${ref}: name "${declarado}" difere do nome do arquivo "${esperado}" — a convenção é kebab-case do nome do agente`,
