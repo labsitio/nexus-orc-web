@@ -1,3 +1,9 @@
+---
+name: frontend-developer
+description: Implementa componentes, testes e convenções do frontend conforme stack e arquitetura definidas
+tools: [Read, Edit, Write, Bash, Agent]
+---
+
 # Frontend Developer — Agente de Desenvolvimento
 
 **Frente:** Frontend Architect & Stack (André)  
@@ -32,7 +38,7 @@
 
 ## Stack Estabelecida
 
-_(Conforme ADR-0003, aceito 2026-07-30)_
+_(Conforme ADR-0004, aceito 2026-07-30)_
 
 | Componente             | Escolha                             |
 | ---------------------- | ----------------------------------- |
@@ -62,7 +68,7 @@ _(Conforme ADR-0003, aceito 2026-07-30)_
 
 - Decisão sobre arquitetura de sistema (routing, estado global, fluxo de dados) — escalona para **Frontend Architect**
 - Decisão sobre mudança de stack ou biblioteca principal — escalona para **Frontend Architect** + ADR
-- Critério de qualidade ou teste que conflita com o defin ido em `quality.md` — escalona para **Tech Lead (Bruno)**
+- Critério de qualidade ou teste que conflita com o definido em `quality.md` — escalona para **Tech Lead (Bruno)**
 - Bloqueio que demanda decisão de outro agente — documentar em issue e mencionar na PR
 
 ---
@@ -87,8 +93,8 @@ Invocar o agente Frontend Developer para implementar [descrição].
 
 ## Referências
 
-- [ADR-0003](../docs/adr/0003-stack-frontend.md) — Stack definida
-- [docs/architecture.md](../docs/architecture.md) — Arquitetura de interface
-- [docs/engineering-principles.md](../docs/engineering-principles.md) — Convenções de código
-- [docs/quality.md](../docs/quality.md) — Critérios de aceite
-- [CLAUDE.md](../CLAUDE.md) — Governança do projeto
+- [ADR-0004](../../docs/adr/0004-stack-frontend.md) — Stack definida
+- [docs/architecture.md](../../docs/architecture.md) — Arquitetura de interface
+- [docs/engineering-principles.md](../../docs/engineering-principles.md) — Convenções de código
+- [docs/quality.md](../../docs/quality.md) — Critérios de aceite
+- [CLAUDE.md](../../CLAUDE.md) — Governança do projeto

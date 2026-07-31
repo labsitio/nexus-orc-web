@@ -12,7 +12,7 @@ Este documento **não deve** conter decisões de arquitetura de sistema (isso pe
 |---|---|---|
 | Linguagem | TypeScript 5.x | [ADR-0004](adr/0004-stack-frontend.md) |
 | Framework | Next.js 14 (App Router) + React 18 | [ADR-0004](adr/0004-stack-frontend.md) |
-| Build & Dev | Vite (integrado no Next.js) | [ADR-0004](adr/0004-stack-frontend.md) |
+| Build & Dev | Next.js (Webpack/Turbopack) | [ADR-0004](adr/0004-stack-frontend.md) |
 | Testes unitários | Vitest | [ADR-0004](adr/0004-stack-frontend.md) |
 | Testes de componentes | React Testing Library | [ADR-0004](adr/0004-stack-frontend.md) |
 | Integração com API | React Query (TanStack Query) | [ADR-0004](adr/0004-stack-frontend.md) |
@@ -29,7 +29,7 @@ Este documento **não deve** conter decisões de arquitetura de sistema (isso pe
 - `react` (18.x) — framework base
 - `next` (14.x) — framework com App Router
 - `typescript` (5.x) — tipagem estática
-- `react-query` — cache, refetch, sincronização com backend
+- `@tanstack/react-query` (v5.x) — cache, refetch, sincronização com backend
 - `next-auth` — autenticação OAuth via Cognito
 - `tailwindcss` — utilitários CSS
 - `clsx` ou `classnames` — composição condicional de classes
@@ -39,6 +39,7 @@ Este documento **não deve** conter decisões de arquitetura de sistema (isso pe
 - `vitest` — executor de testes ultrarrápido
 - `@testing-library/react` — testes de componentes
 - `@testing-library/user-event` — simulação de eventos do usuário
+- `@testing-library/jest-dom` — matchers customizadas (ex: `toBeInTheDocument`)
 - `msw` (Mock Service Worker) — mocking de requisições HTTP
 - `eslint`, `prettier` — linting e formatação
 - `@types/node`, `@types/react` — tipagem
@@ -162,9 +163,10 @@ useEffect(() => {
 }, []);
 
 // ✅ Certo: React Query
-const { data: budgets } = useQuery(['budgets'], () => 
-  fetch('/api/budgets').then(r => r.json())
-);
+const { data: budgets } = useQuery({
+  queryKey: ['budgets'],
+  queryFn: () => fetch('/api/budgets').then(r => r.json()),
+});
 ```
 
 ---
@@ -177,12 +179,22 @@ const { data: budgets } = useQuery(['budgets'], () =>
 - Localizado no mesmo diretório do código testado (colocation)
 - Usar `describe` para agrupar testes relacionados
 
+**Comando de teste:**
+
+```bash
+npm run test
+```
+
+Configurado em `vitest.config.ts` com `globals: true` para permitir `describe`, `it`, `expect` sem imports. Testes rodam em modo watch por padrão.
+
 **Padrão de teste de componente:**
 
 ```typescript
 // src/components/ui/Button.test.tsx
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 import { Button } from './Button';
 
 describe('Button', () => {
@@ -208,8 +220,8 @@ describe('Button', () => {
 
 **Cobertura:**
 
-- Alvo mínimo: 70% de cobertura de linhas (definido em `quality.md`)
 - Prioridade: funções críticas (cálculos, validação) > componentes de UI
+- Critérios de cobertura definidos em `quality.md`
 
 ---
 
