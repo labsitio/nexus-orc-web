@@ -2,7 +2,9 @@
 
 > Define a distribuição de responsabilidades da equipe de frontend (repositório [nexus-orc-web](https://github.com/labsitio/nexus-orc-web)) do projeto Nexo: quem é dono de qual documento, quais agentes cada integrante desenvolve e em que ordem o trabalho converge.
 
-A equipe tem **3 integrantes** e produz **6 agentes de desenvolvimento**. Os números são diferentes por decisão de desenho: a quantidade de agentes vem do trabalho a ser feito, não do tamanho do time. Criar e operar agentes é o objetivo central do treinamento, então cada integrante desenvolve pelo menos um, e nenhuma frente fica sem dono.
+A equipe tem **3 integrantes** e produz **5 agentes de desenvolvimento próprios** — Tech Lead, QA & Reviewer, Frontend Architect, Frontend Developer e Product Planner. Os números são diferentes por decisão de desenho: a quantidade de agentes vem do trabalho a ser feito, não do tamanho do time. Criar e operar agentes é o objetivo central do treinamento, então cada integrante desenvolve pelo menos um, e nenhuma frente fica sem dono.
+
+**Um sexto agente vive neste repositório sem ser nosso:** o de **Integração**, que vem do time de backend com o padrão de labels acordado entre as três frentes. Ele entra na tabela de convenção mais abaixo porque precisa seguir as mesmas regras, mas **não conta como entrega desta equipe** e pode não existir na entrega final. Quando este documento e o [CLAUDE.md](../CLAUDE.md) falam de "cinco agentes", é a esses cinco que se referem.
 
 Referência de fluxo geral: [CLAUDE.md](../CLAUDE.md).
 
@@ -159,7 +161,7 @@ Vale registrar que **os próprios agentes são parte da resposta a variação de
 Convenção obrigatória, para que os agentes das três frentes sejam encontráveis e a execução centralizada funcione sem garimpo:
 
 - **Local:** `.claude/agents/` na raiz do repositório. Um arquivo por agente.
-- **Nome do arquivo:** kebab-case do nome do agente — `tech-lead.md`, `qa-reviewer.md`, `frontend-architect.md`, `frontend-developer.md`, `product-planner.md`.
+- **Nome do arquivo:** kebab-case do nome do agente — `tech-lead.md`, `qa-reviewer.md`, `frontend-architect.md`, `frontend-developer.md`, `product-planner.md`, `integracao.md`. O `check-docs` verifica isso: o campo `name` do frontmatter tem de ser igual ao nome do arquivo.
 - **Versionado no Git.** Os agentes são o entregável central do exercício, não configuração de máquina. Só o `.claude/settings.local.json` fica fora do versionamento, porque é específico de cada máquina.
 - **Cada definição de agente deve declarar o próprio escopo** — quais documentos aquele agente pode alterar e a qual frente pertence. Isso é o que, no fim, torna o direcionamento por frente confiável sem depender de ninguém se identificar a cada sessão (ver CLAUDE.md, seção 3.1).
 
