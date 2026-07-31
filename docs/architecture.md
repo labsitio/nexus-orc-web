@@ -34,7 +34,7 @@ Ambas consomem a mesma **API REST do backend** (Gateway + Lambda), mas com **pap
 
 | Componente | Responsabilidade |
 |---|---|
-| **Auth Guard** | Integração NextAuth + Cognito, proteção de rotas, refresh de token |
+| **Auth Guard** | Integração com Cognito, proteção de rotas, refresh de token |
 | **Sidebar / Nav** | Navegação entre lista de orçamentos, busca, relatórios, configurações |
 | **Orçamento List** | Tabela de orçamentos com filtros (período, fornecedor, status, faixa de preço), paginação, busca semântica |
 | **Orçamento Detail** | Exibição completa de um orçamento — metadados, itens extraídos, histórico de processamento, status consolidado |
@@ -66,16 +66,16 @@ Backend (Lambda: recebe, valida, dispara pipeline)
 
 ```
 Gestor (Browser)
-    ↓ (NextAuth login → Cognito)
+    ↓ (Login → Cognito)
 [Auth Guard] → Token JWT
     ↓
 [Painel: lista de orçamentos]
-    ↓ (GET /budgets?limit=50&offset=0 via React Query)
+    ↓ (GET /budgets?limit=50&offset=0)
 Backend (API Gateway + Lambda)
     ↓
 [JSON paginado]
     ↓
-[React Query cache + render]
+[Cache e render]
     ↓
 [Polling a cada 30s: GET /budgets/{id}/status]
     ↓
@@ -86,7 +86,7 @@ Backend (API Gateway + Lambda)
 [Histórico, itens extraídos, decisões humanas]
 ```
 
-**Cache e refetch:** React Query gerencia cache de `budgets` e `budgets/{id}` — refetch manual em click, automático via polling em intervalo.
+**Cache e refetch:** Cliente gerencia cache de `budgets` e `budgets/{id}` — refetch manual em click, automático via polling em intervalo.
 
 ---
 
@@ -98,42 +98,46 @@ O que **não** é decisão do frontend — cada linha nomeia responsável e prem
 |---|---|---|---|
 | **Autenticação do Portal de Upload** | Backend | Fornecedor identificado via campo no formulário (sem autenticação). Backend extrai identidade do JWT ou do contexto da requisição. | Premissa (aguardando confirma em #1) |
 | **Autenticação do Painel** | Backend | Cognito + NextAuth.js (OAuth2 / OIDC). Gestor faz login, recebe JWT, inclui em Authorization header | Acordado (ADR-0004) |
-| **Status em tempo real** | Backend | REST com polling cliente-side a cada 30s (não há WebSocket ou SSE especificado). Frontend compara timestamp e atualiza UI. | Premissa (REST+polling registrado) |
+| **Status em tempo real** | Backend | REST com polling cliente-side a cada 30s (não há WebSocket ou SSE especificado). Frontend compara timestamp e atualiza UI. | Acordado (REST+polling, ADR-0004) |
 | **Busca semântica** | Backend | Backend expõe endpoint `GET /budgets/search?q=termo` que retorna IDs + score de relevância. Frontend chama ao digitar (debounce 300ms). | Premissa (aguardando spec) |
 | **Listagem de orçamentos** | Backend | REST com paginação cursor ou offset. Padrão: `GET /budgets?limit=50&offset=0` retorna `{ total, offset, budgets[] }`. | Premissa (spec provisória no [contrato deles](https://github.com/labsitio/nexus-orc-back/docs/openapi.yaml)) |
 | **Notificações push** | Mobile + Backend | Fora do escopo do frontend web. Mobile envia push; web pode atualizar via polling. | N/A (mobile) |
-| **Exportação de relatórios** | Frontend | Backend entrega JSON paginado (decisão ADR-006 deles). CSV/PDF são gerados no frontend (ex: biblioteca PapaParse para CSV, html2pdf para PDF). | Acordado (frontend gera arquivo) |
+| **Exportação de relatórios** | Frontend | Backend entrega JSON paginado (decisão ADR-006 deles). CSV/PDF são gerados no frontend. | Acordado (frontend gera arquivo) |
 
 ---
 
 ## 5. Contrato de Integração e Estratégia de Mock
 
-### 5.1 Proposta de Contrato (Pauta para #1)
+### 5.1 Contrato — Bloco 1 Confirmado (Ref: #1, docs/contrato-integracao-pauta.md)
 
-| Item | Definição Proposta | Status |
+| Item | Definição | Status |
 |---|---|---|
-| **Nomes e casing dos campos** | camelCase (ex: `orçamentoId`, `fornecedorCnpj`, `statusAtual`). Consistente com JavaScript conventions. | Premissa (backend usa snake_case; conversor na camada API) |
-| **Formato de data e timezone** | ISO 8601 com timezone (`2026-07-31T14:30:00Z`). Sempre UTC. JavaScript Date desserializa nativamente. | Premissa (servidor em UTC) |
-| **Enums (tipo e valores)** | Status: `RECEBIDO`, `FORNECEDOR_IDENTIFICADO`, `EXTRAIDO`, `VALIDADO_COM_RESSALVA`, `FALHA_VALIDACAO`, `INDEXADO`, `DISPONIVEL`, `ARQUIVADO`, `FALHA_INDEXACAO`. Maiúsculas, snake_case, sem "status" no nome. | Premissa (lido do spec provisória do backend) |
-| **Paginação** | Offset-based: `?limit=50&offset=0`. Resposta: `{ total: 1234, offset: 0, limit: 50, items: [] }`. | Premissa (padrão REST) |
-| **Envelope da resposta** | Sucesso: `{ data: {...} }` ou `{ data: [...] }`. Erro: `{ error: { code: "...", message: "..." } }`. Sem aninhamento extra. | Premissa (simples, sem wrapper genérico) |
-| **Formato de erro** | HTTP status + JSON: `{ error: { code: "INVALID_FILE", message: "Arquivo inválido" } }`. Códigos em UPPER_SNAKE_CASE. | Premissa (RFC 7807 simplificado) |
-| **Autenticação** | `Authorization: Bearer <JWT>`. Header em requisições autenticadas. Refresh via POST `/auth/refresh` com refresh token em cookie HttpOnly. | Acordado (NextAuth + Cognito) |
-| **Nulabilidade** | Campos opcionais explícitos no schema (JSON Schema / OpenAPI). Nunca null se não declarado. Ausência = null. | Premissa (precisão em OpenAPI) |
-| **Tipo de ID** | UUID v4 (ex: `550e8400-e29b-41d4-a716-446655440000`). Ou string numérica de banco de dados? Será confirmado em #1. | Premissa (UUID, mais seguro) |
+| **Nomes e casing dos campos** | camelCase com nomes **em português** (ex: `orcamentoId`, `nomeArquivo`, `precoUnitario`, `tamanhoPagina`). | Acordado |
+| **Formato de data e timezone** | ISO 8601 UTC com sufixo `Z` (ex: `2026-07-31T14:30:00Z`); datas puras em `YYYY-MM-DD`. | Acordado |
+| **Enums (tipo e valores)** | String em `MAIUSCULA_SNAKE`. Todos enumerados no schema (ex: `RECEBIDO`, `FORNECEDOR_IDENTIFICADO`, `EXTRAIDO`, `VALIDADO_COM_RESSALVA`, `FALHA_VALIDACAO`, `INDEXADO`, `DISPONIVEL`, `ARQUIVADO`, `FALHA_INDEXACAO`). | Acordado |
+| **Paginação** | **Dois padrões coexistem** (inconsistência conhecida): `pagina`/`tamanhoPagina` na busca; `cursor`/`limit` na auditoria. Originárias de specs que não coordenaram — não tentar unificar. | Acordado |
+| **Envelope da resposta** | **Sem envelope padronizado**: busca retorna `{resultados, pagina, tamanhoPagina, totalAproximado}`; auditoria retorna `{itens, proximoCursor}`; status endpoints retornam objeto direto. | Acordado |
+| **Formato de erro** | RFC 7807 Problem Details: `type` (URI estável; ex: `https://nexo.internal/problems/estado-invalido`), `title`, `status`, `detail`, `instance`. **O `type` é o código estável** — não existe campo `code`. | Acordado |
+| **Autenticação** | JWT do Cognito User Pool. `Authorization: Bearer <JWT>`. **Tenant não é header/query/body** — vem da claim `custom:tenant_id`. Papéis (`comprador-responsavel`, `compliance-admin`) de grupos Cognito. | Acordado |
+| **Nulabilidade** | `nullable: true` explícito. Regra forte: `extraido: false` ⟺ `valor: null` — agente **nunca inventa valor**. | Acordado |
+| **Tipo de ID** | UUID **v7**, gerado pelo Gateway de Ingestão. | Acordado |
+| **Semântica de 404** | Pode significar "não existe" **ou** "existe em outro tenant" — indistinguível. Tratar como não encontrado; nunca inferir existência. | Acordado |
+| **409 (conflito)** | Estado mudou entre tela carregar e usuário agir. Recarregar status antes de reexibir — comportamento correto. | Acordado |
+| **Idempotência** | `Idempotency-Key` em `confirmar-upload`, janela 24h. Gerar **uma vez por clique** do usuário, evita duplicar orçamento em retry de rede. Demais POSTs não idempotentes. | Acordado |
+| **Versionamento** | Prefixo `/v1` em todos os endpoints. | Acordado |
 
 ### 5.2 Estratégia de Mock
 
 **Decisão:** Mock é **derivado do contrato OpenAPI do backend**, não suposição privada. Enquanto o backend não tiver implementação, o frontend:
 
 1. Lê o [openapi.yaml](https://github.com/labsitio/nexus-orc-back/blob/main/docs/openapi.yaml) do backend (spec 0.1.0-provisional)
-2. Gera dados fake a partir dos schemas definidos lá (ex: gerador de UUIDs, datas ISO, arrays com N itens)
-3. Usa **Mock Service Worker (MSW)** para interceptar requisições HTTP em desenvolvimento e testes
-4. Handlers MSW vivem em `src/test/mocks.ts`, organizados por endpoint
-5. Dados fake são gerados com bibliotecas como `faker.js` ou `@faker-js/faker` — consistentes, reproduzíveis
+2. Gera dados fake a partir dos schemas definidos lá (UUIDs, datas ISO, arrays com N itens)
+3. Intercepta requisições HTTP em desenvolvimento e testes com ferramenta de mock HTTP
+4. Handlers mock vivem em `src/test/mocks.ts`, organizados por endpoint
+5. Dados fake são gerados de forma determinística — consistentes e reproduzíveis
 6. O mock **muda quando o backend muda o OpenAPI** — backend não implementa, frontend atualiza o mock
 
-**ADR-0005** registra essa decisão como estrutural.
+**ADR-0005** registra essa decisão como estrutural e especifica as tecnologias de implementação.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: frontend-architect
 description: Estrutura das interfaces web, componentes, fluxo de dados, contrato de integração e mock strategy
-tools: [Read, Edit, Write, Bash, Agent]
+tools: [Read, Edit, Write, Bash, Glob, Grep, Agent]
 ---
 
 # Frontend Architect — Agente de Arquitetura
@@ -51,7 +51,7 @@ tools: [Read, Edit, Write, Bash, Agent]
 ## Responsabilidades
 
 1. **Estruturar as interfaces web** — definir componentes, páginas, layout e fluxo de navegação para Portal de Upload (Fase 01) e Painel do Gestor (Fase 02)
-2. **Definir o contrato de integração** — 10 itens técnicos (nomes, datas, enums, paginação, erro, autenticação, nulabilidade, IDs) que formam a pauta do alinhamento com o backend
+2. **Definir o contrato de integração** — 13 itens técnicos (casing, datas, enums, paginação, envelope, erro RFC 7807, autenticação, nulabilidade, IDs UUID v7, 404, 409, idempotência, versionamento) do Bloco 1 confirmado
 3. **Especificar a estratégia de mock** — como o contrato é derivado do OpenAPI deles e como será mockado localmente enquanto não tiverem implementação
 4. **Documentar fronteiras** — marcar explicitamente o que não é decisão nossa (autenticação, real-time, busca semântica) e de quem é
 5. **Identificar riscos arquiteturais** — autenticação do fornecedor, multi-tenancy, performance em listagem de orçamentos
