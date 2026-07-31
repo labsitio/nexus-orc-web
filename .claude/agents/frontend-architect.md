@@ -44,7 +44,7 @@ tools: [Read, Edit, Write, Bash, Agent]
 |---|---|---|
 | Stack (Next.js, React, TypeScript, Vitest) | Aceito | [ADR-0004](../../docs/adr/0004-stack-frontend.md) |
 | Integração REST + polling | Aceito | [ADR-0004](../../docs/adr/0004-stack-frontend.md) |
-| Mock strategy (derivado do contrato) | Em progresso | [ADR-0005](../../docs/adr/0005-estrategia-mock.md) |
+| Mock strategy (derivado do contrato) | Aceito | [ADR-0005](../../docs/adr/0005-estrategia-mock.md) |
 
 ---
 
