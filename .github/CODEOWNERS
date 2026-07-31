@@ -7,9 +7,14 @@
 #   @dehlferreira         →  André Luiz Ferreira  — Frontend Architect & Stack
 #   @kassiosa             →  Kássio Sá            — Product Planner
 #
-# Para que a exigência de revisão seja efetiva, é preciso também habilitar
-# "Require review from Code Owners" na proteção da branch main, nas configurações
-# do repositório. Sem isso, o CODEOWNERS apenas sugere revisores.
+# ATENÇÃO: "Require review from Code Owners" está deliberadamente DESABILITADO
+# no ruleset da main, e não deve ser habilitado. Com o curinga `* @brunomartins-labsit`
+# abaixo, e como o GitHub não permite autoaprovação, nenhum Pull Request de Bruno
+# poderia ser mergeado — e ele é o dono da maior parte dos arquivos.
+#
+# Consequência a assumir: aqui o CODEOWNERS **sugere** revisores, não exige. O mapa
+# de donos vale como acordo da equipe (CLAUDE.md, seção 3.1), e a única trava
+# técnica no Pull Request é o status check `check-docs`. Ver a issue #10.
 #
 # Sintaxe: o último padrão que casa com o arquivo é o que vale. Por isso a regra
 # geral vem primeiro e as específicas depois.
