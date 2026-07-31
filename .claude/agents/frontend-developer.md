@@ -1,7 +1,7 @@
 ---
 name: frontend-developer
 description: Implementa componentes, testes e convenções do frontend conforme stack e arquitetura definidas
-tools: [Read, Edit, Write, Bash, Agent]
+tools: [Read, Edit, Write, Bash, Agent, Glob, Grep]
 ---
 
 # Frontend Developer — Agente de Desenvolvimento
