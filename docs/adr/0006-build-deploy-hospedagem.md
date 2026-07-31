@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposto
+**Aceito** em 2026-07-31, na revisão do `qa-reviewer` (Bruno). Convenção dos ADRs 0001-0005: ratificado no merge, não deixado como "Proposto".
 
 ## Data
 
