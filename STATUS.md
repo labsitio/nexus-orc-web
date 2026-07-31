@@ -178,10 +178,16 @@ Template para novos ADRs: [docs/adr/TEMPLATE.md](docs/adr/TEMPLATE.md).
 - **Permissão de repositório.** Os três integrantes são collaborators com papel `admin` — confirmado pela API. O `.github/CODEOWNERS` passou a valer de fato; antes as entradas de André e Kássio eram ignoradas em silêncio pelo GitHub.
 - **Proteção da branch `main` ativa e validada** ([#10](https://github.com/labsitio/nexus-orc-web/issues/10)). Ruleset com: exigir Pull Request, **0 aprovações** (para ninguém depender de disponibilidade de terceiros na janela de entrega), `check-docs` como status check obrigatório, bloqueio de force push, restrição de deleção, e **bypass list vazia** — a regra vale para os três, inclusive para o Tech Lead. Testado com push direto, que foi recusado.
 - **Três ADRs aceitos:** 0001 (governança), 0002 (execução centralizada e escritor único) e 0003 (execução distribuída na janela até 03/08).
+- **Fluxo de Pull Request validado de ponta a ponta** no [PR #16](https://github.com/labsitio/nexus-orc-web/pull/16), o primeiro do projeto, aberto deliberadamente como ensaio: push direto recusado, branch aceita, `check-docs` reportando com o nome cadastrado no ruleset, merge liberado com 0 aprovações. O risco que motivou o ensaio — PR travado indefinidamente esperando um check que nunca reporta — não se materializou.
+- **As 14 issues abertas têm responsável atribuído.** Só foi possível depois de André e Kássio virarem collaborators. Além do ganho de organização, isso faz a notificação chegar a quem responde pela issue e dá ao `/minhas-tarefas` uma segunda forma de identificar o que é de cada um, além da label `para:*`.
+- **`gh` CLI instalado e autenticado** como `brunomartins-labsit`, com token próprio no keyring — separado do `GITHUB_MCP_PAT` usado pelo MCP.
 
 ---
 
 ## Observações
+
+- **Criação de Project da organização está bloqueada**, e não por permissão de repositório: o botão "New project" não aparece, o que indica restrição na configuração da organização ("Allow members to create projects"). Depende de um owner da `labsitio`. Registrado na [#10](https://github.com/labsitio/nexus-orc-web/issues/10) como pós-entrega — o problema prático que o board resolveria já está coberto por labels e assignees.
+- **Filtros e views do protocolo de integração ficam para depois.** As labels `integracao:*` não existem em nenhum dos três repositórios, e o agente de Integração — com o padrão de labels acordado entre as três frentes — vem do time de backend. Montar filtro agora retornaria vazio e daria a falsa impressão de que não há pendência.
 
 - **`.github/CODEOWNERS` está com placeholders** (`@usuario-pessoa-1/2/3`). Enquanto não forem substituídos pelos handles reais, **o GitHub ignora as regras silenciosamente** — nada é exigido no Pull Request e o mapa de donos segue valendo apenas como acordo. É a task 9.
 - **Nome do projeto definido: Nexo.** Todas as referências na documentação já usam esse nome. A **pasta raiz de trabalho ainda se chama `LabsTalks - Agentes IA`** (nome do treinamento, não do projeto) — a renomeação está pendente e deve ocorrer fora de uma sessão ativa do Claude Code, ou ser resolvida naturalmente ao criar o repositório com o nome `nexo`.
