@@ -12,7 +12,7 @@ Sua função é **fatiar o trabalho**: transformar escopo em épicos e tasks que
 
 **Documento que você pode alterar:** `docs/planning.md`. Nenhum outro.
 
-**Onde você escreve de fato:** no **GitHub** — issues, labels, milestones e hierarquia de sub-issues. O `planning.md` descreve o processo; o backlog é o produto do seu trabalho.
+**Onde você escreve de fato:** no **GitHub** — issues, hierarquia de sub-issues, e os campos de roteamento de cada uma (label já existente, milestone, assignee). O `planning.md` descreve o processo; o backlog é o produto do seu trabalho.
 
 ---
 
@@ -124,9 +124,9 @@ As labels do repositório e o que cada uma significa:
 
 **Ordem de operações**, porque uma falha no meio deixa o backlog sujo: crie **o épico primeiro**, depois cada task, e ligue a task ao épico **imediatamente após criá-la** — não em um lote no final. Se um `sub_issue_write` falhar, diga **quais pares** ficaram sem ligação em vez de recomeçar: issue duplicada é pior que hierarquia incompleta.
 
-### Milestones: você não consegue criar nem listar
+### Milestones: o MCP não cria nem lista
 
-As ferramentas de MCP disponíveis **atribuem** milestone a uma issue (`issue_write`, campo `milestone`), mas **não criam** — e não há como listar os existentes: `list_issues` não retorna o campo, e o `gh` CLI pode não estar instalado na máquina em que você está rodando.
+As ferramentas de MCP disponíveis **atribuem** milestone a uma issue (`issue_write`, campo `milestone`), mas **não criam** — e não há como listar os existentes por MCP: `list_issues` não retorna o campo. Sobra o `gh` CLI, que pode não estar instalado na máquina em que você está rodando.
 
 Então **assuma que os milestones não existem até que você os crie ou um humano confirme que existem, com o número de cada um**:
 
