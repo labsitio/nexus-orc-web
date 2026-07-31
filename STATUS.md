@@ -25,24 +25,18 @@ Nenhuma feature de produto em desenvolvimento. A **stack está decidida** ([ADR-
 
 **Sexta 31/07, tarde.** A stack saiu e o primeiro PR de conteúdo foi mergeado. As três frentes estão com trabalho aberto em paralelo.
 
-### Bruno — PR #20 corrigido, aguardando nova validação
+### Bruno — PR #20 mergeado, contrato parcialmente confirmado
 
-[PR #20](https://github.com/labsitio/nexus-orc-web/pull/20) ([#19](https://github.com/labsitio/nexus-orc-web/issues/19) — travas mecânicas antes do PR) foi **reprovado pelo `qa-reviewer`** e **corrigido** (head `b79fa68`). Os achados eram:
+[PR #20](https://github.com/labsitio/nexus-orc-web/pull/20) ([#19](https://github.com/labsitio/nexus-orc-web/issues/19) — travas mecânicas antes do PR) foi **reprovado, corrigido e mergeado** (`e1e739c`), sem nova rodada de `qa-reviewer` — decisão assumida por limite de sessão, com a verificação (17 testes, `check-docs` verde) declarada no PR. #19 fechada.
 
-- Falso positivo na validação de frontmatter com `name` entre aspas e com comentário inline.
-- Falso negativo quando o frontmatter não é fechado.
-- `README.md` dentro de `.claude/agents/` sendo tratado como agente, o que quebraria o push de todos.
-- Ausência de teste automatizado que era possível com `node:test`, sem depender da stack de aplicação.
+[PR #24](https://github.com/labsitio/nexus-orc-web/pull/24) confirmou o **Bloco 1** do contrato de integração ([#1](https://github.com/labsitio/nexus-orc-web/issues/1)) por leitura direta do repositório do backend, sem reunião — é definição pública, não pendia de negociação. Blocos 2, 3 e 4 seguem sem mudança, verificados na mesma leitura; continuam exigindo reunião real, sem data marcada.
 
-Todos corrigidos, com **17 testes em `node:test`** — o primeiro teste automatizado do repositório — rodando no job `check-docs` do CI. Verificado que 6 deles falham quando a correção é revertida, conforme o critério da seção 2 de `docs/quality.md`.
+### André — segunda exceção à concentração de execução, ressalvas do #18 e arquitetura
 
-**Aguardando a nova validação do `qa-reviewer`**, que não pôde ser concluída por limite de sessão da ferramenta. Enquanto o veredito não sair, o PR não deve ser mergeado — é acordo da equipe, não trava técnica.
-
-### André — ressalvas do #18 e arquitetura
-
+- **[ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md) emendado de novo:** André passa a executar também o `frontend-architect` na própria máquina, além do `frontend-developer` — segunda exceção à concentração em Bruno, para não fazer a #3 esperar na fila do mesmo limite de sessão que já travou hoje.
+- [#3](https://github.com/labsitio/nexus-orc-web/issues/3) — **prioridade agora.** Criar o agente `frontend-architect`, preencher `architecture.md` (14 campos) e a estratégia de mock. Não precisa de issue nova — já está coberta. Destrava o restante do #1 e o contexto que o `frontend-developer` vai ler no fim de semana.
 - [#21](https://github.com/labsitio/nexus-orc-web/issues/21) — `tools` do `frontend-developer` sem `Glob` e `Grep`. **O agente ainda não foi executado nenhuma vez**, e a execução pelo autor é critério de aceite da issue e exigência de `docs/quality.md`, seção 2. É o último item da Definition of Done do #18 em aberto.
 - [#22](https://github.com/labsitio/nexus-orc-web/issues/22) — imprecisões factuais no ADR-0004 já aceito. **Despriorizada:** corrige precisão, não decisão, e não deve disputar tempo com o caminho crítico do código.
-- [#3](https://github.com/labsitio/nexus-orc-web/issues/3) — `architecture.md`, ainda com 14 campos a preencher, e a estratégia de mock. A decisão REST + polling precisa aparecer lá, senão a arquitetura contradiz a stack por omissão.
 
 ### Kássio — vai tentar produzir hoje
 
@@ -99,10 +93,11 @@ A estrutura documental deste repositório foi desenhada para um projeto de seman
 
 | Quando | Quem | O quê |
 |---|---|---|
-| **Sex 31, tarde** | Bruno | Nova validação do PR #20 e merge — retomar depois do reset do limite de sessão |
-| **Sex 31, tarde** | Bruno | Consolidar o STATUS (esta atualização) e aplicar as correções de contradição nos documentos dele |
+| **Sex 31, tarde** | Bruno | ~~Nova validação do PR #20~~ — feito, mergeado sem 3ª rodada de agente (limite de sessão) |
+| **Sex 31, tarde** | Bruno | ~~Consolidar o STATUS~~ — feito, e reconsolidado de novo agora (esta atualização) |
+| **Sex 31, tarde** | Bruno | ~~Bloco 1 do contrato (#1)~~ — confirmado no PR #24 |
+| **Sex 31, tarde** | André | **#3 — prioridade.** Criar `frontend-architect`, preencher `architecture.md` mínimo do portal de upload + estratégia de mock (#15), com a decisão REST + polling registrada. Executado na própria máquina — segunda exceção da concentração |
 | **Sex 31, tarde** | André | #21 — corrigir `tools` e **executar o `frontend-developer` uma vez**, fechando o último item da DoD do #18 |
-| **Sex 31, tarde** | André | #3 — `architecture.md` mínimo do portal de upload + estratégia de mock (#15), com a decisão REST + polling registrada |
 | **Sex 31, tarde** | André | **Liberar as respostas às dúvidas do backend** — os agentes de integração deles seguem parados |
 | **Sex 31, tarde** | Kássio | #4 — agente Product Planner e `planning.md`; em seguida, gerar as issues de implementação (#12) pelo agente |
 | **Sáb 01 – Dom 02** | Bruno (execução) + André (`frontend-developer`) | **Implementação do portal de upload, com testes.** Andaime do projeto Next.js, `package.json`, suíte rodando, e o formulário de upload contra mock |
@@ -130,14 +125,13 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 | Issue | Task | Responsável |
 |---|---|---|
-| [#19](https://github.com/labsitio/nexus-orc-web/issues/19) | Travas mecânicas antes do PR — **PR #20 corrigido, aguardando nova validação** | Bruno |
+| [#3](https://github.com/labsitio/nexus-orc-web/issues/3) | **Criar `frontend-architect`, preencher `architecture.md` e estratégia de mock — prioridade máxima agora.** Destrava #1 e o contexto do `frontend-developer` | André |
 | [#21](https://github.com/labsitio/nexus-orc-web/issues/21) | `frontend-developer` sem `Glob` e `Grep`, e **executar o agente uma vez** | André |
-| [#3](https://github.com/labsitio/nexus-orc-web/issues/3) | Preencher `architecture.md`: arquitetura, fronteiras e estratégia de mock | André |
 | [#4](https://github.com/labsitio/nexus-orc-web/issues/4) | Criar o agente Product Planner e preencher `planning.md` — sem dependência | Kássio |
-| [#12](https://github.com/labsitio/nexus-orc-web/issues/12) | Estruturar o backlog de implementação — **portão da fase de código**; passa a ser saída do agente Product Planner | Kássio |
+| [#12](https://github.com/labsitio/nexus-orc-web/issues/12) | Estruturar o backlog de implementação — **portão da fase de código**; passa a ser saída do agente Product Planner, com milestones por fase | Kássio |
 | [#15](https://github.com/labsitio/nexus-orc-web/issues/15) | Plano de troca do mock pela API real, com data | André |
 | [#14](https://github.com/labsitio/nexus-orc-web/issues/14) | Build, deploy e hospedagem das interfaces web — parte da definição de pronto | André |
-| [#1](https://github.com/labsitio/nexus-orc-web/issues/1) | **Acordar o contrato base de integração com o backend** — maior espera externa | Bruno |
+| [#1](https://github.com/labsitio/nexus-orc-web/issues/1) | Contrato com o backend — **Bloco 1 confirmado (#24)**; Blocos 2/3/4 seguem pendentes de reunião real | Bruno |
 | [#13](https://github.com/labsitio/nexus-orc-web/issues/13) | **Confirmar com os organizadores o escopo entregável até 03/08 17:30** | Bruno |
 | [#22](https://github.com/labsitio/nexus-orc-web/issues/22) | Correções de precisão no ADR-0004 — despriorizada | André |
 | [#6](https://github.com/labsitio/nexus-orc-web/issues/6) | Obter dos organizadores as metas numéricas dos critérios de sucesso — adiada | Bruno |
@@ -150,7 +144,7 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 1. **Nenhum projeto de aplicação existe ainda.** A stack está decidida, mas não há `package.json`, andaime Next.js nem suíte de testes de aplicação no repositório. **É o bloqueio de maior impacto para a entrega**, porque tudo que é avaliável como código depende dele.
 2. **Critérios de sucesso sem números** ([#6](https://github.com/labsitio/nexus-orc-web/issues/6)). O escopo define os objetivos qualitativamente ("de horas para minutos", "rastreabilidade completa") mas não traz metas verificáveis. Contornado por ora: `docs/quality.md` adotou um critério objetivo que não depende de número — o teste deve falhar se a mudança for revertida.
-3. **Três dos agentes ainda não existem:** Frontend Architect (#3), Product Planner (#4) e Integração — este último vem do time de backend, com padrões de label acordados entre as três frentes. E o `frontend-developer`, embora publicado, **nunca foi executado** (#21). (Não confundir com os 5 agentes de IA do produto, que são do backend — ver CLAUDE.md, seção 1.3.)
+3. **Três dos agentes ainda não existem:** Frontend Architect (#3, prioridade agora), Product Planner (#4) e Integração — este último vem do time de backend, com padrões de label acordados entre as três frentes. E o `frontend-developer`, embora publicado, **nunca foi executado** (#21). (Não confundir com os 5 agentes de IA do produto, que são do backend — ver CLAUDE.md, seção 1.3.)
 4. **Contrato com o backend em aberto, mas já publicado por eles.** O backend entregou [openapi.yaml](https://github.com/labsitio/nexus-orc-back/blob/main/docs/openapi.yaml) (OpenAPI 3.1, `0.1.0-provisional`) e um [guia de leitura para o frontend](https://github.com/labsitio/nexus-orc-back/blob/main/docs/api-contrato-frontend.md), com suposições e lacunas marcadas. Casing, datas, enums, erro (RFC 7807), tipo de ID, autenticação e nulabilidade estão **definidos** — falta confirmar em reunião e transcrever. O que segue aberto são as lacunas estruturais e o mecanismo de status, tratados em `docs/contrato-integracao-pauta.md`. O repositório deles está em fase de especificação: **não há implementação ainda**, então o frontend depende integralmente de mock por enquanto.
 5. **GitHub MCP pendente para André e Kássio** ([#9](https://github.com/labsitio/nexus-orc-web/issues/9)). Funcionando na máquina de Bruno. Cada integrante precisa repetir o procedimento do README ("Integração com o GitHub via MCP"): token clássico próprio e `GITHUB_MCP_PAT`. Impacto reduzido pela concentração da execução em Bruno — mas ainda impede que os agentes daquela pessoa operem issues e PRs na máquina dela.
 
@@ -160,8 +154,8 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 - **O entregável final é software rodando, e o backend não tem implementação.** Os organizadores têm utilização prevista para o Nexo — é projeto real, e ao final esperam o projeto funcionando, não só documentação e agentes. Mas o repositório do backend está em **fase de especificação**: contrato publicado, zero código. Se a nossa entrega precisa funcionar integrada, dependemos de algo que ainda não existe do outro lado. **É o risco de maior impacto do projeto.** Mitigações: mock como ponte com data de troca (#15), e a pergunta sobre o que "rodando" significa levada aos organizadores (#13). Definition of Done de projeto em CLAUDE.md, seção 1.2.1.
 - **Metade da janela consumida sem uma linha de código.** Passaram-se 30/07 e a sexta 31/07 em governança, stack e travas de processo. Restam o fim de semana e a manhã de segunda para andaime, feature, teste e deploy. **Sem prorrogação — pedida em 30/07 e sem resposta — este é o risco que mais provavelmente se materializa.** Mitigação: o ponto de corte de domingo à noite registrado no plano por dia.
-- **Disponibilidade no fim de semana é incerta**, e o fim de semana é a maior janela contínua de implementação. Com a execução dos agentes concentrada em Bruno, a mitigação do [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md) — cada um executa a própria frente — deixa de operar por padrão. **Risco residual:** se Bruno não estiver disponível sábado e domingo, resta apenas a manhã de segunda. André segue habilitado a executar o `frontend-developer` por conta própria (exceção acordada).
-- **Limite de sessão da ferramenta é um risco operacional real.** A reavaliação do PR #20 foi interrompida por limite de sessão em 31/07. Com a execução dos agentes concentrada numa única máquina e conta, o teto de uso passa a ser recurso compartilhado por todas as frentes — e o fim de semana é justamente quando o volume de execução aumenta.
+- **Disponibilidade no fim de semana é incerta**, e o fim de semana é a maior janela contínua de implementação. Com a execução dos agentes concentrada em Bruno, a mitigação do [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md) — cada um executa a própria frente — deixa de operar por padrão. **Risco residual:** se Bruno não estiver disponível sábado e domingo, resta apenas a manhã de segunda. André segue habilitado a executar `frontend-architect` e `frontend-developer` por conta própria (duas exceções acordadas, a segunda registrada em 31/07).
+- **Limite de sessão da ferramenta é um risco operacional real, e já mudou uma decisão de execução.** A reavaliação do PR #20 foi interrompida por limite de sessão em 31/07. Em resposta, o `frontend-architect` também passou a ser exceção à concentração em Bruno — para não empilhar a #3, que é caminho crítico duplo, na mesma fila que já travou. Com a execução ainda concentrada para as demais frentes, o teto de uso segue sendo recurso compartilhado, e o fim de semana é justamente quando o volume de execução aumenta.
 - **As travas mecânicas só valem para quem as ativou.** O hook `pre-push` foi ativado na máquina de Bruno (`git config core.hooksPath .githooks`); **André e Kássio ainda não rodaram o comando**. É configuração por máquina e não é versionável — quem não ativou continua sem trava local nenhuma, e a única trava que ninguém contorna sem querer é o `check-docs` no CI.
 - **`architecture.md` e `planning.md` ainda vazios** — 14 e 3 campos a preencher, respectivamente. São exatamente os dois documentos que o agente dev precisa ler para escrever o portal de upload: sem arquitetura e sem tasks com critério de aceite, o agente inventa o que falta. #3 e #4 são, por isso, caminho crítico do código, não trabalho de documentação.
 - **O painel do gestor não tem backend especificado.** O contrato publicado pelo backend declara que **não existe spec de um Bounded Context "Acompanhamento"** — a spec 006 (Portal do Gestor) foi removida do repositório deles. Não há endpoint para **listar orçamentos**, nem para listar **pendências de revisão humana**; a busca semântica só retorna o que já foi validado, e o endpoint de status consolidado é PROVISÓRIO e sem dono. Como o painel é a nossa entrega das Fases 02 e 03, isto é risco de **escopo**, não de integração. Tratado no bloco 2 de `docs/contrato-integracao-pauta.md`; se a reunião não resolver, escalar aos organizadores.
