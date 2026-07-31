@@ -10,15 +10,15 @@ Este documento **não deve** conter decisões de arquitetura de sistema (isso pe
 
 | Camada | Escolha | ADR relacionado |
 |---|---|---|
-| Linguagem | TypeScript 5.x | [ADR-0003](adr/0003-stack-frontend.md) |
-| Framework | Next.js 14 (App Router) + React 18 | [ADR-0003](adr/0003-stack-frontend.md) |
-| Build & Dev | Vite (integrado no Next.js) | [ADR-0003](adr/0003-stack-frontend.md) |
-| Testes unitários | Vitest | [ADR-0003](adr/0003-stack-frontend.md) |
-| Testes de componentes | React Testing Library | [ADR-0003](adr/0003-stack-frontend.md) |
-| Integração com API | React Query (TanStack Query) | [ADR-0003](adr/0003-stack-frontend.md) |
-| Estilos | Tailwind CSS | [ADR-0003](adr/0003-stack-frontend.md) |
-| Autenticação | Cognito + NextAuth.js | [ADR-0003](adr/0003-stack-frontend.md) |
-| Hospedagem | CloudFront + S3 (via CI/CD) | [ADR-0003](adr/0003-stack-frontend.md) |
+| Linguagem | TypeScript 5.x | [ADR-0004](adr/0004-stack-frontend.md) |
+| Framework | Next.js 14 (App Router) + React 18 | [ADR-0004](adr/0004-stack-frontend.md) |
+| Build & Dev | Vite (integrado no Next.js) | [ADR-0004](adr/0004-stack-frontend.md) |
+| Testes unitários | Vitest | [ADR-0004](adr/0004-stack-frontend.md) |
+| Testes de componentes | React Testing Library | [ADR-0004](adr/0004-stack-frontend.md) |
+| Integração com API | React Query (TanStack Query) | [ADR-0004](adr/0004-stack-frontend.md) |
+| Estilos | Tailwind CSS | [ADR-0004](adr/0004-stack-frontend.md) |
+| Autenticação | Cognito + NextAuth.js | [ADR-0004](adr/0004-stack-frontend.md) |
+| Hospedagem | CloudFront + S3 (via CI/CD) | [ADR-0004](adr/0004-stack-frontend.md) |
 
 ---
 
@@ -235,7 +235,7 @@ describe('Button', () => {
 
 ## 8. Débitos Técnicos Conhecidos
 
-1. **Sem realtime nativo (polling apenas)** — backend não especificou WebSocket/SSE; polling com React Query é suficiente para MVP. Se realtime virar requisito, considerar AppSync (ver ADR-0003).
+1. **Sem realtime nativo (polling apenas)** — backend não especificou WebSocket/SSE; polling com React Query é suficiente para MVP. Se realtime virar requisito, considerar AppSync (ver ADR-0004).
 
 2. **Componentes UI sem biblioteca externa** — temos total controle, mas significa mais CSS a manter. Trade-off: zero dependency bloat vs. mais código. Reavaliado se crescer demais.
 
@@ -245,7 +245,7 @@ describe('Button', () => {
 
 ## Referências
 
-- [ADR-0003](adr/0003-stack-frontend.md) — Decisão de stack
+- [ADR-0004](adr/0004-stack-frontend.md) — Decisão de stack
 - [docs/architecture.md](architecture.md) — Arquitetura de interfaces
 - [docs/quality.md](quality.md) — Critérios de teste e cobertura
 - [Next.js App Router](https://nextjs.org/docs/app)
