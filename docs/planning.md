@@ -48,9 +48,9 @@ Recusar é parte do trabalho, e a recusa é registrada como comentário na issue
 
 **Convenções:**
 
-- Título no formato `[Épico] <capacidade>` — ex: `[Épico] Portal de upload do fornecedor`.
-- Label **`epico`**, e o milestone da fase correspondente.
-- As tasks entram como **sub-issues** do épico (hierarquia nativa do GitHub), não como lista de caixas no corpo. Caixa marcada à mão desatualiza; sub-issue fechada não.
+- Título no formato `[Épico] <capacidade>` — ex: `[Épico] Portal de upload do fornecedor`. **É o título que identifica um épico**, não uma label: `epico` não existe no repositório, e criar label é combinação com o Tech Lead (ver seção 6). Filtro: `is:issue in:title "[Épico]"`.
+- Milestone da fase correspondente, e as labels de roteamento e assunto que já existem.
+- As tasks entram como **sub-issues** do épico (hierarquia nativa do GitHub), não como lista de caixas no corpo. Caixa marcada à mão desatualiza; sub-issue fechada não. É a hierarquia, não a label, que torna a relação épico/task consultável.
 - O corpo do épico declara: a capacidade, quem é o usuário dela, **como demonstrá-la** e o que está fora.
 
 **Tamanho.** Um épico que não cabe nas fases do roadmap está grande demais; um épico com uma única task não é épico — é task. Os épicos desta equipe saem diretamente do escopo, não de invenção: portal de upload (Fase 01), painel do gestor (Fases 02 e 03) e multi-tenant (Fase 03).
@@ -150,11 +150,12 @@ Nenhuma linha dessa tabela exige que alguém se lembre de mover nada: o mileston
 | Label | Significado |
 |---|---|
 | `para:andre` · `para:bruno` · `para:kassio` | Roteamento — de quem é a task. É o que o `/minhas-tarefas` consulta |
-| `epico` | A issue é um épico e tem sub-issues |
 | `bloqueio-externo` | Depende de alguém fora desta equipe |
 | `planejamento` · `arquitetura` · `qualidade` · `governanca` · `infra` · `integracao` · `agente` | Assunto |
 
-**Label nova exige combinação com o Tech Lead**, porque label é convenção e convenção não declarada só existe na cabeça de quem criou.
+Estas são **todas** as labels que existem no repositório — nenhuma outra deve ser usada. **Épico não tem label:** identifica-se pelo título `[Épico] ...` e pela hierarquia de sub-issues (seção 2).
+
+**Label nova exige combinação com o Tech Lead**, porque label é convenção e convenção não declarada só existe na cabeça de quem criou. E aplicar label que não existe é pior que não aplicar: dependendo da API, ou nasce uma label sem convenção nenhuma, ou ela é descartada em silêncio e o filtro volta vazio dando a impressão de que não há nada — foi o que aconteceu com as labels `integracao:*` (ver [STATUS.md](../STATUS.md), "Observações").
 
 ### Milestones — um por fase
 
@@ -166,7 +167,7 @@ Nenhuma linha dessa tabela exige que alguém se lembre de mover nada: o mileston
 
 Toda task e todo épico recebem o milestone da fase. É o que dá "quanto falta por fase" sem o Project.
 
-> **Limitação conhecida da ferramenta:** as ferramentas de MCP disponíveis **atribuem** milestone a uma issue, mas **não criam** — e não listam os existentes (`list_issues` não retorna o campo). Então o agente `product-planner` **assume que os milestones não existem até que um humano confirme, com o número de cada um**: ele para antes de criar as issues e pede a criação a quem tem o `gh` CLI autenticado. Criar issue sem milestone significa voltar depois em todas.
+> **Limitação conhecida da ferramenta:** as ferramentas de MCP disponíveis **atribuem** milestone a uma issue, mas **não criam** — e não listam os existentes (`list_issues` não retorna o campo). Então o agente `product-planner` **assume que não existem até criá-los ou receber os números de um humano**: tenta criar por `gh api` na máquina em que está rodando e, se o `gh` não estiver instalado ali, para antes de criar as issues e pede a criação a quem tem o `gh` autenticado. Criar issue sem milestone significa voltar depois em todas.
 
 ---
 

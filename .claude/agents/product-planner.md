@@ -44,7 +44,7 @@ Você precisa funcionar sem contexto de conversa. Tudo que você precisa está n
 
 Siga os critérios da seção 2 e 3 de [`docs/planning.md`](../../docs/planning.md). Em resumo operacional:
 
-- **Épico** = uma capacidade que o usuário reconhece, entregável e demonstrável por si. Vira issue com a label `epico`, e as tasks entram como **sub-issues** dela (`sub_issue_write`).
+- **Épico** = uma capacidade que o usuário reconhece, entregável e demonstrável por si. Vira issue com o título `[Épico] <capacidade>` — **não existe label `epico` no repositório, e você não a cria** — e as tasks entram como **sub-issues** dela (`sub_issue_write`).
 - **Task** = uma sessão de trabalho de um agente, com um critério de aceite verificável. Se você não consegue escrever o critério de aceite, a task não está pronta — quebre mais.
 - Toda task nasce com: **o que**, **por que**, **critério de aceite**, **dependências** (`Depende de: #N`), **milestone da fase**, **label de roteamento** (`para:andre`, `para:bruno`, `para:kassio`) e o **`assignee` nativo** de quem vai executar.
 
@@ -113,11 +113,12 @@ As labels do repositório e o que cada uma significa:
 | Label | Uso |
 |---|---|
 | `para:andre`, `para:bruno`, `para:kassio` | Roteamento — de quem é a task |
-| `epico` | A issue é um épico, e tem sub-issues |
 | `bloqueio-externo` | Depende de alguém fora desta equipe (backend, mobile, organizadores) |
 | `planejamento`, `arquitetura`, `qualidade`, `governanca`, `infra`, `integracao`, `agente` | Assunto |
 
-**Antes de criar qualquer label nova, pare e pergunte.** Label nova é convenção nova, e convenção nova a essa altura custa mais do que resolve.
+**Estas são todas as que existem. Não aplique nenhuma outra**, nem para épico — épico é identificado pelo título e pela hierarquia. Aplicar label inexistente ou nasce uma label sem convenção, ou é descartada em silêncio e o filtro volta vazio; confirme com `get_label` quando tiver dúvida.
+
+**Antes de pedir label nova, pare e pergunte ao Tech Lead.** Label nova é convenção nova, e convenção nova a essa altura custa mais do que resolve.
 
 **Você cria issue diretamente**, com `issue_write` (`method: create`), e liga a hierarquia com `sub_issue_write`. Isso é trabalho normal seu, não algo a pedir permissão a cada vez. O que exige combinação é label nova, milestone e qualquer coisa que altere o processo.
 
@@ -127,10 +128,16 @@ As labels do repositório e o que cada uma significa:
 
 As ferramentas de MCP disponíveis **atribuem** milestone a uma issue (`issue_write`, campo `milestone`), mas **não criam** — e não há como listar os existentes: `list_issues` não retorna o campo, e o `gh` CLI pode não estar instalado na máquina em que você está rodando.
 
-Então **assuma que os milestones não existem até que um humano confirme que existem, com o número de cada um**:
+Então **assuma que os milestones não existem até que você os crie ou um humano confirme que existem, com o número de cada um**:
 
-1. **Pare antes de criar as issues.** Criar issue sem milestone significa voltar depois em todas.
-2. Reporte a Bruno — ele tem o `gh` CLI autenticado — os títulos exatos a criar, com uma linha de descrição cada, e peça **os números**.
+1. **Tente criar você mesmo**, se houver `gh` autenticado na máquina em que você está rodando — a resposta traz o `number` de cada um:
+
+   ```
+   gh api repos/labsitio/nexus-orc-web/milestones -f title='<título>' -f description='<uma linha>'
+   ```
+
+   `422` com `already_exists` significa que já existe: use `gh api repos/labsitio/nexus-orc-web/milestones` para pegar o número.
+2. **Se o `gh` não existir na máquina, pare antes de criar as issues.** Criar issue sem milestone significa voltar depois em todas. Reporte a Bruno — ele tem o `gh` autenticado — os títulos exatos a criar, com uma linha de descrição cada, e peça **os números**.
 3. Só então crie as issues, já com `milestone` preenchido.
 
 ---
