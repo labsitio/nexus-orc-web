@@ -47,13 +47,15 @@ Nada aqui precisa de discussão. Ler, confirmar que segue valendo e transcrever 
 - **Paginação em dois padrões:** `pagina`/`tamanhoPagina` na busca (spec 004) e `cursor`/`limit` na exportação de auditoria (spec 007). Vêm de specs que não coordenaram entre si.
 - **Sem envelope padronizado:** busca retorna `{resultados, pagina, tamanhoPagina, totalAproximado}`, auditoria retorna `{itens, proximoCursor}`, endpoints de status retornam o objeto direto.
 
-**Acordado / segue valendo:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+**Acordado / segue valendo:** Confirmado por leitura direta em 31/07 (`api-contrato-frontend.md`, verificado via GitHub) — nenhuma mudança desde a publicação inicial. São definições públicas do contrato, não pendem de reunião. **Próximo passo:** André transcreve para a seção 5 de `architecture.md` com status `acordado` (issue #3).
 
 ---
 
 ## Bloco 2 — Lacunas estruturais: o foco da reunião
 
 Estes três itens não são detalhe de contrato. São **ausência de backend** para o nosso produto principal.
+
+> **Verificado em 31/07, sem reunião:** as três lacunas (2.1, 2.2, 2.3) persistem sem mudança — confirmado por leitura direta do repositório do backend. Nenhuma delas se resolve por confirmação de leitura; todas seguem pendentes de reunião real ou escalonamento aos organizadores.
 
 ### 2.1 Não existe endpoint para listar orçamentos
 
@@ -102,6 +104,8 @@ Sem isso, não há como montar a fila de triagem: o gestor só descobriria uma p
 ---
 
 ## Bloco 3 — Decisões abertas de contrato
+
+> **Verificado em 31/07, sem reunião:** nenhum dos quatro itens (3.1 a 3.4) mudou desde a publicação — confirmado por leitura direta. São decisões que exigem negociação real com o backend, não confirmação de leitura.
 
 ### 3.1 Status em tempo real: não existe push
 
