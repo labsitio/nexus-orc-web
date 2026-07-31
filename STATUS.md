@@ -98,19 +98,21 @@ Ordem, por dependência real e não por preferência:
 - **Reduz:** ADR apenas para decisões estruturais de fato (stack, execução, mock). A partir de agora, correção de precisão em documento aceito só entra se orientar código — o que aparecer depois fica registrado como issue e não disputa tempo com implementação.
 - **Adia:** #6 (metas numéricas), #11 (datas intermediárias — o prazo é único).
 
-### Plano por dia
+### Plano por dia — revisado à noite de 31/07
+
+**Mudança de cenário:** a disponibilidade de sábado (01/08) está incerta — pode ser um dia sem ninguém trabalhando. Isso muda a janela real de implementação: em vez de "todo o fim de semana", pode sobrar só domingo e a manhã de segunda. Consequência direta: **a implementação começa hoje à noite**, não amanhã.
 
 | Quando | Quem | O quê |
 |---|---|---|
-| **Sex 31, restante do dia** | André | #14 — build e deploy. #15 — plano de troca do mock, agora que o ADR-0005 existe |
-| **Sex 31, restante do dia** | Kássio | #12 — backlog de implementação, começando pela Fase 01 |
-| **Sex 31, restante do dia** | Bruno | Acompanhar #12/#14, revisar PRs que saírem |
-| **Sáb 01 – Dom 02** | Todos | **Implementação do portal de upload, com testes.** Andaime do projeto Next.js, `package.json`, suíte rodando, formulário de upload contra mock |
-| **Sáb 01 – Dom 02** | André | #14 concluído, com URL no README |
+| **Sex 31, noite** | André | [#35](https://github.com/labsitio/nexus-orc-web/issues/35) — **antecipado.** Andaime dos dois projetos Next.js (monorepo, conforme ADR-0006), Vitest configurado e rodando. Não depende da #12 terminar |
+| **Sex 31, noite** | Kássio | #12 — backlog de implementação, começando pela Fase 01 |
+| **Sex 31, noite** | Bruno | Acompanhar #35/#12, revisar PRs que saírem |
+| **Sáb 01 (se houver)** | André | Formulário de upload contra mock, a partir das tasks da #12. **Se o dia cair, sem problema** — o andaime já ficou pronto na sexta |
+| **Dom 02** | Todos | Implementação com testes, #14 (deploy real), o que sobrar do fim de semana |
 | **Seg 03, manhã** | Bruno + André | Dado de demonstração, README que funciona em máquina limpa, fechamento do que estiver pela metade |
 | **Seg 03, até 17:30** | Bruno | Verificar a Definition of Done de projeto (CLAUDE.md, 1.2.1) e entregar |
 
-**Ponto de corte a respeitar:** se no domingo à noite não houver build passando e aplicação publicada, o que falta vira limitação declarada no README, não trabalho de segunda-feira. A DoD de projeto aceita limitação declarada; não aceita software que não roda.
+**Ponto de corte a respeitar:** se no domingo à noite não houver build passando e aplicação publicada, o que falta vira limitação declarada no README, não trabalho de segunda-feira. A DoD de projeto aceita limitação declarada; não aceita software que não roda. **Com o risco de sábado sem trabalho, este ponto de corte fica mais apertado — vale reavaliar no sábado à noite, não só no domingo.**
 
 ### O que está travado e por quem
 
@@ -156,6 +158,7 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 - **O entregável final é software rodando, e o backend, apesar de ter começado a codar hoje, ainda não resolveu as lacunas que nos afetam.** Descoberta de 31/07: o backend mergeou 10 PRs de código de domínio (BCs de Validação, Indexação, Orquestração) nas últimas horas — a premissa "zero código do lado deles" caiu. Mas as três lacunas estruturais (listagem, Acompanhamento, fila de revisão) e o `openapi.yaml` **não mudaram**: `GET /orcamentos/{id}` segue PROVISÓRIO, sem endpoint de listagem. Continuamos dependendo de mock. **Ainda é o risco de maior impacto do projeto**, só que por um motivo mais restrito agora — não falta código neles, falta a spec certa. Mitigações: plano de troca do mock com data (#15), pergunta sobre o que "rodando" significa aos organizadores (#13).
 - **Cerca de metade da janela consumida sem uma linha de código de aplicação**, mas com a base de especificação inteira fechada hoje (stack, arquitetura, contrato, mock, planejamento). Restam o fim de semana e a manhã de segunda para andaime, feature, teste e deploy. **Sem prorrogação — pedida em 30/07 e sem resposta.** Mitigação: o ponto de corte de domingo à noite.
+- **Sábado (01/08) pode ser um dia sem ninguém trabalhando — risco novo, registrado à noite de 31/07.** Se isso se confirmar, a janela real de implementação encolhe para hoje à noite + domingo + a manhã de segunda, não o fim de semana inteiro. Mitigação: antecipar o andaime do projeto Next.js ([#35](https://github.com/labsitio/nexus-orc-web/issues/35)) para esta noite, para que o sábado — se cair — não custe trabalho que dependia dele ser o primeiro dia de código.
 - **Disponibilidade no fim de semana é incerta.** Execução concentrada em Bruno, com duas exceções (André executa `frontend-architect` e `frontend-developer`). **Risco residual:** se Bruno não estiver disponível sábado e domingo, resta a manhã de segunda.
 - **Limite de sessão da ferramenta é recurso compartilhado**, e já interrompeu uma revisão hoje. Motivou a segunda exceção de execução (`frontend-architect` com André). Vale monitorar no fim de semana, quando o volume de execução aumenta.
 - **Um agente pode não carregar mesmo com frontmatter válido** — achado no `product-planner` (`Agent type not found`), possivelmente sistemático. Não investigado ainda; adiado por decisão explícita para depois do fim de semana, mas é risco real se se repetir com o `frontend-developer` durante a implementação.
