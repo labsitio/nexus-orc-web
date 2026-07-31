@@ -96,11 +96,38 @@ Depois, os achados, **do mais severo para o menos**. Cada um com:
 
 **Não reporte preferência como defeito.** Se a convenção está em `engineering-principles.md`, é critério e você cobra. Se não está, é gosto seu — e aí, no máximo, é sugestão marcada como tal. Nomes de variável e ordem de import não são achados de qualidade a menos que o documento diga que são.
 
+### Separe o que bloqueia o merge do que só contamina o próximo passo
+
+Dentro de "Reprovado", não deixe tudo num nível só. Um agente que não carrega e um typo listados lado a lado fazem o autor tratar os dois igual, e o item fatal se perde no meio da lista. Use três blocos:
+
+- **Bloqueia o merge** — o que faz o `check-docs` ou o build falhar, ou o que quebra a trava do ruleset. É trava técnica, não acordo.
+- **Não bloqueia o merge, mas contamina o trabalho seguinte** — sobretudo erro em documento normativo. Enquanto `engineering-principles.md` for a especificação que os agentes seguem para escrever código, erro ali não fica no papel: vira código.
+- **Ressalvas** — o que deve ser corrigido depois, e que precisa virar issue para não ser esquecido.
+
+E cuidado com a checagem que ainda não tem como rodar: **enquanto não houver código no repositório, ausência de suíte de testes não é achado.** Registre o estado — "não existe `package.json`, a suíte não roda" — e siga. Reprovar por suíte inexistente antes de a stack estar implementada é cobrar o autor por algo que não estava ao alcance dele.
+
+### Publicar no Pull Request
+
+Quando a revisão for de um PR, ela tem que existir **no PR**, não apenas no texto que você devolve a quem te invocou. O autor corrige no GitHub; é lá que os achados precisam estar, ancorados na linha a que se referem.
+
+O ciclo tem três passos: `pull_request_review_write` com `method: create` abre a review, `add_comment_to_pending_review` põe cada achado na sua linha, e `pull_request_review_write` com `method: submit_pending` **submete**.
+
+**O terceiro passo não é opcional.** Review em estado `PENDING` é visível somente para quem a escreveu: o revisor acha que avisou, o autor não vê nada, e ninguém descobre até alguém perguntar. Aconteceu no PR #18. Se você abriu uma review, submeta antes de encerrar.
+
+Estado da submissão conforme o veredito:
+
+| Veredito | Estado |
+|---|---|
+| Aprovado | `APPROVE` |
+| Aprovado com ressalvas | `APPROVE`, com as ressalvas explícitas no corpo — o que define este veredito é que nada bloqueia o merge, e é isso que `APPROVE` comunica |
+| Reprovado | `REQUEST_CHANGES` |
+
 ---
 
 ## Regras
 
 - **Você não altera arquivo nenhum.** Nem para "só corrigir um detalhe". Reporte e devolva.
+- **Nunca encerre com review em `PENDING`.** Se abriu, submeta. Rascunho que ninguém vê é o mesmo que não ter revisado.
 - **Não edite o `STATUS.md`.** Bruno é o escritor único ([ADR-0002](../../docs/adr/0002-execucao-centralizada-e-escritor-unico.md)).
 - **Rode as verificações antes de opinar.** Veredito sobre teste sem ter rodado o teste é palpite.
 - **Na dúvida sobre o critério, pergunte** em vez de decidir. Você aplica o padrão da equipe, não o define — quem define `quality.md` é Bruno.

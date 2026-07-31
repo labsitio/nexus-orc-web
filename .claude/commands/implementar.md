@@ -43,10 +43,22 @@ Aguarde confirmação antes de seguir.
 
 Rode os testes e o build. Se falhar, corrija antes de prosseguir — não abra PR vermelho.
 
+Rode também o `check-docs`. Ele é status check obrigatório do ruleset, então Pull Request com ele vermelho não tem permissão de merge:
+
+```
+node scripts/check-docs.mjs
+```
+
+O hook de `pre-push` roda isso sozinho quando está ativo (`git config core.hooksPath .githooks`), mas rodar antes evita descobrir no meio do push.
+
+Depois, faça a **auto-revisão**: `/revisar`. O comando chama o agente `qa-reviewer` contra o diff local e aponta o que a revisão apontaria — escopo da issue, contradição com ADR aceito, teste que passaria com a implementação vazia. Encontrar isso aqui custa um minuto; encontrar na revisão custa a disponibilidade de duas pessoas.
+
 Confira, item por item:
 
 - [ ] O escopo da issue foi atendido integralmente, ou o desvio está documentado
 - [ ] Existe teste automatizado cobrindo a mudança, e a suíte passa
+- [ ] `node scripts/check-docs.mjs` passa
+- [ ] `/revisar` foi rodado, e os achados foram corrigidos ou justificados
 - [ ] As convenções de `engineering-principles.md` foram seguidas
 - [ ] Critérios de aceite de `docs/quality.md` verificados
 - [ ] Nenhuma decisão estrutural tomada sem ADR
