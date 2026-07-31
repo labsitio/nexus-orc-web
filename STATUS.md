@@ -135,16 +135,14 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 
 1. **Critérios de sucesso sem números.** O escopo define os objetivos qualitativamente ("de horas para minutos", "rastreabilidade completa") mas não traz metas verificáveis. Sem elas, Bruno não consegue escrever critérios de aceite que possam ser de fato verificados em `docs/quality.md`.
 2. **GitHub MCP pendente para André e Kássio.** Funcionando na máquina de Bruno — validado com leitura autenticada no repositório privado. Cada integrante precisa repetir o procedimento do README ("Integração com o GitHub via MCP"): criar um token clássico próprio e definir `GITHUB_MCP_PAT`. Até que cada um faça isso, os agentes daquela pessoa não operam issues nem PRs.
-3. **Proteção da branch `main` não configurada.** O `.github/CODEOWNERS` está completo com os três handles, mas o GitHub só **exige** a revisão do dono se "Require review from Code Owners" estiver habilitado na proteção da branch. Sem isso, o arquivo apenas sugere revisores e o mapa de donos segue valendo como acordo.
-4. **Nenhum agente de desenvolvimento criado.** Os cinco agentes descritos em `docs/team-responsibilities.md` existem apenas como especificação; nenhum foi implementado. (Não confundir com os 5 agentes de IA do produto, que são do backend — ver CLAUDE.md, seção 1.3.)
-5. **Contrato com o backend em aberto, mas já publicado por eles.** O backend entregou [openapi.yaml](https://github.com/labsitio/nexus-orc-back/blob/main/docs/openapi.yaml) (OpenAPI 3.1, `0.1.0-provisional`) e um [guia de leitura para o frontend](https://github.com/labsitio/nexus-orc-back/blob/main/docs/api-contrato-frontend.md), com as suposições e lacunas marcadas. Casing, datas, enums, erro (RFC 7807), tipo de ID, autenticação e nulabilidade estão **definidos** — falta confirmar em reunião e transcrever. O que segue aberto são as lacunas estruturais e o mecanismo de status, tratados em `docs/contrato-integracao-pauta.md`. O repositório deles está em fase de especificação: **não há implementação ainda**, então o frontend depende integralmente de mock por enquanto.
+3. **Quatro dos seis agentes ainda não existem.** Publicados: `qa-reviewer` e `tech-lead`. Faltam Frontend Architect e Frontend Developer (o Developer está feito, retido na máquina de André), Product Planner e Integração — este último vem do time de backend, com padrões de label acordados entre as três frentes. (Não confundir com os 5 agentes de IA do produto, que são do backend — ver CLAUDE.md, seção 1.3.)
+4. **Contrato com o backend em aberto, mas já publicado por eles.** O backend entregou [openapi.yaml](https://github.com/labsitio/nexus-orc-back/blob/main/docs/openapi.yaml) (OpenAPI 3.1, `0.1.0-provisional`) e um [guia de leitura para o frontend](https://github.com/labsitio/nexus-orc-back/blob/main/docs/api-contrato-frontend.md), com as suposições e lacunas marcadas. Casing, datas, enums, erro (RFC 7807), tipo de ID, autenticação e nulabilidade estão **definidos** — falta confirmar em reunião e transcrever. O que segue aberto são as lacunas estruturais e o mecanismo de status, tratados em `docs/contrato-integracao-pauta.md`. O repositório deles está em fase de especificação: **não há implementação ainda**, então o frontend depende integralmente de mock por enquanto.
 
 ---
 
 ## Riscos
 
 - **O entregável final é software rodando, e o backend não tem implementação.** Os organizadores têm utilização prevista para o Nexo — é projeto real, e ao final esperam o projeto funcionando, não só documentação e agentes. Mas o repositório do backend está em **fase de especificação**: contrato publicado, zero código. Se a nossa entrega precisa funcionar integrada, dependemos de algo que ainda não existe do outro lado. **É o risco de maior impacto do projeto.** Mitigações: mock como ponte com data de troca (#15), e a pergunta sobre o que "rodando" significa levada aos organizadores (#13). Definition of Done de projeto em CLAUDE.md, seção 1.2.1.
-- **Acesso ao repositório concedido apenas a Bruno.** Consulta aos collaborators em 30/07: só `brunomartins-labsit`, com papel `maintain`. André e Kássio **não conseguem fazer push**, e o trabalho do André está retido na máquina dele. Solicitado aos admins da organização. **Consequência colateral:** as entradas `@dehlferreira` e `@kassiosa` do CODEOWNERS estão sendo ignoradas em silêncio pelo GitHub, porque apontam para quem não tem acesso. E o papel `maintain` pode não permitir configurar a proteção da branch (#10).
 - **Um dia perdido na janela de quatro.** André encerrou o expediente de 30/07 sem conseguir publicar, e retoma em 31/07. Restam então sexta, o fim de semana de disponibilidade incerta, e a manhã de segunda. **Isso reforça o pedido de prorrogação (#13) como a mitigação de maior impacto disponível.**
 - **Disponibilidade de Bruno no fim de semana é incerta.** O fim de semana é a maior janela contínua de implementação, e o plano original dependia dele para a execução oficial. Mitigado pelo [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md): cada um executa a própria frente. **Risco residual:** se ninguém produzir sábado e domingo, resta apenas a manhã de segunda.
 - **Prorrogação do prazo a ser pedida.** A equipe avalia pedir uma semana. Deve ser solicitada **hoje** — pedir na quinta dá aos organizadores tempo de replanejar; pedir na segunda à tarde não. Não substitui o plano atual, corre em paralelo (#13).
@@ -172,6 +170,14 @@ Todas as tasks existem como issue no [backlog do GitHub](https://github.com/labs
 - [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md) — Execução distribuída na janela até a entrega — **Aceito** (30/07). Expira em 03/08.
 
 Template para novos ADRs: [docs/adr/TEMPLATE.md](docs/adr/TEMPLATE.md).
+
+---
+
+## Resolvido em 30/07
+
+- **Permissão de repositório.** Os três integrantes são collaborators com papel `admin` — confirmado pela API. O `.github/CODEOWNERS` passou a valer de fato; antes as entradas de André e Kássio eram ignoradas em silêncio pelo GitHub.
+- **Proteção da branch `main` ativa e validada** ([#10](https://github.com/labsitio/nexus-orc-web/issues/10)). Ruleset com: exigir Pull Request, **0 aprovações** (para ninguém depender de disponibilidade de terceiros na janela de entrega), `check-docs` como status check obrigatório, bloqueio de force push, restrição de deleção, e **bypass list vazia** — a regra vale para os três, inclusive para o Tech Lead. Testado com push direto, que foi recusado.
+- **Três ADRs aceitos:** 0001 (governança), 0002 (execução centralizada e escritor único) e 0003 (execução distribuída na janela até 03/08).
 
 ---
 
