@@ -1,18 +1,18 @@
 #!/bin/sh
 #
-# Recusa push direto na `main`.
+# Duas travas antes do push:
 #
-# Substituto local da proteção de branch do GitHub, para quando ela não puder
-# ser habilitada por falta de permissão de admin no repositório.
+#   1. Recusa push direto na `main`.
+#   2. Roda o `check-docs` e recusa o push se ele falhar.
 #
 # É proteção do lado do cliente: dá para contornar com `--no-verify`, e isso é
-# intencional. O objetivo não é impedir quem decide empurrar na main — é impedir
-# quem empurra na main sem perceber. Transforma um acidente em uma escolha.
+# intencional. O objetivo não é impedir quem decide empurrar — é impedir quem
+# empurra sem perceber. Transforma um acidente em uma escolha.
 #
 # Para ativar, uma vez por máquina:
 #     git config core.hooksPath .githooks
 #
-# Ver CLAUDE.md, seção 2, e a issue #10.
+# Ver CLAUDE.md, seção 2, e as issues #10 e #19.
 
 remoto="$1"
 protegida="main"
@@ -46,5 +46,40 @@ MSG
       ;;
   esac
 done
+
+# ---------------------------------------------------------------------------
+# Consistência da documentação.
+#
+# O `check-docs` já roda no CI como status check obrigatório, mas só depois do
+# push. O PR #18 chegou à revisão humana com 5 links relativos quebrados que
+# este script acha em um segundo — rodar aqui troca uma ida e volta de revisão
+# por um erro na própria máquina.
+# ---------------------------------------------------------------------------
+
+raiz=$(git rev-parse --show-toplevel)
+script="$raiz/scripts/check-docs.mjs"
+
+[ -f "$script" ] || exit 0
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "  aviso: 'node' não está no PATH — o check-docs não rodou antes deste push." >&2
+  exit 0
+fi
+
+if ! node "$script"; then
+  cat >&2 <<MSG
+
+  Push recusado: o check-docs encontrou erro de consistência.
+
+  Os erros estão listados acima. O mesmo script roda no CI como status
+  check obrigatório do ruleset, então empurrar assim deixaria o Pull
+  Request vermelho e sem permissão de merge.
+
+  Se você precisa mesmo empurrar antes de corrigir, repita o comando
+  com --no-verify.
+
+MSG
+  exit 1
+fi
 
 exit 0

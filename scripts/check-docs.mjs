@@ -5,16 +5,23 @@
  * Verifica as classes de defeito que já ocorreram de fato neste repositório:
  * link relativo apontando para arquivo inexistente, referência a seção do
  * CLAUDE.md que deixou de existir após renumeração, termo legado que sobrou de
- * uma renomeação, e segredo versionado por acidente.
+ * uma renomeação, segredo versionado por acidente, e definição de agente que o
+ * Claude Code não consegue carregar.
  *
  * Uso:  node scripts/check-docs.mjs
  * Saída: código 1 se houver ERRO; 0 se houver apenas AVISO ou nada.
  */
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, dirname, resolve, relative } from 'node:path';
+import { join, dirname, resolve, relative, basename } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const RAIZ = resolve(dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
+/**
+ * `fileURLToPath` em vez de `new URL(...).pathname`: o pathname vem
+ * percent-encoded, então um caminho com espaço chega como `Bruno%20Martins` e o
+ * script quebra com ENOENT. A pasta deste projeto se chamou `LabsTalks - Agentes IA`.
+ */
+const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 const IGNORAR_DIR = new Set(['.git', 'node_modules', 'dist', 'build', '.next', 'out']);
 
@@ -147,7 +154,87 @@ for (const arquivo of arquivosVarredura) {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Avisos: pendências que não impedem o merge, mas não devem sumir de vista
+// 5. Definições de agente que o Claude Code não consegue carregar
+//    Ocorreu no PR #18: agente entregue sem frontmatter nenhum. Sem `name` e
+//    `description` o arquivo não é registrado como subagente — o agente
+//    simplesmente não existe, e o entregável central do exercício não funciona.
+//    Nenhuma outra checagem daqui pega isso: não é link, nem termo, nem seção.
+// ---------------------------------------------------------------------------
+
+/**
+ * Extrai o frontmatter do início do arquivo, ou null se não houver um válido.
+ *
+ * A checagem de *forma* do bloco não é preciosismo: um frontmatter aberto e
+ * nunca fechado faz a primeira régua `---` do corpo passar por fechamento, e o
+ * bloco "capturado" é prosa, não YAML. O agente não carrega, mas olhar só os
+ * delimitadores diria que está tudo bem.
+ */
+function extrairFrontmatter(texto) {
+  const m = texto.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
+  if (!m) return null;
+
+  const linhas = m[1].split(/\r?\n/).filter((l) => l.trim() !== '');
+  if (!linhas.length) return null;
+
+  const pareceYaml = linhas.every(
+    (l) => /^\s+\S/.test(l) || /^-\s/.test(l) || /^[A-Za-z_][\w-]*[ \t]*:/.test(l),
+  );
+  return pareceYaml ? m[1] : null;
+}
+
+/** Valor escalar de uma chave do frontmatter, sem aspas nem comentário inline. */
+function valorFrontmatter(frontmatter, chave) {
+  const m = frontmatter.match(new RegExp(`^${chave}[ \\t]*:[ \\t]*(.*)$`, 'm'));
+  if (!m) return null;
+
+  // Comentário inline só conta depois de espaço: `#` colado ao valor é conteúdo.
+  let valor = m[1].replace(/\s+#.*$/, '').trim();
+
+  const entreAspas = valor.match(/^(['"])([\s\S]*)\1$/);
+  if (entreAspas) valor = entreAspas[2];
+
+  return valor;
+}
+
+const dirAgentes = join(RAIZ, '.claude/agents');
+if (existsSync(dirAgentes)) {
+  // Recursivo, como o resto do script. `README.md` fica de fora: o Claude Code
+  // não o trata como agente, e reprová-lo quebraria o push de todo mundo.
+  const agentes = listar(dirAgentes, (n) => n.endsWith('.md') && n.toLowerCase() !== 'readme.md');
+
+  for (const caminho of agentes) {
+    const ref = rel(caminho);
+    const frontmatter = extrairFrontmatter(readFileSync(caminho, 'utf8'));
+
+    if (frontmatter === null) {
+      erros.push(
+        `${ref}: sem frontmatter YAML no início do arquivo — o Claude Code não registra o agente, ele não carrega`,
+      );
+      continue;
+    }
+
+    // `name` e `description` são exigência da plataforma. `tools` é convenção
+    // deste projeto: sem ele o agente herda todas as ferramentas, e o escopo
+    // deixa de ser explícito — ver "Onde os Agentes Vivem" em
+    // docs/team-responsibilities.md.
+    for (const campo of ['name', 'description', 'tools']) {
+      const valor = valorFrontmatter(frontmatter, campo);
+      if (valor === null) erros.push(`${ref}: frontmatter sem "${campo}:"`);
+      else if (valor === '') erros.push(`${ref}: frontmatter com "${campo}:" vazio`);
+    }
+
+    const declarado = valorFrontmatter(frontmatter, 'name');
+    const esperado = basename(caminho, '.md');
+    if (declarado && declarado !== esperado) {
+      erros.push(
+        `${ref}: name "${declarado}" difere do nome do arquivo "${esperado}" — a convenção é kebab-case do nome do agente`,
+      );
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 6. Avisos: pendências que não impedem o merge, mas não devem sumir de vista
 // ---------------------------------------------------------------------------
 
 const codeowners = join(RAIZ, '.github/CODEOWNERS');
@@ -155,8 +242,11 @@ if (existsSync(codeowners) && /@usuario-/.test(readFileSync(codeowners, 'utf8'))
   avisos.push('.github/CODEOWNERS: ainda tem placeholder @usuario- — o GitHub ignora essas regras em silêncio');
 }
 
+// `semCodigo` aqui também: um documento que *menciona* o placeholder dentro de
+// code span não tem campo a preencher, e contá-lo faz a lista de avisos deixar
+// de ser confiável.
 for (const arquivo of arquivosMd) {
-  const n = (readFileSync(arquivo, 'utf8').match(/_\(a preencher\)_/g) || []).length;
+  const n = (semCodigo(readFileSync(arquivo, 'utf8')).match(/_\(a preencher\)_/g) || []).length;
   if (n) avisos.push(`${rel(arquivo)}: ${n} campo(s) ainda "a preencher"`);
 }
 
