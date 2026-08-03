@@ -27,8 +27,19 @@ const API_BASE = '/v1';
 // execuções (critério de aceite da #38). Nenhum Date.now()/random aqui.
 // ---------------------------------------------------------------------------
 
-/** UUID v7 fixo, formato correto (spec 001) — não é aleatório de propósito. */
-const ORCAMENTO_ID_FIXO = '018f2f6a-7c2e-7b1a-9c3d-1a2b3c4d5e6f';
+/**
+ * UUID v7 fixo, formato correto (spec 001) — não é aleatório de propósito.
+ * Exportado (issue #65): quem consome o mock referencia este valor em vez
+ * de redeclarar a string, para não haver duas fontes do mesmo dado.
+ */
+export const ORCAMENTO_ID_FIXO = '018f2f6a-7c2e-7b1a-9c3d-1a2b3c4d5e6f';
+
+/**
+ * UUID que nenhum handler reconhece — para exercitar os caminhos de 404
+ * (orçamento inexistente ou em outro tenant) sem cravar um valor mágico em
+ * cada teste que precisar de um id desconhecido.
+ */
+export const ORCAMENTO_ID_INEXISTENTE = '018f2f6a-0000-7000-8000-000000000000';
 
 const FIXTURES = {
   /**
@@ -37,6 +48,12 @@ const FIXTURES = {
    * GerarUploadUrlRequest. Isolado aqui: se o shape mudar, só este objeto
    * muda.
    */
+  uploadUrlRequestValido: {
+    canal: 'PORTAL_WEB' as const,
+    nomeArquivo: 'orcamento.pdf',
+    tipoConteudo: 'application/pdf',
+  },
+
   uploadUrlResponse: {
     orcamentoId: ORCAMENTO_ID_FIXO,
     uploadUrl:
@@ -94,6 +111,15 @@ function problemDetails(
     { status, headers: { 'Content-Type': 'application/problem+json' } },
   );
 }
+
+/**
+ * Corpo válido de requisição para `POST /orcamentos/upload-url`, derivado
+ * do mesmo `FIXTURES` que os handlers usam (issue #65) — quem precisar de
+ * um corpo válido em teste importa isto em vez de redeclarar os campos.
+ * Renomear um campo PROVISÓRIO exige mudar só aqui para a suíte inteira
+ * continuar refletindo o mesmo contrato.
+ */
+export const uploadUrlRequestValido = FIXTURES.uploadUrlRequestValido;
 
 // ---------------------------------------------------------------------------
 // Handlers

@@ -14,6 +14,8 @@ import { setupServer } from 'msw/node';
 import {
   uploadHandlers,
   confirmarUploadNaoConcluidoHandler,
+  ORCAMENTO_ID_FIXO,
+  uploadUrlRequestValido,
 } from './mocks';
 
 const server = setupServer(...uploadHandlers);
@@ -22,7 +24,6 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers(...uploadHandlers));
 afterAll(() => server.close());
 
-const ORCAMENTO_ID_FIXO = '018f2f6a-7c2e-7b1a-9c3d-1a2b3c4d5e6f';
 const AUTH_HEADER = { Authorization: 'Bearer token-de-teste' };
 
 describe('POST /v1/orcamentos/upload-url', () => {
@@ -30,11 +31,7 @@ describe('POST /v1/orcamentos/upload-url', () => {
     const resposta = await fetch('/v1/orcamentos/upload-url', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...AUTH_HEADER },
-      body: JSON.stringify({
-        canal: 'PORTAL_WEB',
-        nomeArquivo: 'orcamento.pdf',
-        tipoConteudo: 'application/pdf',
-      }),
+      body: JSON.stringify(uploadUrlRequestValido),
     });
 
     expect(resposta.status).toBe(201);
@@ -64,11 +61,7 @@ describe('POST /v1/orcamentos/upload-url', () => {
     const resposta = await fetch('/v1/orcamentos/upload-url', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        canal: 'PORTAL_WEB',
-        nomeArquivo: 'orcamento.pdf',
-        tipoConteudo: 'application/pdf',
-      }),
+      body: JSON.stringify(uploadUrlRequestValido),
     });
 
     expect(resposta.status).toBe(401);

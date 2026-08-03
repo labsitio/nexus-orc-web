@@ -11,7 +11,13 @@ import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import '@testing-library/jest-dom';
 import { ErroUpload } from './ErroUpload';
-import { uploadHandlers, confirmarUploadNaoConcluidoHandler } from '@/test/mocks';
+import {
+  uploadHandlers,
+  confirmarUploadNaoConcluidoHandler,
+  ORCAMENTO_ID_FIXO,
+  ORCAMENTO_ID_INEXISTENTE,
+  uploadUrlRequestValido as CORPO_VALIDO,
+} from '@/test/mocks';
 import { capturarErro, type ErroUpload as ErroUploadModel } from '@/lib/erros-upload';
 
 const ERRO_SEM_NOVA_TENTATIVA: ErroUploadModel = {
@@ -76,14 +82,7 @@ describe('ErroUpload alimentado pelo erro real do mock (#38)', () => {
   afterEach(() => server.resetHandlers(...uploadHandlers));
   afterAll(() => server.close());
 
-  const ORCAMENTO_ID_FIXO = '018f2f6a-7c2e-7b1a-9c3d-1a2b3c4d5e6f';
-  const ORCAMENTO_ID_INEXISTENTE = '018f2f6a-0000-7000-8000-000000000000';
   const AUTH = { Authorization: 'Bearer token-de-teste' };
-  const CORPO_VALIDO = {
-    canal: 'PORTAL_WEB',
-    nomeArquivo: 'orcamento.pdf',
-    tipoConteudo: 'application/pdf',
-  };
 
   function pedirUploadUrl(headers: HeadersInit, corpo: unknown): Promise<Response> {
     return fetch('/v1/orcamentos/upload-url', {

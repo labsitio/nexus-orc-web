@@ -15,7 +15,13 @@
 import { describe, it, expect, vi, beforeAll, afterEach, afterAll } from 'vitest';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
-import { uploadHandlers, confirmarUploadNaoConcluidoHandler } from '@/test/mocks';
+import {
+  uploadHandlers,
+  confirmarUploadNaoConcluidoHandler,
+  ORCAMENTO_ID_FIXO,
+  ORCAMENTO_ID_INEXISTENTE,
+  uploadUrlRequestValido as CORPO_VALIDO,
+} from '@/test/mocks';
 import {
   capturarErro,
   interpretarFalhaDeRede,
@@ -29,13 +35,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers(...uploadHandlers));
 afterAll(() => server.close());
 
-const ORCAMENTO_ID_FIXO = '018f2f6a-7c2e-7b1a-9c3d-1a2b3c4d5e6f';
 const AUTH = { Authorization: 'Bearer token-de-teste' };
-const CORPO_VALIDO = {
-  canal: 'PORTAL_WEB',
-  nomeArquivo: 'orcamento.pdf',
-  tipoConteudo: 'application/pdf',
-};
 
 function pedirUploadUrl(headers: HeadersInit, corpo: unknown): Promise<Response> {
   return fetch('/v1/orcamentos/upload-url', {
@@ -70,7 +70,7 @@ describe('erros previstos no contrato', () => {
 
   it('404 vira "não encontrado", sem sugerir que existe em outro lugar', async () => {
     const erro = await capturarErro(() =>
-      confirmarUpload('018f2f6a-0000-7000-8000-000000000000'),
+      confirmarUpload(ORCAMENTO_ID_INEXISTENTE),
     );
 
     expect(erro?.codigo).toBe('nao-encontrado');
@@ -95,7 +95,7 @@ describe('erros previstos no contrato', () => {
     const validacao = await capturarErro(() => pedirUploadUrl(AUTH, {}));
     const naoAutenticado = await capturarErro(() => pedirUploadUrl({}, CORPO_VALIDO));
     const naoEncontrado = await capturarErro(() =>
-      confirmarUpload('018f2f6a-0000-7000-8000-000000000000'),
+      confirmarUpload(ORCAMENTO_ID_INEXISTENTE),
     );
     server.use(confirmarUploadNaoConcluidoHandler);
     const naoConcluido = await capturarErro(() => confirmarUpload(ORCAMENTO_ID_FIXO));
