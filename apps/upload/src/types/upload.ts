@@ -35,3 +35,15 @@ export interface IdentificacaoFornecedor {
   cnpjCpf: string;
   nomeContato: string;
 }
+
+/**
+ * Resposta de `POST /orcamentos/{orcamentoId}/confirmar-upload` (issue #41).
+ * Espelha exatamente `FIXTURES.confirmarUploadResponse` em `src/test/mocks.ts`
+ * — `recebidoEm` é ISO 8601 UTC (docs/architecture.md, seção 5.1); a
+ * conversão para horário local acontece só na apresentação, nunca aqui.
+ */
+export interface ConfirmarUploadResponse {
+  orcamentoId: string;
+  status: 'RECEBIDO';
+  recebidoEm: string;
+}
