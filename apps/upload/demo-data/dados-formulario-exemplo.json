@@ -1,0 +1,6 @@
+{
+  "_comentario": "Dado de DEMONSTRAÇÃO (issue #50) — não é dado de teste automatizado. Dado de teste vive em apps/upload/src/test/mocks.ts e nos arquivos *.test.ts. CNPJ fictício, sem dígito verificador real e sem correspondência com empresa existente — só o formato (14 dígitos) importa para a validação client-side (issue #39).",
+  "cnpjCpf": "12.345.678/0001-99",
+  "nomeContato": "Maria Souza — Fornecedor Demonstração Ltda",
+  "referenciaExterna": "COT-DEMO-0001"
+}
