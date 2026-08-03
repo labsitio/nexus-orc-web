@@ -2,7 +2,7 @@
 
 ## Status
 
-**Aceito** em 2026-07-30 por Bruno Martins (Tech Lead), **com emenda em 2026-07-31**.
+**Aceito** em 2026-07-30 por Bruno Martins (Tech Lead), **com emendas em 2026-07-31 e 2026-08-03**.
 
 > Emenda o [ADR-0002](0002-execucao-centralizada-e-escritor-unico.md), suspendendo a decisão 1 (execução oficial centralizada) durante a janela até 03/08. A decisão 2 daquele ADR — escritor único do STATUS.md — **permanece em vigor**.
 
@@ -17,6 +17,12 @@ Isto **não restaura** o ADR-0002 nem revoga esta permissão: quem quiser execut
 Registrado como emenda, e não como ADR novo, por proporção: este ADR expira em 03/08, e abrir um ADR-0005 para uma mudança com três dias de vida seria cerimônia sem retorno (ver "Governança aplicada com proporção" no [STATUS.md](../../STATUS.md)).
 
 **Risco que a emenda cria, e que está registrado no STATUS:** com a execução numa única máquina e conta, o limite de sessão da ferramenta passa a ser recurso compartilhado por todas as frentes — e já interrompeu uma revisão em 31/07.
+
+### Emenda de 2026-08-03 — terceira exceção (Kássio), execução plenamente distribuída no dia da entrega
+
+Confirmado pelos organizadores que 03/08 às 17:30 é a própria reunião de apresentação, com demonstração ao vivo (ver [STATUS.md](../../STATUS.md) e [#13](https://github.com/labsitio/nexus-orc-web/issues/13)). Restam poucas horas, e a cadeia de tasks da Fase 01 (`#35 → #38/#39 → #40 → #41/#42`) só usa as três máquinas de verdade se cada pessoa executar a própria fatia.
+
+**Kássio passa a executar `frontend-developer` na própria máquina hoje** — terceira exceção, mesma lógica das duas anteriores: ele já validaria o próprio código de qualquer forma (`docs/quality.md`, seção 2), então rodar na sessão de Bruno só atrasaria sem ganho. Isto não é retorno à atribuição nominal original — é a mesma decisão de fundo do ADR (execução onde está a pessoa, não centralizada), agora estendida à terceira pessoa pela mesma pressão de tempo. Divisão do dia registrada no STATUS.md, seção "Ordem de execução de hoje".
 
 ## Data
 

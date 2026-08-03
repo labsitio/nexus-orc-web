@@ -42,33 +42,28 @@ A fase de especificação está concluída e o backlog de implementação da Fas
 
 Issues fechadas hoje: #1, #2, #3, #4, #5, #7, #10, #19, #21, #29, #30.
 
-### André — ordem de execução de hoje, 03/08 (dia da entrega)
+### Execução de hoje — as três máquinas em paralelo, por etapa da cadeia
 
-O Kássio fatiou a Fase 01 no fim de semana ([#12](https://github.com/labsitio/nexus-orc-web/issues/12), comentário de 02/08) — 6 issues encadeadas, todas já com assignee `dehlferreira` e milestone. **Esta é a ordem real de execução, nesta sequência, sem pular:**
+**Confirmado às ~11:30 de 03/08: os três executam hoje.** Com ~6h até a demonstração ao vivo (17:30), a cadeia da Fase 01 só usa as três máquinas de verdade se a divisão for por etapa, não por pessoa fixa — o grafo de dependência só tem paralelismo de 2 em cada ponto. Reatribuído no GitHub (assignee + label `para:*`), para que `/minhas-tarefas` de cada um mostre a task certa. **Terceira exceção de execução registrada no [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md):** Kássio também executa `frontend-developer` na própria máquina hoje.
 
-| Ordem | Issue | Depende de |
-|---|---|---|
-| 1º | [#35](https://github.com/labsitio/nexus-orc-web/issues/35) — Andaime dos dois projetos Next.js | nada — **ainda não iniciado**, é o bloqueio de tudo abaixo |
-| 2º | [#38](https://github.com/labsitio/nexus-orc-web/issues/38) — Mock dos endpoints do fluxo de upload | #35 |
-| 2º (paralelo) | [#39](https://github.com/labsitio/nexus-orc-web/issues/39) — Formulário de envio | #35 |
-| 3º | [#40](https://github.com/labsitio/nexus-orc-web/issues/40) — Envio em duas chamadas, idempotência | #38, #39 |
-| 4º | [#41](https://github.com/labsitio/nexus-orc-web/issues/41) — Tela de confirmação | #40 |
-| 4º (paralelo) | [#42](https://github.com/labsitio/nexus-orc-web/issues/42) — Tratamento de erros do formato do backend | #40 |
+**Só dados mockados — sem integração com o backend real hoje.** Não é decisão nova (já era o ADR-0005), só confirmação explícita de escopo: ninguém gasta tempo tentando bater contra API real.
+
+| Etapa | Quem | Issue | Depende de |
+|---|---|---|---|
+| 1º | **André** | [#35](https://github.com/labsitio/nexus-orc-web/issues/35) — Andaime dos dois projetos Next.js | nada — **em andamento**, travou em problema de estrutura, resolvendo via [#34](https://github.com/labsitio/nexus-orc-web/issues/34) antes de prosseguir. Bloqueio de tudo abaixo |
+| 2º | **Bruno** | [#38](https://github.com/labsitio/nexus-orc-web/issues/38) — Mock dos endpoints do fluxo de upload | #35 |
+| 2º (paralelo) | **Kássio** | [#39](https://github.com/labsitio/nexus-orc-web/issues/39) — Formulário de envio | #35 |
+| 3º | **André** | [#40](https://github.com/labsitio/nexus-orc-web/issues/40) — Envio em duas chamadas, idempotência | #38, #39 — ele fecha o ponto de junção, por já conhecer o andaime |
+| 4º | **Bruno** | [#41](https://github.com/labsitio/nexus-orc-web/issues/41) — Tela de confirmação | #40 |
+| 4º (paralelo) | **Kássio** | [#42](https://github.com/labsitio/nexus-orc-web/issues/42) — Tratamento de erros do formato do backend | #40 |
 
 **Candidatos a virar limitação declarada no README, não trabalho de hoje, se o tempo apertar:** #41 e #42 — o fluxo funciona sem eles, de forma mais crua.
 
-Depois da cadeia acima, na fila (sem urgência de hoje): [#14](https://github.com/labsitio/nexus-orc-web/issues/14) (deploy — se Bruno não assumir), [#15](https://github.com/labsitio/nexus-orc-web/issues/15), [#31](https://github.com/labsitio/nexus-orc-web/issues/31), [#22](https://github.com/labsitio/nexus-orc-web/issues/22) (despriorizada), [#9](https://github.com/labsitio/nexus-orc-web/issues/9).
+**Depois da cadeia, sem urgência hoje:** [#15](https://github.com/labsitio/nexus-orc-web/issues/15), [#31](https://github.com/labsitio/nexus-orc-web/issues/31), [#22](https://github.com/labsitio/nexus-orc-web/issues/22) (despriorizada), [#54](https://github.com/labsitio/nexus-orc-web/issues/54).
 
-### Kássio — backlog entregue, disponibilidade de hoje incerta
+**[#14](https://github.com/labsitio/nexus-orc-web/issues/14) — parcialmente feito.** Workflows e runbook mergeados ([PR #53](https://github.com/labsitio/nexus-orc-web/pull/53)); falta só validar o pipeline de verdade depois que o #35 existir — Bruno faz isso entre #38 e #41.
 
-[#12](https://github.com/labsitio/nexus-orc-web/issues/12) entregou 15 issues no fim de semana: épico + 5 tasks completas da Fase 01 (#37-42), 4 títulos da Fase 02 (#43-47, não iniciar sem corpo), Fase 03 registrada e não fatiada (#48 lista, #49 multi-tenant — **`bloqueio-externo`, confirmado de novo por leitura direta em 02/08**: backend ainda sem endpoint de listagem), e 2 transversais com corpo completo (#50 dado de demonstração, #51 README). Milestones das 3 fases criados. Se ele não estiver disponível hoje, Bruno assume #14/#50/#51.
-
-### Bruno — hoje, dia da entrega (17:30)
-
-- Se Kássio não vier: assumir [#14](https://github.com/labsitio/nexus-orc-web/issues/14) (deploy, rodando `frontend-developer` na própria máquina) e depois [#50](https://github.com/labsitio/nexus-orc-web/issues/50)/[#51](https://github.com/labsitio/nexus-orc-web/issues/51).
-- Revisar os PRs do André assim que saírem — é o caminho crítico, cada rodada de revisão importa.
-- Verificar a DoD de projeto (CLAUDE.md, 1.2.1) antes de 17:30.
-- #6, #11, #13 seguem dependendo dos organizadores, sem resposta.
+Bruno também: revisar os PRs do André assim que saírem (caminho crítico, cada rodada importa) e verificar a DoD de projeto antes de 17:30. #6 e #11 seguem sem resposta dos organizadores; #13 foi respondida e fechada.
 
 ### Agentes: 5 de 5 publicados e executados
 
