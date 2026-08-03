@@ -6,18 +6,18 @@
 
 ## Última atualização
 
-- **Data:** 2026-07-31, fim de tarde
+- **Data:** 2026-08-03, manhã — dia da entrega
 - **Atualizado por:** Bruno Martins — escritor único do STATUS.md, [ADR-0002](docs/adr/0002-execucao-centralizada-e-escritor-unico.md)
 
 ---
 
 ## Feature atual
 
-Nenhuma feature de produto em desenvolvimento. **A fase de especificação e governança está concluída**: stack decidida, arquitetura preenchida, contrato de integração (Bloco 1) confirmado, estratégia de mock em ADR, planejamento estruturado. **Ainda não existe código de aplicação** — nem `package.json`, nem projeto Next.js, nem suíte de testes da aplicação.
+**Hoje é o dia da entrega, 17:30.** A fase de especificação está concluída e o backlog de implementação da Fase 01 está pronto (#37-42) desde o fim de semana. **Ainda não existe código de aplicação** — nem `package.json`, nem projeto Next.js, nem suíte de testes. O andaime ([#35](https://github.com/labsitio/nexus-orc-web/issues/35)) é o próximo passo, e ainda não foi iniciado.
 
-- **Backlog:** [9 issues abertas](https://github.com/labsitio/nexus-orc-web/issues) (#6, #9, #11, #12, #13, #14, #15, #22, #31).
+- **Backlog:** 22 issues abertas. Ver "André — ordem de execução de hoje" abaixo para a Fase 01.
 - **Escopo do produto:** em [`escopo/`](escopo/) (5 arquivos HTML). Resumo e delimitação da fatia de frontend no [CLAUDE.md](CLAUDE.md), seções 1, 1.1 e 1.2.
-- **Portão para a fase de código:** [#12](https://github.com/labsitio/nexus-orc-web/issues/12) — o backlog de implementação, agora desbloqueado (milestones criados, arquitetura fechada) e em andamento pelo Kássio.
+- **Portão da fase de código, cumprido:** [#12](https://github.com/labsitio/nexus-orc-web/issues/12) entregou o backlog fatiado da Fase 01 no fim de semana.
 
 ---
 
@@ -38,23 +38,33 @@ Nenhuma feature de produto em desenvolvimento. **A fase de especificação e gov
 
 Issues fechadas hoje: #1, #2, #3, #4, #5, #7, #10, #19, #21, #29, #30.
 
-### André — próximo
+### André — ordem de execução de hoje, 03/08 (dia da entrega)
 
-- **[#14](https://github.com/labsitio/nexus-orc-web/issues/14) — prioridade.** Build, deploy e hospedagem (CloudFront + S3). Não depende de mais nada, e o STATUS já registra "não deixar para segunda".
-- [#15](https://github.com/labsitio/nexus-orc-web/issues/15) — plano de troca do mock pela API real, com data. Estava esperando a estratégia de mock (ADR-0005), que já saiu — pode avançar agora, mas a data de troca em si depende do #1 (Blocos 2/3/4), sem resposta do backend ainda.
-- [#31](https://github.com/labsitio/nexus-orc-web/issues/31) — limpeza pequena: `NextAuth`/`React Query` ainda aparecem em `architecture.md`, que não deve conter biblioteca.
-- [#22](https://github.com/labsitio/nexus-orc-web/issues/22) — despriorizada, só quando sobrar tempo.
-- [#9](https://github.com/labsitio/nexus-orc-web/issues/9) — GitHub MCP na própria máquina. Provavelmente já resolvido na prática (ele abriu PRs normalmente); confirmar e fechar.
+O Kássio fatiou a Fase 01 no fim de semana ([#12](https://github.com/labsitio/nexus-orc-web/issues/12), comentário de 02/08) — 6 issues encadeadas, todas já com assignee `dehlferreira` e milestone. **Esta é a ordem real de execução, nesta sequência, sem pular:**
 
-### Kássio — em andamento
+| Ordem | Issue | Depende de |
+|---|---|---|
+| 1º | [#35](https://github.com/labsitio/nexus-orc-web/issues/35) — Andaime dos dois projetos Next.js | nada — **ainda não iniciado**, é o bloqueio de tudo abaixo |
+| 2º | [#38](https://github.com/labsitio/nexus-orc-web/issues/38) — Mock dos endpoints do fluxo de upload | #35 |
+| 2º (paralelo) | [#39](https://github.com/labsitio/nexus-orc-web/issues/39) — Formulário de envio | #35 |
+| 3º | [#40](https://github.com/labsitio/nexus-orc-web/issues/40) — Envio em duas chamadas, idempotência | #38, #39 |
+| 4º | [#41](https://github.com/labsitio/nexus-orc-web/issues/41) — Tela de confirmação | #40 |
+| 4º (paralelo) | [#42](https://github.com/labsitio/nexus-orc-web/issues/42) — Tratamento de erros do formato do backend | #40 |
 
-[#12](https://github.com/labsitio/nexus-orc-web/issues/12) — backlog de implementação das 3 fases, pelo agente `product-planner`. Desbloqueado: milestones criados (1, 2, 3), `architecture.md` fechado. Orientação registrada na issue: referenciar `architecture.md` por seção ao escrever critério de aceite de contrato, não copiar valores — evita retrabalho se o documento mudar. Começar pela Fase 01 (milestone 1).
+**Candidatos a virar limitação declarada no README, não trabalho de hoje, se o tempo apertar:** #41 e #42 — o fluxo funciona sem eles, de forma mais crua.
 
-### Bruno — próximo
+Depois da cadeia acima, na fila (sem urgência de hoje): [#14](https://github.com/labsitio/nexus-orc-web/issues/14) (deploy — se Bruno não assumir), [#15](https://github.com/labsitio/nexus-orc-web/issues/15), [#31](https://github.com/labsitio/nexus-orc-web/issues/31), [#22](https://github.com/labsitio/nexus-orc-web/issues/22) (despriorizada), [#9](https://github.com/labsitio/nexus-orc-web/issues/9).
 
-- **Nenhuma issue própria não-externa restante.** #6, #11, #13 dependem dos organizadores, sem resposta.
-- Acompanhar #12 e #14 e revisar os PRs que saírem.
-- Quando #12 e #14 avançarem, iniciar o andaime do projeto Next.js (`package.json`, Vitest configurado) — é o próximo passo real rumo a código.
+### Kássio — backlog entregue, disponibilidade de hoje incerta
+
+[#12](https://github.com/labsitio/nexus-orc-web/issues/12) entregou 15 issues no fim de semana: épico + 5 tasks completas da Fase 01 (#37-42), 4 títulos da Fase 02 (#43-47, não iniciar sem corpo), Fase 03 registrada e não fatiada (#48 lista, #49 multi-tenant — **`bloqueio-externo`, confirmado de novo por leitura direta em 02/08**: backend ainda sem endpoint de listagem), e 2 transversais com corpo completo (#50 dado de demonstração, #51 README). Milestones das 3 fases criados. Se ele não estiver disponível hoje, Bruno assume #14/#50/#51.
+
+### Bruno — hoje, dia da entrega (17:30)
+
+- Se Kássio não vier: assumir [#14](https://github.com/labsitio/nexus-orc-web/issues/14) (deploy, rodando `frontend-developer` na própria máquina) e depois [#50](https://github.com/labsitio/nexus-orc-web/issues/50)/[#51](https://github.com/labsitio/nexus-orc-web/issues/51).
+- Revisar os PRs do André assim que saírem — é o caminho crítico, cada rodada de revisão importa.
+- Verificar a DoD de projeto (CLAUDE.md, 1.2.1) antes de 17:30.
+- #6, #11, #13 seguem dependendo dos organizadores, sem resposta.
 
 ### Agentes: 5 de 5 publicados e executados
 
