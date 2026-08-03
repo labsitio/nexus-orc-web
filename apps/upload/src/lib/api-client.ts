@@ -69,7 +69,7 @@ export const apiClient = {
     const response = await apiRequest(endpoint, {
       ...options,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(options?.headers || {}) },
+      headers: { ...(options?.headers || {}), 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined,
     });
     return response.json();
@@ -79,7 +79,7 @@ export const apiClient = {
     await apiRequest(endpoint, {
       ...options,
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', ...(options?.headers || {}) },
+      headers: { ...(options?.headers || {}), 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined,
     });
   },
