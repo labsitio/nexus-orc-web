@@ -2,11 +2,26 @@
 
 Repositório da equipe de **frontend** do projeto Nexo. Contém as interfaces web da plataforma e a documentação de governança que orienta os agentes de desenvolvimento da equipe.
 
-> **Nenhuma tecnologia ou stack foi definida ainda.** Essa é uma decisão da equipe, a ser registrada em ADR antes de qualquer implementação. Ver [docs/engineering-principles.md](docs/engineering-principles.md).
+> **Stack:** TypeScript, Next.js 14 (App Router) + React 18, Vitest + React Testing Library, Tailwind CSS, hospedagem em CloudFront + S3. Decidida no [ADR-0004](docs/adr/0004-stack-frontend.md); a organização em monorepo de dois apps vem do [ADR-0006](docs/adr/0006-build-deploy-hospedagem.md). Convenções em [docs/engineering-principles.md](docs/engineering-principles.md).
 
 > **O entregável é software funcionando.** O Nexo é um projeto real, com utilização prevista pelos organizadores. A prática com agentes é o método; o resultado esperado é a aplicação rodando, publicada e navegável — ver a Definition of Done de projeto no [CLAUDE.md](CLAUDE.md), seção 1.2.1.
 
-**URL do ambiente:** _(a definir — ver [#14](https://github.com/labsitio/nexus-orc-web/issues/14))_
+## URL do ambiente
+
+| Aplicação | URL |
+|---|---|
+| Portal de upload (`apps/upload`) | **não publicada** |
+| Painel do gestor (`apps/dashboard`) | **não publicada** |
+
+**Limitação declarada, e o que falta.** Os workflows de deploy existem e estão versionados
+(`.github/workflows/deploy-upload.yml` e `deploy-dashboard.yml`), e os dois apps buildam como
+site estático (`output: 'export'`). O que não existe é o **destino**: bucket S3, distribuição
+CloudFront, role IAM e os secrets do repositório. O passo a passo está pronto em
+[docs/runbooks/deploy-aws-setup.md](docs/runbooks/deploy-aws-setup.md) e **nada dele foi
+executado**, porque depende de uma conta AWS confirmada para o projeto — o que está fora do
+alcance desta equipe. Acompanhado em [#14](https://github.com/labsitio/nexus-orc-web/issues/14).
+
+Enquanto isso, o caminho para ver as duas aplicações rodando é local, e está na seção abaixo.
 
 ---
 
@@ -30,6 +45,88 @@ As duas interfaces web do produto:
 2. **Portal web de upload** — envio manual de orçamento pelo fornecedor sem integração automatizada.
 
 São dois produtos distintos no mesmo repositório: públicos diferentes, fases diferentes do roadmap e modelos de autenticação provavelmente diferentes.
+
+---
+
+## Como rodar localmente
+
+**Pré-requisito:** Node.js 20 ou superior (o CI usa a 22) e o `npm` que vem com ele. Nada além disso — não é preciso conta AWS, credencial nem serviço externo, porque o frontend roda contra mock (ver [Mock e troca pela API real](#mock-e-troca-pela-api-real)).
+
+O repositório é um **monorepo com npm workspaces**: um único `package-lock.json` na raiz cobre os dois apps e o `shared/`. Instale uma vez, na raiz:
+
+```bash
+npm ci
+```
+
+> `npm ci` (não `npm install`) é o comando certo aqui: ele instala exatamente o que está no lockfile. Se o `npm` avisar que há `install scripts not yet covered by allowScripts`, ignore — os dois apps buildam e a suíte passa sem eles.
+
+### Subir cada aplicação
+
+Cada app sobe em porta própria, e são independentes: dá para rodar um, o outro, ou os dois ao mesmo tempo em terminais separados.
+
+| Aplicação | Comando | Endereço |
+|---|---|---|
+| Portal de upload do fornecedor | `npm run dev --workspace=apps/upload` | http://localhost:3000 |
+| Painel do gestor | `npm run dev --workspace=apps/dashboard` | http://localhost:3001 |
+
+O fluxo navegável hoje é o do **portal de upload** (Fase 01). O painel do gestor tem o andaime e a página inicial, mas as telas de acompanhamento são Fase 02 — ver [#43](https://github.com/labsitio/nexus-orc-web/issues/43).
+
+### Rodar os testes
+
+O Vitest roda em **modo watch por padrão**. Para uma execução única, que é o que serve para verificar a entrega, passe `--run`:
+
+```bash
+npm run test --workspace=apps/upload -- --run
+npm run test --workspace=apps/dashboard -- --run
+```
+
+Os testes de governança do repositório usam `node:test` e não dependem de instalação nenhuma:
+
+```bash
+node --test scripts/check-docs.test.mjs scripts/check-readme.test.mjs
+node scripts/check-docs.mjs
+```
+
+### Gerar o build de produção
+
+```bash
+npm run build --workspace=apps/upload
+npm run build --workspace=apps/dashboard
+```
+
+Cada app é exportado como site estático (`output: 'export'`, conforme o [ADR-0006](docs/adr/0006-build-deploy-hospedagem.md)) na própria pasta `out/` — é esse diretório que os workflows de deploy publicam no S3.
+
+---
+
+## Variáveis de ambiente
+
+**Nenhuma variável é necessária para rodar localmente.** Vale registrar por que, para ninguém procurar um `.env` que não existe: o frontend consome o mock, e o mock atende em caminho relativo (`/v1`), sem host externo.
+
+Duas famílias de variáveis existem no projeto, e elas não se confundem:
+
+**1. Execução da aplicação** — reservada, ainda não consumida por código de app:
+
+| Nome | Aplicação | O que significa |
+|---|---|---|
+| `NEXT_PUBLIC_API_BASE_URL` | upload, dashboard | URL base da API do backend. É o ponto único de troca do mock pela API real (ver [#15](https://github.com/labsitio/nexus-orc-web/issues/15)). Enquanto não existir API consumível, o mock ignora esta variável e usa `/v1` |
+
+**2. Publicação (CI/CD)** — são **secrets do repositório no GitHub**, lidos pelos workflows de deploy. Não vão para `.env`, não são usados em desenvolvimento e nenhum valor real aparece neste repositório: `AWS_DEPLOY_ROLE_ARN_UPLOAD`, `AWS_DEPLOY_ROLE_ARN_DASHBOARD`, `AWS_S3_BUCKET_UPLOAD`, `AWS_S3_BUCKET_DASHBOARD`, `AWS_CLOUDFRONT_DISTRIBUTION_ID_UPLOAD`, `AWS_CLOUDFRONT_DISTRIBUTION_ID_DASHBOARD` e `AWS_REGION`. O significado de cada um e como obtê-los está em [docs/runbooks/deploy-aws-setup.md](docs/runbooks/deploy-aws-setup.md), seção 5.
+
+Também existe o `GITHUB_MCP_PAT`, que é da **sua máquina** e não da aplicação — ver [Integração com o GitHub via MCP](#integração-com-o-github-via-mcp). Segredo nunca é versionado: sempre variável de ambiente ou secret do GitHub.
+
+---
+
+## Dado de demonstração
+
+Em andamento — [#50](https://github.com/labsitio/nexus-orc-web/issues/50). Hoje o dado que sustenta a demonstração vem das **fixtures determinísticas do mock** (`apps/upload/src/test/mocks.ts`): a mesma chamada devolve sempre a mesma resposta, com um `id` de orçamento fixo. Não é preciso semear banco nem rodar script — subir o app já dá o que mostrar no fluxo de upload.
+
+## Mock e troca pela API real
+
+O frontend **roda contra mock, não contra o backend real** — decisão registrada no [ADR-0005](docs/adr/0005-estrategia-mock.md). O mock não é invenção nossa: deriva do `openapi.yaml` publicado pelo backend, e os campos que eles marcam como PROVISÓRIO estão isolados num único bloco de fixtures, para que uma mudança do lado deles não se espalhe pelo código.
+
+O plano de troca pela API real, com data, é a [#15](https://github.com/labsitio/nexus-orc-web/issues/15) — em aberto. O ponto de troca é a variável `NEXT_PUBLIC_API_BASE_URL` da tabela acima.
+
+---
 
 ## Por onde começar
 
