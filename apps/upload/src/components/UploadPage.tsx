@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { UploadForm } from './UploadForm';
 import { ErroUpload } from './ErroUpload';
 import { useFileUpload } from '@/hooks/useFileUpload';
+import { interpretarExcecao, type ErroUpload as ErroUploadModel } from '@/lib/erros-upload';
 import type { GerarUploadUrlRequest } from '@/types/upload';
 
 export interface UploadPageProps {
@@ -12,7 +13,7 @@ export interface UploadPageProps {
 
 export function UploadPage({ token }: UploadPageProps) {
   const [orcamentoId, setOrcamentoId] = useState<string | null>(null);
-  const [erro, setErro] = useState<{ tipo: string; mensagem: string } | null>(null);
+  const [erro, setErro] = useState<ErroUploadModel | null>(null);
 
   const { upload, isPending, reset } = useFileUpload({
     token,
@@ -21,10 +22,9 @@ export function UploadPage({ token }: UploadPageProps) {
       setErro(null);
     },
     onError: (error) => {
-      setErro({
-        tipo: 'upload-error',
-        mensagem: error.message || 'Erro ao enviar orçamento. Tente novamente.',
-      });
+      // Traduz pelo código estável do contrato — `error.message` carrega o
+      // `detail` do backend, que nunca deve chegar à tela (#42, #64).
+      setErro(interpretarExcecao(error));
       setOrcamentoId(null);
     },
   });
@@ -62,7 +62,7 @@ export function UploadPage({ token }: UploadPageProps) {
 
   return (
     <div className="space-y-4">
-      {erro && <ErroUpload tipo={erro.tipo} mensagem={erro.mensagem} />}
+      {erro && <ErroUpload erro={erro} onTentarNovamente={() => setErro(null)} />}
       <UploadForm onSubmit={handleFormSubmit} />
       {isPending && (
         <div className="rounded bg-blue-50 p-3 text-center text-sm text-blue-700">

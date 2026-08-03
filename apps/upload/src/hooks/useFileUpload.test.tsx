@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterEach, afterAll, vi } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
@@ -197,7 +197,9 @@ describe('useFileUpload', () => {
     const firstKey = result.current.idempotencyKey;
     expect(firstKey).toBeDefined();
 
-    result.current.reset();
+    // `reset()` limpa estado do React fora de um evento — sem `act`, a
+    // atualização não é aplicada antes da asserção.
+    act(() => result.current.reset());
 
     expect(result.current.idempotencyKey).toBeNull();
     expect(result.current.data).toBeUndefined();

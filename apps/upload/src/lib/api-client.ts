@@ -36,6 +36,15 @@ interface RequestOptions extends RequestInit {
   token?: string;
 }
 
+/**
+ * A URL temporária do S3 chega absoluta, do próprio backend — prefixá-la com
+ * `API_BASE` produziria `/v1https://...`, que o `fetch` rejeita. Só o que é
+ * caminho relativo da nossa API recebe o prefixo.
+ */
+function urlDe(endpoint: string): string {
+  return /^https?:\/\//.test(endpoint) ? endpoint : `${API_BASE}${endpoint}`;
+}
+
 async function apiRequest(
   endpoint: string,
   options: RequestOptions = {},
@@ -46,7 +55,7 @@ async function apiRequest(
     headers.set('Authorization', `Bearer ${options.token}`);
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
+  const response = await fetch(urlDe(endpoint), {
     ...options,
     headers,
   });

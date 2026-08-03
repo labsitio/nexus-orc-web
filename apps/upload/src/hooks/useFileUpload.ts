@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { v7 as uuidv7 } from 'uuid';
 import {
@@ -17,7 +17,12 @@ interface UseFileUploadOptions {
 }
 
 export function useFileUpload(options: UseFileUploadOptions) {
+  // A ref é a fonte da verdade dentro da chamada — precisa ser lida de forma
+  // síncrona no retry, sem depender de re-render. O estado espelha o valor só
+  // para quem consome o hook: mutar a ref não notifica o React, então sem o
+  // espelho `idempotencyKey` continuaria exibindo a chave antiga após `reset()`.
   const idempotencyKeyRef = useRef<string | null>(null);
+  const [idempotencyKey, setIdempotencyKey] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: async (params: {
@@ -26,6 +31,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
     }) => {
       if (!idempotencyKeyRef.current) {
         idempotencyKeyRef.current = uuidv7();
+        setIdempotencyKey(idempotencyKeyRef.current);
       }
 
       return executeUploadFlow(
@@ -52,7 +58,8 @@ export function useFileUpload(options: UseFileUploadOptions) {
     reset: () => {
       mutation.reset();
       idempotencyKeyRef.current = null;
+      setIdempotencyKey(null);
     },
-    idempotencyKey: idempotencyKeyRef.current,
+    idempotencyKey,
   };
 }

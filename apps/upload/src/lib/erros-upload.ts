@@ -137,6 +137,20 @@ export function interpretarFalhaDeRede(): ErroUpload {
 }
 
 /**
+ * Traduz o que a camada de API lança (issue #64) — `ApiError` carrega o
+ * Problem Details já parseado, então não há `Response` para reinterpretar.
+ * Só o `type` é consultado: `detail` e `message` são texto de depuração e
+ * nunca viram texto de tela (`docs/quality.md`, seção 3).
+ */
+export function interpretarExcecao(excecao: unknown): ErroUpload {
+  const problem = (excecao as { problem?: { type?: unknown } } | null)?.problem;
+  if (problem === undefined || problem === null) {
+    return interpretarFalhaDeRede();
+  }
+  return montar(codigoDoType(problem.type) ?? 'inesperado');
+}
+
+/**
  * Ponto único de entrada para o fluxo de upload: executa a chamada e devolve
  * `null` em sucesso, ou o erro já traduzido. Concentra aqui os dois caminhos
  * de falha (resposta de erro e exceção de rede), para que nenhuma tela precise
