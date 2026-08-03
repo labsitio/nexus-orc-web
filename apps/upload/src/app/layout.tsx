@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { QueryClientProvider } from '@/components/QueryClientProvider';
+import { MockProvider } from '@/components/MockProvider';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        <QueryClientProvider>{children}</QueryClientProvider>
+        <MockProvider>
+          <QueryClientProvider>{children}</QueryClientProvider>
+        </MockProvider>
       </body>
     </html>
   );
