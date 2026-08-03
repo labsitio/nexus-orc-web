@@ -18,13 +18,11 @@ description: >
 # vez) e teste/build usam `--workspace=<app-path>` a partir da raiz, em vez
 # de `cd` para dentro do diretório do app com seu próprio `npm ci`.
 #
-# Assume também que o app builda como export estático em `<app-path>/out`
-# (Next.js `output: 'export'` em next.config.js) — coerente com hospedagem em
-# S3 + CloudFront (sem servidor Node do lado da hospedagem). **Ainda
-# pendente de confirmação**: o andaime mergeado no #57 builda para
-# `<app-path>/.next`, sem `output: 'export'` configurado — André precisa
-# adicionar isso em cada `next.config.mjs`, ou este passo de sync quebra.
-# Ver issue #57 e o comentário sobre o #14.
+# O app builda como export estático em `<app-path>/out` (Next.js
+# `output: 'export'` em next.config.mjs) — confirmado no #57 (mergeado):
+# cada app já builda para `out/`, coerente com hospedagem em S3 + CloudFront
+# (sem servidor Node do lado da hospedagem). Verificado rodando
+# `npm run build --workspace=<app-path>` de fato contra o andaime real.
 
 inputs:
   app-path:
