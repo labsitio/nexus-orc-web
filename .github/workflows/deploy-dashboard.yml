@@ -1,0 +1,51 @@
+name: Deploy — Painel do Gestor
+
+# Publica o app apps/dashboard (uso interno, Fase 02/03) em S3 + CloudFront.
+#
+# NOTA (2026-08): este workflow é código correto, mas ainda não roda com
+# sucesso — `apps/dashboard` não existe até a issue #35 (andaime Next.js) ser
+# concluída, e os secrets referenciados abaixo não existem em nenhuma conta
+# AWS real ainda. O passo a passo para provisionar a conta e registrar esses
+# secrets está em docs/runbooks/deploy-aws-setup.md. Ver ADR-0006.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/dashboard/**'
+      - 'shared/**'
+      - '.github/workflows/deploy-dashboard.yml'
+      - '.github/actions/build-and-deploy/**'
+  workflow_dispatch: {}
+
+# Necessário para aws-actions/configure-aws-credentials assumir a role via
+# OIDC, sem chaves de acesso salvas no repositório (ADR-0006).
+permissions:
+  id-token: write
+  contents: read
+
+# Evita duas execuções concorrentes publicarem o mesmo bucket fora de ordem.
+concurrency:
+  group: deploy-dashboard-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build e deploy — Painel do Gestor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN_DASHBOARD }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build e deploy
+        uses: ./.github/actions/build-and-deploy
+        with:
+          app-path: apps/dashboard
+          s3-bucket: ${{ secrets.AWS_S3_BUCKET_DASHBOARD }}
+          cloudfront-distribution-id: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_DASHBOARD }}

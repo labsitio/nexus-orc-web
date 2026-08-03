@@ -1,0 +1,51 @@
+name: Deploy — Portal de Upload
+
+# Publica o app apps/upload (fornecedor externo, Fase 01) em S3 + CloudFront.
+#
+# NOTA (2026-08): este workflow é código correto, mas ainda não roda com
+# sucesso — `apps/upload` não existe até a issue #35 (andaime Next.js) ser
+# concluída, e os secrets referenciados abaixo não existem em nenhuma conta
+# AWS real ainda. O passo a passo para provisionar a conta e registrar esses
+# secrets está em docs/runbooks/deploy-aws-setup.md. Ver ADR-0006.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/upload/**'
+      - 'shared/**'
+      - '.github/workflows/deploy-upload.yml'
+      - '.github/actions/build-and-deploy/**'
+  workflow_dispatch: {}
+
+# Necessário para aws-actions/configure-aws-credentials assumir a role via
+# OIDC, sem chaves de acesso salvas no repositório (ADR-0006).
+permissions:
+  id-token: write
+  contents: read
+
+# Evita duas execuções concorrentes publicarem o mesmo bucket fora de ordem.
+concurrency:
+  group: deploy-upload-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build e deploy — Portal de Upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN_UPLOAD }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build e deploy
+        uses: ./.github/actions/build-and-deploy
+        with:
+          app-path: apps/upload
+          s3-bucket: ${{ secrets.AWS_S3_BUCKET_UPLOAD }}
+          cloudfront-distribution-id: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_UPLOAD }}
