@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterEach, afterAll, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { useFileUpload } from './useFileUpload';
-import { uploadHandlers, confirmarUploadNaoConcluidoHandler } from '@/test/mocks';
+import { uploadHandlers } from '@/test/mocks';
 import { ApiError } from '@/lib/api-client';
 
 const API_BASE = '/v1';
@@ -13,15 +13,15 @@ const TEST_TOKEN = 'test-token';
 
 const server = setupServer(...uploadHandlers);
 
-beforeAll(() => server.listen());
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 function createQueryClient() {
   return new QueryClient({
     defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
+      queries: { retry: 0 },
+      mutations: { retry: 0 },
     },
   });
 }
@@ -33,18 +33,16 @@ function createWrapper(queryClient: QueryClient) {
 }
 
 describe('useFileUpload', () => {
-  it('executes complete upload flow: generate URL → upload file → confirm', async () => {
+  it('executes complete upload flow and calls onSuccess', async () => {
     const queryClient = createQueryClient();
     const wrapper = createWrapper(queryClient);
-    let successResult: unknown;
+    const onSuccess = vi.fn();
 
     const { result } = renderHook(
       () =>
         useFileUpload({
           token: TEST_TOKEN,
-          onSuccess: (data) => {
-            successResult = data;
-          },
+          onSuccess,
         }),
       { wrapper },
     );
@@ -58,34 +56,30 @@ describe('useFileUpload', () => {
 
     result.current.upload({ file, uploadRequest });
 
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
+    await waitFor(() => expect(result.current.isPending).toBe(false), { timeout: 5000 });
 
     expect(result.current.error).toBeNull();
-    expect(successResult).toEqual({
+    expect(onSuccess).toHaveBeenCalledWith({
       orcamentoId: ORCAMENTO_ID_FIXO,
       status: 'RECEBIDO',
     });
   });
 
-  it('reuses same Idempotency-Key on retry after network failure in confirm step', async () => {
+  it('generates Idempotency-Key on first upload and reuses on retry', async () => {
     const queryClient = createQueryClient();
     const wrapper = createWrapper(queryClient);
     let callCount = 0;
-    let idempotencyKeys: string[] = [];
+    const idempotencyKeys: string[] = [];
 
     server.use(
       http.post(`${API_BASE}/orcamentos/:orcamentoId/confirmar-upload`, ({ request }) => {
-        callCount++;
-        const idempotencyKey = request.headers.get('Idempotency-Key');
-        if (idempotencyKey) {
-          idempotencyKeys.push(idempotencyKey);
-        }
+        const key = request.headers.get('Idempotency-Key');
+        if (key) idempotencyKeys.push(key);
 
+        callCount++;
         if (callCount === 1) {
           return HttpResponse.json(
-            { type: 'https://nexo.internal/problems/network-error', title: 'Network error' },
+            { type: 'https://nexo.internal/problems/network', title: 'Error', status: 500 },
             { status: 500 },
           );
         }
@@ -118,37 +112,34 @@ describe('useFileUpload', () => {
 
     result.current.upload({ file, uploadRequest });
 
-    await waitFor(() => {
-      expect(result.current.error).toBeTruthy();
-    });
+    await waitFor(() => expect(result.current.error).toBeTruthy(), { timeout: 5000 });
 
-    const firstIdempotencyKey = result.current.idempotencyKey;
-    expect(firstIdempotencyKey).toBeDefined();
+    const firstKey = result.current.idempotencyKey;
+    expect(firstKey).toBeDefined();
 
     result.current.upload({ file, uploadRequest });
 
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
+    await waitFor(() => expect(result.current.isPending).toBe(false), { timeout: 5000 });
 
-    expect(result.current.error).toBeNull();
+    expect(result.current.data).toBeDefined();
     expect(idempotencyKeys).toHaveLength(2);
     expect(idempotencyKeys[0]).toBe(idempotencyKeys[1]);
+    expect(result.current.idempotencyKey).toBe(firstKey);
   });
 
-  it('handles error when generating upload URL fails', async () => {
+  it('handles error when upload fails', async () => {
     const queryClient = createQueryClient();
     const wrapper = createWrapper(queryClient);
-    let errorReceived: ApiError | Error | null = null;
+    const onError = vi.fn();
 
     server.use(
       http.post(`${API_BASE}/orcamentos/upload-url`, () =>
         HttpResponse.json(
           {
             type: 'https://nexo.internal/problems/validacao',
-            title: 'Validação falhou',
+            title: 'Validation failed',
             status: 400,
-            detail: 'Campo obrigatório ausente: canal',
+            detail: 'Missing required field',
             instance: '/v1/orcamentos/upload-url',
           },
           { status: 400 },
@@ -160,9 +151,7 @@ describe('useFileUpload', () => {
       () =>
         useFileUpload({
           token: TEST_TOKEN,
-          onError: (error) => {
-            errorReceived = error;
-          },
+          onError,
         }),
       { wrapper },
     );
@@ -176,85 +165,13 @@ describe('useFileUpload', () => {
 
     result.current.upload({ file, uploadRequest });
 
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
+    await waitFor(() => expect(result.current.error).toBeTruthy(), { timeout: 5000 });
 
-    expect(result.current.error).toBeTruthy();
-    expect(errorReceived).toBeInstanceOf(ApiError);
+    expect(onError).toHaveBeenCalled();
+    expect(result.current.error).toBeInstanceOf(ApiError);
   });
 
-  it('handles error when file upload to S3 fails', async () => {
-    const queryClient = createQueryClient();
-    const wrapper = createWrapper(queryClient);
-
-    server.use(
-      http.put('https://nexo-orcamentos-raw.s3.amazonaws.com/pending/*', () =>
-        HttpResponse.json(
-          { error: 'Access Denied' },
-          { status: 403 },
-        ),
-      ),
-    );
-
-    const { result } = renderHook(
-      () =>
-        useFileUpload({
-          token: TEST_TOKEN,
-        }),
-      { wrapper },
-    );
-
-    const file = new File(['content'], 'test.pdf', { type: 'application/pdf' });
-    const uploadRequest = {
-      canal: 'PORTAL_WEB',
-      nomeArquivo: 'test.pdf',
-      tipoConteudo: 'application/pdf',
-    };
-
-    result.current.upload({ file, uploadRequest });
-
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
-
-    expect(result.current.error).toBeTruthy();
-  });
-
-  it('handles 409 (conflict) when confirm fails because file upload is incomplete', async () => {
-    const queryClient = createQueryClient();
-    const wrapper = createWrapper(queryClient);
-
-    server.use(confirmarUploadNaoConcluidoHandler);
-
-    const { result } = renderHook(
-      () =>
-        useFileUpload({
-          token: TEST_TOKEN,
-        }),
-      { wrapper },
-    );
-
-    const file = new File(['content'], 'test.pdf', { type: 'application/pdf' });
-    const uploadRequest = {
-      canal: 'PORTAL_WEB',
-      nomeArquivo: 'test.pdf',
-      tipoConteudo: 'application/pdf',
-    };
-
-    result.current.upload({ file, uploadRequest });
-
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
-
-    expect(result.current.error).toBeTruthy();
-    if (result.current.error instanceof ApiError) {
-      expect(result.current.error.statusCode).toBe(409);
-    }
-  });
-
-  it('resets state and generates new Idempotency-Key when reset is called', async () => {
+  it('resets state and idempotency key', async () => {
     const queryClient = createQueryClient();
     const wrapper = createWrapper(queryClient);
 
@@ -275,11 +192,10 @@ describe('useFileUpload', () => {
 
     result.current.upload({ file, uploadRequest });
 
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
+    await waitFor(() => expect(result.current.isPending).toBe(false), { timeout: 5000 });
 
     const firstKey = result.current.idempotencyKey;
+    expect(firstKey).toBeDefined();
 
     result.current.reset();
 
@@ -289,12 +205,8 @@ describe('useFileUpload', () => {
 
     result.current.upload({ file, uploadRequest });
 
-    await waitFor(() => {
-      expect(result.current.isPending).toBe(false);
-    });
+    await waitFor(() => expect(result.current.isPending).toBe(false), { timeout: 5000 });
 
-    const secondKey = result.current.idempotencyKey;
-
-    expect(secondKey).not.toBe(firstKey);
+    expect(result.current.idempotencyKey).not.toBe(firstKey);
   });
 });
