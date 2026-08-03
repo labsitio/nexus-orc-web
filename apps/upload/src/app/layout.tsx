@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { QueryClientProvider } from '@/components/QueryClientProvider';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        <QueryClientProvider>{children}</QueryClientProvider>
+      </body>
     </html>
   );
 }
