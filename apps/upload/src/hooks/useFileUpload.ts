@@ -9,11 +9,12 @@ import {
   UploadFlowResult,
 } from '@/api/upload';
 import { ApiError } from '@/lib/api-client';
+import { ErroUpload, erroUploadDe } from '@/lib/erros-upload';
 
 interface UseFileUploadOptions {
   token: string;
   onSuccess?: (result: UploadFlowResult) => void;
-  onError?: (error: ApiError | Error) => void;
+  onError?: (error: ApiError | ErroUpload | Error) => void;
 }
 
 export function useFileUpload(options: UseFileUploadOptions) {
@@ -39,7 +40,11 @@ export function useFileUpload(options: UseFileUploadOptions) {
       options.onSuccess?.(data);
     },
     onError: (error) => {
-      options.onError?.(error instanceof ApiError ? error : new Error(String(error)));
+      if (error instanceof ApiError) {
+        options.onError?.(erroUploadDe(error.problem));
+      } else {
+        options.onError?.(error instanceof Error ? error : new Error(String(error)));
+      }
     },
   });
 

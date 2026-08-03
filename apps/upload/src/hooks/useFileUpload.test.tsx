@@ -209,4 +209,57 @@ describe('useFileUpload', () => {
 
     expect(result.current.idempotencyKey).not.toBe(firstKey);
   });
+
+  it('error state is correctly set on failure (issue #64 — error not treated as success)', async () => {
+    const queryClient = createQueryClient();
+    const wrapper = createWrapper(queryClient);
+    const onError = vi.fn();
+
+    server.use(
+      http.post(`${API_BASE}/orcamentos/upload-url`, () =>
+        HttpResponse.json(
+          {
+            type: 'https://nexo.internal/problems/validacao',
+            title: 'Validation failed',
+            status: 400,
+            detail: 'Missing required field',
+            instance: '/v1/orcamentos/upload-url',
+          },
+          { status: 400 },
+        ),
+      ),
+    );
+
+    const { result } = renderHook(
+      () =>
+        useFileUpload({
+          token: TEST_TOKEN,
+          onError,
+        }),
+      { wrapper },
+    );
+
+    const file = new File(['content'], 'test.pdf', { type: 'application/pdf' });
+    const uploadRequest = {
+      canal: 'PORTAL_WEB',
+      nomeArquivo: 'test.pdf',
+      tipoConteudo: 'application/pdf',
+    };
+
+    result.current.upload({ file, uploadRequest });
+
+    await waitFor(() => expect(result.current.isPending).toBe(false), { timeout: 5000 });
+
+    // Critical: isError must be true, not false (issue #64)
+    expect(result.current.error).toBeTruthy();
+    // data must be undefined when error occurs
+    expect(result.current.data).toBeUndefined();
+    // onError must have been called with the translated error
+    expect(onError).toHaveBeenCalled();
+    const errorArg = onError.mock.calls[0][0];
+    // The error passed should have ErroUpload properties
+    expect(errorArg).toHaveProperty('codigo');
+    expect(errorArg).toHaveProperty('titulo');
+    expect(errorArg).toHaveProperty('mensagem');
+  });
 });
