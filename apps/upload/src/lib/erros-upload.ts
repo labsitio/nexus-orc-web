@@ -141,6 +141,18 @@ export function interpretarFalhaDeRede(): ErroUpload {
  * `null` em sucesso, ou o erro já traduzido. Concentra aqui os dois caminhos
  * de falha (resposta de erro e exceção de rede), para que nenhuma tela precise
  * lembrar de tratar os dois.
+ *
+ * **Atenção ao plugar no React Query (#40):** esta função *resolve* com o erro
+ * em vez de lançar. Usada crua como `mutationFn`, toda falha chega ao React
+ * Query como sucesso — `isError` fica `false` e `onError` nunca dispara. Dentro
+ * de `useMutation`, lance a partir do retorno:
+ *
+ * ```ts
+ * mutationFn: async () => {
+ *   const erro = await capturarErro(() => enviar());
+ *   if (erro) throw erro;
+ * }
+ * ```
  */
 export async function capturarErro(chamada: () => Promise<Response>): Promise<ErroUpload | null> {
   let resposta: Response;

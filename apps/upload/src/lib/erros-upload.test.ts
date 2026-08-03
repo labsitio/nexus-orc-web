@@ -15,7 +15,7 @@
 import { describe, it, expect, vi, beforeAll, afterEach, afterAll } from 'vitest';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
-import { uploadHandlers, confirmarUploadNaoConcluidoHandler } from '../test/mocks';
+import { uploadHandlers, confirmarUploadNaoConcluidoHandler } from '@/test/mocks';
 import {
   capturarErro,
   interpretarFalhaDeRede,
