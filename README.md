@@ -69,7 +69,7 @@ Cada app sobe em porta própria, e são independentes: dá para rodar um, o outr
 | Portal de upload do fornecedor | `npm run dev --workspace=apps/upload` | http://localhost:3000 |
 | Painel do gestor | `npm run dev --workspace=apps/dashboard` | http://localhost:3001 |
 
-**O que já dá para ver no navegador, dito com precisão.** No portal de upload: o formulário de envio, com validação de CNPJ/CPF, contato e arquivo acontecendo no navegador, e o tratamento de erro do formato do backend. **O envio em si ainda não sai da tela** — a chamada HTTP de duas etapas é a [#40](https://github.com/labsitio/nexus-orc-web/issues/40), em aberto, então clicar em "Enviar orçamento" com o formulário válido apenas marca o botão como "Enviando..." e para ali. Não há requisição, nem protocolo de confirmação. O painel do gestor tem apenas o andaime e a página inicial; as telas de acompanhamento são Fase 02 — ver [#43](https://github.com/labsitio/nexus-orc-web/issues/43).
+**O que já dá para ver no navegador, dito com precisão.** No portal de upload: o formulário de envio, com validação de CNPJ/CPF, contato e arquivo acontecendo no navegador, e o tratamento de erro do formato do backend. **O envio em si ainda não sai da tela** — a chamada HTTP de duas etapas é a [#40](https://github.com/labsitio/nexus-orc-web/issues/40), em aberto, então clicar em "Enviar orçamento" com o formulário válido apenas marca o botão como "Enviando..." e para ali. Não há requisição, nem protocolo de confirmação. A tela de confirmação de envio existe como componente testado desde a [#41](https://github.com/labsitio/nexus-orc-web/issues/41) (`ConfirmacaoEnvio.tsx`), mas só aparece quando a #40 a ligar ao formulário — hoje a página monta `UploadForm` sem `onSubmit`. O painel do gestor tem apenas o andaime e a página inicial; as telas de acompanhamento são Fase 02 — ver [#43](https://github.com/labsitio/nexus-orc-web/issues/43).
 
 Ou seja: o item "fluxo principal navegável de ponta a ponta" da Definition of Done de projeto (**[CLAUDE.md](CLAUDE.md), seção 1.2.1**) **não está cumprido**, e a lacuna é a #40 — não o deploy.
 
@@ -120,9 +120,16 @@ Também existe o `GITHUB_MCP_PAT`, que é da **sua máquina** e não da aplicaç
 
 ## Dado de demonstração
 
-Em andamento — [#50](https://github.com/labsitio/nexus-orc-web/issues/50).
+Entregue pela [#50](https://github.com/labsitio/nexus-orc-web/issues/50). Não é preciso semear banco nem rodar script — o dado existe em duas formas, com finalidades que não se confundem:
 
-O que existe hoje são as **fixtures determinísticas do mock** em `apps/upload/src/test/mocks.ts`: a mesma chamada devolve sempre a mesma resposta, com um `id` de orçamento fixo. Não é preciso semear banco nem rodar script — mas seja claro sobre onde esse dado aparece: **ele alimenta a suíte de testes, não a aplicação no navegador**. Enquanto a #40 não fechar, a demonstração no navegador é a do formulário e da validação; a evidência de que o contrato do backend é atendido está nos testes (`npm run test --workspace=apps/upload -- --run`).
+| Onde | O que é | Para que serve |
+|---|---|---|
+| [`apps/upload/demo-data/`](apps/upload/demo-data/) | `orcamento-exemplo.pdf` e `dados-formulario-exemplo.json` (CNPJ fictício, contato, referência) | Preencher e enviar o formulário **no navegador**, durante a demonstração. Ver o [README do diretório](apps/upload/demo-data/README.md) para os três cenários — sucesso, erro 400 e erro 404 |
+| `apps/upload/src/test/mocks.ts` | Fixtures determinísticas do mock: a mesma chamada devolve sempre a mesma resposta, com `orcamentoId` fixo | Alimenta a **suíte de testes**, não a aplicação no navegador |
+
+Um teste (`apps/upload/demo-data/demo-data.test.ts`) submete o dado de demonstração às mesmas validações do formulário real: se alguém o remover ou invalidar, a suíte falha.
+
+Enquanto a #40 não fechar, o que se demonstra no navegador é o preenchimento e a validação — o envio para ali (ver acima). A evidência de que o contrato do backend é atendido está nos testes (`npm run test --workspace=apps/upload -- --run`).
 
 ## Mock e troca pela API real
 
