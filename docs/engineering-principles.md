@@ -63,19 +63,44 @@ Este documento **não deve** conter decisões de arquitetura de sistema (isso pe
 
 **Organização de pastas:**
 
+Estrutura de monorepo conforme ADR-0006: `/apps/upload`, `/apps/dashboard`, `shared/`.
+
 ```
-src/
-├── app/                 # App Router do Next.js (rotas e layouts)
-├── components/          # Componentes React reutilizáveis
-│   ├── ui/             # Componentes de UI genéricos (Button, Card, etc.)
-│   └── features/       # Componentes de feature específica
-├── hooks/              # Custom hooks
-├── lib/                # Utilities e helpers
-├── api/                # Funções de integração com backend
-├── types/              # Definições TypeScript (tipos, interfaces)
-├── contexts/           # React Context (se aplicável)
-└── styles/             # Estilos globais, variáveis Tailwind
+apps/
+├── upload/              # Portal de upload (Fase 01)
+│   ├── src/
+│   │   ├── app/         # App Router do Next.js (rotas e layouts)
+│   │   ├── components/  # Componentes específicos do portal
+│   │   ├── hooks/       # Custom hooks
+│   │   ├── lib/         # Utilities e helpers
+│   │   ├── types/       # Definições TypeScript
+│   │   └── styles/      # Estilos globais, variáveis Tailwind
+│   ├── package.json
+│   └── next.config.mjs
+│
+├── dashboard/           # Painel do gestor (Fase 02+)
+│   ├── src/
+│   │   ├── app/         # App Router do Next.js (rotas e layouts)
+│   │   ├── components/  # Componentes de dashboard
+│   │   ├── hooks/       # Custom hooks (useQuery para polling, etc.)
+│   │   ├── lib/         # Utilities e helpers
+│   │   ├── types/       # Definições TypeScript
+│   │   └── styles/      # Estilos globais, variáveis Tailwind
+│   ├── package.json
+│   └── next.config.mjs
+│
+shared/                 # Código compartilhado entre apps
+├── src/
+│   ├── components/      # Componentes de UI genéricos (Button, Card, etc.)
+│   ├── hooks/           # Hooks reutilizáveis (useAuth, useFetch, etc.)
+│   ├── types/           # Tipos e interfaces compartilhadas
+│   └── lib/             # Utilitários compartilhados
+└── package.json
 ```
+
+**Convenção de imports:**
+- Dentro de um app: `import { Button } from '@/components/ui/Button'`
+- De shared: `import { Button } from '@shared/components/Button'`
 
 **Estilos de código:**
 
