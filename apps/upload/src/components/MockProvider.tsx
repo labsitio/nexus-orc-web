@@ -19,6 +19,29 @@ import { useEffect, useState } from 'react';
  */
 const USAR_MOCK = process.env.NEXT_PUBLIC_USAR_MOCK !== 'false';
 
+/**
+ * O worker só pode ser iniciado uma vez por página: `worker.start()` repetido
+ * estoura `cannot configure an already enabled network`. E `reactStrictMode`
+ * (ligado no `next.config.mjs`) monta o efeito duas vezes em desenvolvimento
+ * de propósito. Memorizar a promessa no módulo, e não no componente, é o que
+ * sobrevive a essa segunda montagem — e a qualquer remontagem futura.
+ */
+let inicioDoWorker: Promise<unknown> | null = null;
+
+function iniciarWorker(): Promise<unknown> {
+  if (inicioDoWorker === null) {
+    inicioDoWorker = import('@/test/browser').then(({ worker }) =>
+      worker.start({
+        // Só as rotas do contrato são mockadas; o resto (assets, HMR do Next)
+        // precisa seguir para a rede sem virar erro no console.
+        onUnhandledRequest: 'bypass',
+        quiet: true,
+      }),
+    );
+  }
+  return inicioDoWorker;
+}
+
 export function MockProvider({ children }: { children: React.ReactNode }) {
   const [pronto, setPronto] = useState(!USAR_MOCK);
 
@@ -29,20 +52,11 @@ export function MockProvider({ children }: { children: React.ReactNode }) {
 
     let cancelado = false;
 
-    import('@/test/browser')
-      .then(({ worker }) =>
-        worker.start({
-          // Só as rotas do contrato são mockadas; o resto (assets, HMR do
-          // Next) precisa seguir para a rede sem virar erro no console.
-          onUnhandledRequest: 'bypass',
-          quiet: true,
-        }),
-      )
-      .finally(() => {
-        if (!cancelado) {
-          setPronto(true);
-        }
-      });
+    iniciarWorker().finally(() => {
+      if (!cancelado) {
+        setPronto(true);
+      }
+    });
 
     return () => {
       cancelado = true;

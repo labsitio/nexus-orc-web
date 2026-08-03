@@ -6,79 +6,68 @@
 
 ## Última atualização
 
-- **Data:** 2026-08-03, manhã — dia da entrega
+- **Data:** 2026-08-03, 17:45 — dia da entrega, após a hora da apresentação
 - **Atualizado por:** Bruno Martins — escritor único do STATUS.md, [ADR-0002](docs/adr/0002-execucao-centralizada-e-escritor-unico.md)
 
 ---
 
 ## Feature atual
 
-**Hoje é o dia da entrega, 17:30 — e é literalmente a reunião de apresentação, com demonstração ao vivo do sistema funcionando** (confirmado pelos organizadores em 03/08, ver [#13](https://github.com/labsitio/nexus-orc-web/issues/13), fechada). Não é prazo de merge de código: é o horário em que alguém vai clicar na tela na frente de todos. Sem prorrogação — o pedido de 30/07 não foi atendido.
+**A aplicação roda e o fluxo principal é navegável de ponta a ponta.** Verificado ao vivo no navegador, a partir da `main` (`7791b52`), não por relato:
 
-A fase de especificação está concluída e o backlog de implementação da Fase 01 está pronto (#37-42) desde o fim de semana. **Ainda não existe código de aplicação** — nem `package.json`, nem projeto Next.js, nem suíte de testes. O andaime ([#35](https://github.com/labsitio/nexus-orc-web/issues/35)) é o próximo passo, e o André está nele agora — travou reclamando de estrutura do projeto, e está resolvendo isso via [#34](https://github.com/labsitio/nexus-orc-web/issues/34) antes de prosseguir.
+| App | Estado |
+|---|---|
+| **Portal de Upload** (`apps/upload`, porta 3000) | Formulário valida, o clique em "Enviar" executa os **três passos** do contrato (201 no `upload-url` → 200 no PUT do S3 → 200 com `RECEBIDO` na confirmação), tela de confirmação e tratamento de erro traduzido funcionando |
+| **Painel de Acompanhamento** (`apps/dashboard`, porta 3001) | Detalhe do orçamento com etapas do pipeline, 3 orçamentos de demonstração em estágios diferentes, incluindo estado terminal que não é erro |
 
-**Restam ~6 horas (11:33 → 17:30).** Sem software clicável às 17:30, a demonstração não tem o que mostrar — isso pesa mais que qualquer PR mergeado sem funcionar de ponta a ponta.
+**87 testes automatizados passando** (69 em `apps/upload`, 18 em `apps/dashboard`), build gerando export estático nos dois apps, `check-docs` sem erro.
 
-- **Backlog:** 22 issues abertas. Ver "André — ordem de execução de hoje" abaixo para a Fase 01.
-- **Escopo do produto:** em [`escopo/`](escopo/) (5 arquivos HTML). Resumo e delimitação da fatia de frontend no [CLAUDE.md](CLAUDE.md), seções 1, 1.1 e 1.2.
-- **Portão da fase de código, cumprido:** [#12](https://github.com/labsitio/nexus-orc-web/issues/12) entregou o backlog fatiado da Fase 01 no fim de semana.
+### Limitação declarada, e é uma só
+
+**Roda contra mock, não contra API real.** O mock deriva do `openapi.yaml` do backend (ADR-0005) e agora vale **também no navegador**, não só nos testes. A troca pela API real é mudança de variável de ambiente (`NEXT_PUBLIC_USAR_MOCK=false`), não de código — issue [#15](https://github.com/labsitio/nexus-orc-web/issues/15). **Não há deploy em ambiente público:** falta conta AWS confirmada, declarado no README com o que falta e de quem depende ([#14](https://github.com/labsitio/nexus-orc-web/issues/14)).
+
+- **Escopo do produto:** em [`escopo/`](escopo/). Resumo da fatia de frontend no [CLAUDE.md](CLAUDE.md), seções 1, 1.1 e 1.2.
+- **Aprendizados do exercício:** [RETROSPECTIVA.md](RETROSPECTIVA.md) — agentes, MCP, execução distribuída e a disciplina de verificação que evitou reverter trabalho entregue.
 
 ---
 
 ## Task atual
 
-**Sexta 31/07, fim de tarde.** Cinco Pull Requests de conteúdo mergeados hoje (#18, #20, #24, #26, #27, #28 — seis, na verdade). A base de especificação está pronta; a próxima fase é código.
-
-### Fechado hoje
+### Entregue hoje (03/08)
 
 | PR | O quê | Autor |
 |---|---|---|
-| [#18](https://github.com/labsitio/nexus-orc-web/pull/18) | Stack ([ADR-0004](docs/adr/0004-stack-frontend.md)), `engineering-principles.md`, agente `frontend-developer` | André |
-| [#20](https://github.com/labsitio/nexus-orc-web/pull/20) | Travas mecânicas: `check-docs` valida frontmatter de agente, `pre-push` roda `check-docs`, `/revisar`, 17 testes (primeiro do repositório) | Bruno |
-| [#24](https://github.com/labsitio/nexus-orc-web/pull/24) | Bloco 1 do contrato de integração confirmado | Bruno |
-| [#26](https://github.com/labsitio/nexus-orc-web/pull/26) | Agente `frontend-architect`, `architecture.md` preenchido, Bloco 1 transcrito como `Acordado`, [ADR-0005](docs/adr/0005-estrategia-mock.md) (estratégia de mock) | André |
-| [#27](https://github.com/labsitio/nexus-orc-web/pull/27) | Agente `product-planner`, `planning.md` preenchido, milestones das 3 fases | Kássio |
-| [#28](https://github.com/labsitio/nexus-orc-web/pull/28) | `frontend-developer` ganha `Glob`/`Grep`, executado e validado de verdade pelo revisor | André |
+| [#57](https://github.com/labsitio/nexus-orc-web/pull/57) | #35 — andaime do monorepo, dois apps Next.js, Vitest | André |
+| [#60](https://github.com/labsitio/nexus-orc-web/pull/60) | #38 — mock dos endpoints do fluxo de upload, derivado do contrato | Bruno |
+| [#61](https://github.com/labsitio/nexus-orc-web/pull/61) | #39 — formulário de envio com validação | Kássio |
+| [#66](https://github.com/labsitio/nexus-orc-web/pull/66) | #42 — tratamento dos erros no formato do backend | Kássio |
+| [#67](https://github.com/labsitio/nexus-orc-web/pull/67) | #50 — dado de demonstração | Bruno |
+| [#68](https://github.com/labsitio/nexus-orc-web/pull/68) | #65 — mock exporta fixtures, sem redeclaração espalhada | Bruno |
+| [#70](https://github.com/labsitio/nexus-orc-web/pull/70) | #41 — tela de confirmação do envio | Bruno, via `frontend-developer` |
+| [#62](https://github.com/labsitio/nexus-orc-web/pull/62) | #40 e #64 — envio em duas chamadas com idempotência, **mais 4 correções** (ver abaixo) | André + Bruno |
+| [#71](https://github.com/labsitio/nexus-orc-web/pull/71) | #51 — README que funciona em máquina limpa, limitação declarada | Kássio |
+| [#74](https://github.com/labsitio/nexus-orc-web/pull/74) | #46 — painel com detalhe do orçamento e etapas do pipeline | Bruno, via `frontend-developer` |
+| [#75](https://github.com/labsitio/nexus-orc-web/pull/75) | Mock passa a valer no navegador, não só nos testes | Bruno |
 
-Issues fechadas hoje: #1, #2, #3, #4, #5, #7, #10, #19, #21, #29, #30.
+### Dois defeitos que só apareceram por verificação independente
 
-### Execução de hoje — as três máquinas em paralelo, por etapa da cadeia
+Registrado porque é o aprendizado mais caro do dia, não para atribuir culpa:
 
-**Confirmado às ~11:30 de 03/08: os três executam hoje.** Com ~6h até a demonstração ao vivo (17:30), a cadeia da Fase 01 só usa as três máquinas de verdade se a divisão for por etapa, não por pessoa fixa — o grafo de dependência só tem paralelismo de 2 em cada ponto. Reatribuído no GitHub (assignee + label `para:*`), para que `/minhas-tarefas` de cada um mostre a task certa. **Terceira exceção de execução registrada no [ADR-0003](docs/adr/0003-execucao-distribuida-na-janela-de-entrega.md):** Kássio também executa `frontend-developer` na própria máquina hoje.
+1. **#62 alegava suíte e build verdes; nenhum dos dois estava.** Rodando de verdade: 5 testes vermelhos e `next build` falhando por erro de tipo. Causa raiz encontrada lendo o código — `apiRequest` prefixava `API_BASE` em toda URL, inclusive na URL **absoluta** do S3, gerando `/v1https://...`. O fluxo abortava no 2º passo, então `onSuccess`/`data` nunca chegavam. Corrigido junto com: `idempotencyKey` lido de `ref` sem re-render após `reset()`; `UploadPage` passando props inexistentes ao `ErroUpload`; e `error.message` (o `detail` cru do backend) sendo exibido ao fornecedor, contra `docs/quality.md` seção 3 — agora traduzido pelo código estável, o que **resolveu a #64**.
+2. **O mock existia só nos testes.** O fluxo passava em 69 testes e dava **404 na tela**, porque `msw/node` não intercepta nada no navegador. Corrigido no #75, reaproveitando os mesmos handlers via `msw/browser`. **Suíte verde não prova aplicação funcionando** — os testes estavam certos; faltava o mock existir onde o usuário clica.
 
-**Só dados mockados — sem integração com o backend real hoje.** Não é decisão nova (já era o ADR-0005), só confirmação explícita de escopo: ninguém gasta tempo tentando bater contra API real.
-
-| Etapa | Quem | Issue | Depende de |
-|---|---|---|---|
-| 1º | **André** | [#35](https://github.com/labsitio/nexus-orc-web/issues/35) — Andaime dos dois projetos Next.js | nada — **em andamento**, travou em problema de estrutura, resolvendo via [#34](https://github.com/labsitio/nexus-orc-web/issues/34) antes de prosseguir. Bloqueio de tudo abaixo |
-| 2º | **Bruno** | [#38](https://github.com/labsitio/nexus-orc-web/issues/38) — Mock dos endpoints do fluxo de upload | #35 |
-| 2º (paralelo) | **Kássio** | [#39](https://github.com/labsitio/nexus-orc-web/issues/39) — Formulário de envio | #35 |
-| 3º | **André** | [#40](https://github.com/labsitio/nexus-orc-web/issues/40) — Envio em duas chamadas, idempotência | #38, #39 — ele fecha o ponto de junção, por já conhecer o andaime |
-| 4º | **Bruno** | [#41](https://github.com/labsitio/nexus-orc-web/issues/41) — Tela de confirmação | #40 |
-| 4º (paralelo) | **Kássio** | [#42](https://github.com/labsitio/nexus-orc-web/issues/42) — Tratamento de erros do formato do backend | #40 |
-
-**Candidatos a virar limitação declarada no README, não trabalho de hoje, se o tempo apertar:** #41 e #42 — o fluxo funciona sem eles, de forma mais crua.
-
-**Depois da cadeia, sem urgência hoje:** [#15](https://github.com/labsitio/nexus-orc-web/issues/15), [#31](https://github.com/labsitio/nexus-orc-web/issues/31), [#22](https://github.com/labsitio/nexus-orc-web/issues/22) (despriorizada), [#54](https://github.com/labsitio/nexus-orc-web/issues/54).
-
-**[#14](https://github.com/labsitio/nexus-orc-web/issues/14) — parcialmente feito.** Workflows e runbook mergeados ([PR #53](https://github.com/labsitio/nexus-orc-web/pull/53)); falta só validar o pipeline de verdade depois que o #35 existir — Bruno faz isso entre #38 e #41.
-
-Bruno também: revisar os PRs do André assim que saírem (caminho crítico, cada rodada importa) e verificar a DoD de projeto antes de 17:30. #6 e #11 seguem sem resposta dos organizadores; #13 foi respondida e fechada.
+**Três PRs chegaram com branch desatualizado** (#62, #69, #71), e `mergeable_state: clean` do GitHub **não** indica branch atualizado, só ausência de conflito textual. Mergear qualquer um deles como estava teria revertido issues já entregues.
 
 ### Agentes: 5 de 5 publicados e executados
 
-A equipe produz **cinco agentes próprios**, mais o de **Integração**, que vem do time de backend — cobrado hoje, ainda não entregue por eles, pode não existir na entrega.
-
 | Agente | Estado |
 |---|---|
-| `qa-reviewer` | Publicado. Executado repetidamente ao longo do dia (todas as revisões de PR) |
-| `tech-lead` | Publicado. Executado uma vez (auditoria de contradição + consolidação do STATUS) |
-| `frontend-developer` | Publicado, corrigido (#28) e **executado e validado de verdade** pelo revisor |
-| `frontend-architect` | Publicado (#26) e executado pelo autor |
-| `product-planner` | Publicado (#27). **Achado a investigar:** não carregou na sessão do autor (`Agent type not found`) — a validação dele foi feita com prosa em agente genérico, não invocação real. Pode ser sistemático; vale checar antes do fim de semana |
-| `integracao` | Não existe. Backend cobrado, sem entrega ainda |
-
-**Nenhuma linha de código de aplicação ainda** — é o próximo item real do projeto.
+| `qa-reviewer` | Executado em praticamente toda revisão de PR — maior retorno por token do dia |
+| `frontend-developer` | Executado várias vezes, inclusive para o #41 (#70) e o #46 (#74) |
+| `frontend-architect` | Executado pelo autor |
+| `tech-lead` | Executado uma vez (auditoria de contradição + consolidação) |
+| `product-planner` | Executado; o achado do `Agent type not found` segue sem investigação sistemática |
+| `integracao` | Não existe — vinha do time de backend, não foi entregue |
 
 ---
 
