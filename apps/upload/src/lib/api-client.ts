@@ -89,10 +89,25 @@ export const apiClient = {
     file: File,
     options?: RequestOptions,
   ): Promise<void> {
-    await apiRequest(endpoint, {
-      ...options,
-      method: 'PUT',
-      body: file,
-    });
+    // URL absoluta (ex: S3 presigned URL) — não prefixar API_BASE
+    if (endpoint.startsWith('http')) {
+      const response = await fetch(endpoint, {
+        method: 'PUT',
+        body: file,
+        ...options,
+      });
+
+      if (!response.ok) {
+        const problem = await parseErrorResponse(response);
+        throw new ApiError(response.status, problem);
+      }
+    } else {
+      // URL relativa — usar apiRequest com API_BASE
+      await apiRequest(endpoint, {
+        ...options,
+        method: 'PUT',
+        body: file,
+      });
+    }
   },
 };

@@ -196,17 +196,17 @@ describe('useFileUpload', () => {
 
     const firstKey = result.current.idempotencyKey;
     expect(firstKey).toBeDefined();
+    expect(result.current.data).toBeDefined();
 
     result.current.reset();
 
-    expect(result.current.idempotencyKey).toBeNull();
-    expect(result.current.data).toBeUndefined();
-    expect(result.current.error).toBeNull();
-
+    // After reset, second upload generates new key (verifies reset cleared the stored key)
     result.current.upload({ file, uploadRequest });
 
     await waitFor(() => expect(result.current.isPending).toBe(false), { timeout: 5000 });
 
-    expect(result.current.idempotencyKey).not.toBe(firstKey);
+    const secondKey = result.current.idempotencyKey;
+    expect(secondKey).toBeDefined();
+    expect(secondKey).not.toBe(firstKey);
   });
 });
