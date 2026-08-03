@@ -14,7 +14,7 @@ O frontend do Nexo compreende **duas aplicações web distintas**, não um únic
 
 1. **Portal de Upload** (Fase 01) — interface pela qual fornecedores enviam orçamentos manualmente quando não têm integração automatizada (API REST, SFTP, canal mobile). Público, sem autenticação. Formulário simples → upload de arquivo → confirmação. MVP esperado para 02/08.
 
-2. **Painel do Gestor** (Fase 02/03) — interface interna (gestores e equipes de compras) para acompanhar o ciclo de vida de orçamentos: status em tempo real, filtros, busca semântica, exportação de relatórios, alertas de erro e pendência. Autenticado (Cognito + NextAuth). Complexidade maior em visualização de dados e sincronização com backend.
+2. **Painel do Gestor** (Fase 02/03) — interface interna (gestores e equipes de compras) para acompanhar o ciclo de vida de orçamentos: status em tempo real, filtros, busca semântica, exportação de relatórios, alertas de erro e pendência. Autenticado com gerenciamento de sessão integrado. Complexidade maior em visualização de dados e sincronização com backend.
 
 Ambas consomem a mesma **API REST do backend** (Gateway + Lambda), mas com **papéis e permissões distintos**. A separação física em aplicações permite evolução e deploy independentes — stack, roteamento, autenticação e UI podem divergir sem acoplamento.
 
@@ -97,7 +97,7 @@ O que **não** é decisão do frontend — cada linha nomeia responsável e prem
 | Assunto | Equipe responsável | Premissa adotada pelo frontend | Status |
 |---|---|---|---|
 | **Autenticação do Portal de Upload** | Backend | Fornecedor identificado via campo no formulário (sem autenticação). Backend extrai identidade do JWT ou do contexto da requisição. | Premissa (aguardando confirma em #1) |
-| **Autenticação do Painel** | Backend | Cognito + NextAuth.js (OAuth2 / OIDC). Gestor faz login, recebe JWT, inclui em Authorization header | Acordado (ADR-0004) |
+| **Autenticação do Painel** | Backend | Cognito com OAuth2 / OIDC. Gestor faz login, recebe JWT, inclui em Authorization header | Acordado (ADR-0004) |
 | **Status em tempo real** | Backend | REST com polling cliente-side a cada 30s (não há WebSocket ou SSE especificado). Frontend compara timestamp e atualiza UI. | Acordado (REST+polling, ADR-0004) |
 | **Busca semântica** | Backend | Backend expõe endpoint `GET /budgets/search?q=termo` que retorna IDs + score de relevância. Frontend chama ao digitar (debounce 300ms). | Premissa (aguardando spec) |
 | **Listagem de orçamentos** | Backend | REST com paginação cursor ou offset. Padrão: `GET /budgets?limit=50&offset=0` retorna `{ total, offset, budgets[] }`. | Premissa (spec provisória no [contrato deles](https://github.com/labsitio/nexus-orc-back/docs/openapi.yaml)) |
@@ -143,8 +143,8 @@ O que **não** é decisão do frontend — cada linha nomeia responsável e prem
 
 ## 6. Decisões de Arquitetura Relevantes
 
-- [ADR-0004](adr/0004-stack-frontend.md) — Stack: Next.js 14, React 18, TypeScript, Vitest, React Query, Cognito, REST + polling
-- [ADR-0005](adr/0005-estrategia-mock.md) — Estratégia de Mock: derivado do OpenAPI do backend, MSW para interceptação
+- [ADR-0004](adr/0004-stack-frontend.md) — Stack: Next.js 14, React 18, TypeScript, Vitest, cache de requisições, Cognito, REST + polling
+- [ADR-0005](adr/0005-estrategia-mock.md) — Estratégia de Mock: derivado do OpenAPI do backend, interceptação de requisições HTTP
 
 ---
 
@@ -166,4 +166,4 @@ O que **não** é decisão do frontend — cada linha nomeia responsável e prem
 3. **Polling 30s pode gerar ruído de rede** — Fase 01 não tem painel, então o risco é Fase 02+. Mitigação: usar polling adaptativo (aumentar intervalo se nada mudar por 5 min) e avocar do usuário antes de implementar.
 4. **Exportação de relatórios (CSV/PDF) não especificada no backend** — podem querer um formato específico. Mitigação: deixar função de formatação isolada em `src/lib/export.ts` para fácil customização.
 5. **Autenticação com Cognito depende de pool existente** — se o AWS account do projeto não tiver pool configurado, o login falha no dev. Mitigação: documentar setup em README; mock de auth para testes locais sem Cognito.
-6. **Estado crescente sem Redux** — React + React Query suficiente para MVP, mas se estado local crescer exponencialmente (muitos orçamentos abertos simultaneamente com estado local), considerar Redux depois (não agora).
+6. **Estado crescente sem Redux** — Estado local via React + cache de requisições suficiente para MVP, mas se estado local crescer exponencialmente (muitos orçamentos abertos simultaneamente com estado local), considerar Redux depois (não agora).
