@@ -1,0 +1,72 @@
+name: 'Build e deploy (Next.js estático -> S3 + CloudFront)'
+description: >
+  Instala dependências, roda a suíte de testes (Vitest), builda um app Next.js
+  como export estático e publica o resultado em um bucket S3, invalidando o
+  cache da distribuição CloudFront correspondente. Ação reutilizada pelos dois
+  workflows de deploy (upload e dashboard), conforme a mitigação de duplicação
+  registrada no ADR-0006.
+
+# Pressupõe que quem chama esta action já fez `actions/checkout` e já
+# configurou credenciais AWS (via OIDC) no job — ver deploy-upload.yml e
+# deploy-dashboard.yml. Esta action não faz nem uma coisa nem outra, porque o
+# role a assumir difere por app.
+#
+# Assume também que o app builda como export estático em `<app-path>/out`
+# (Next.js `output: 'export'` em next.config.js) — coerente com hospedagem em
+# S3 + CloudFront (sem servidor Node do lado da hospedagem). Essa configuração
+# do lado do app é escopo do andaime Next.js (issue #35), ainda não
+# implementado; se o andaime optar por outra saída, ajustar o passo de sync
+# abaixo.
+
+inputs:
+  app-path:
+    description: 'Caminho do diretório da aplicação dentro do monorepo (ex: apps/upload)'
+    required: true
+  s3-bucket:
+    description: 'Nome do bucket S3 de destino do build estático'
+    required: true
+  cloudfront-distribution-id:
+    description: 'ID da distribuição CloudFront a invalidar após o sync'
+    required: true
+  node-version:
+    description: 'Versão do Node.js usada para instalar, testar e buildar'
+    required: false
+    default: '20'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+        cache-dependency-path: ${{ inputs.app-path }}/package-lock.json
+
+    - name: Instalar dependências (npm ci)
+      shell: bash
+      working-directory: ${{ inputs.app-path }}
+      run: npm ci
+
+    - name: Rodar testes automatizados (Vitest)
+      shell: bash
+      working-directory: ${{ inputs.app-path }}
+      run: npm run test -- --run
+
+    - name: Build de produção (Next.js, export estático)
+      shell: bash
+      working-directory: ${{ inputs.app-path }}
+      run: npm run build
+
+    - name: Sincronizar build estático com o bucket S3
+      shell: bash
+      working-directory: ${{ inputs.app-path }}
+      run: |
+        aws s3 sync ./out "s3://${{ inputs.s3-bucket }}" --delete
+
+    - name: Invalidar cache da distribuição CloudFront
+      shell: bash
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id "${{ inputs.cloudfront-distribution-id }}" \
+          --paths "/*"
