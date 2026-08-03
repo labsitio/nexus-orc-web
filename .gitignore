@@ -10,6 +10,10 @@ build/
 .next/
 out/
 
+# Testing
+coverage/
+.nyc_output/
+
 # Variáveis de ambiente e segredos
 .env
 .env.*
