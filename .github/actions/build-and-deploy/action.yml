@@ -11,12 +11,20 @@ description: >
 # deploy-dashboard.yml. Esta action não faz nem uma coisa nem outra, porque o
 # role a assumir difere por app.
 #
+# O monorepo usa npm workspaces (confirmado no #57: `apps/upload`,
+# `apps/dashboard`, `shared` listados em "workspaces" no package.json da
+# raiz), com **lockfile único em package-lock.json na raiz** — não um por
+# app. Por isso `npm ci` roda na raiz (instala todos os workspaces de uma
+# vez) e teste/build usam `--workspace=<app-path>` a partir da raiz, em vez
+# de `cd` para dentro do diretório do app com seu próprio `npm ci`.
+#
 # Assume também que o app builda como export estático em `<app-path>/out`
 # (Next.js `output: 'export'` em next.config.js) — coerente com hospedagem em
-# S3 + CloudFront (sem servidor Node do lado da hospedagem). Essa configuração
-# do lado do app é escopo do andaime Next.js (issue #35), ainda não
-# implementado; se o andaime optar por outra saída, ajustar o passo de sync
-# abaixo.
+# S3 + CloudFront (sem servidor Node do lado da hospedagem). **Ainda
+# pendente de confirmação**: o andaime mergeado no #57 builda para
+# `<app-path>/.next`, sem `output: 'export'` configurado — André precisa
+# adicionar isso em cada `next.config.mjs`, ou este passo de sync quebra.
+# Ver issue #57 e o comentário sobre o #14.
 
 inputs:
   app-path:
@@ -41,28 +49,24 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'npm'
-        cache-dependency-path: ${{ inputs.app-path }}/package-lock.json
+        cache-dependency-path: package-lock.json
 
-    - name: Instalar dependências (npm ci)
+    - name: Instalar dependências (npm ci, na raiz do monorepo)
       shell: bash
-      working-directory: ${{ inputs.app-path }}
       run: npm ci
 
-    - name: Rodar testes automatizados (Vitest)
+    - name: Rodar testes automatizados (Vitest) do workspace
       shell: bash
-      working-directory: ${{ inputs.app-path }}
-      run: npm run test -- --run
+      run: npm run test --workspace=${{ inputs.app-path }} -- --run
 
-    - name: Build de produção (Next.js, export estático)
+    - name: Build de produção (Next.js, export estático) do workspace
       shell: bash
-      working-directory: ${{ inputs.app-path }}
-      run: npm run build
+      run: npm run build --workspace=${{ inputs.app-path }}
 
     - name: Sincronizar build estático com o bucket S3
       shell: bash
-      working-directory: ${{ inputs.app-path }}
       run: |
-        aws s3 sync ./out "s3://${{ inputs.s3-bucket }}" --delete
+        aws s3 sync "${{ inputs.app-path }}/out" "s3://${{ inputs.s3-bucket }}" --delete
 
     - name: Invalidar cache da distribuição CloudFront
       shell: bash
