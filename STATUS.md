@@ -13,7 +13,11 @@
 
 ## Feature atual
 
-**Hoje é o dia da entrega, 17:30.** A fase de especificação está concluída e o backlog de implementação da Fase 01 está pronto (#37-42) desde o fim de semana. **Ainda não existe código de aplicação** — nem `package.json`, nem projeto Next.js, nem suíte de testes. O andaime ([#35](https://github.com/labsitio/nexus-orc-web/issues/35)) é o próximo passo, e ainda não foi iniciado.
+**Hoje é o dia da entrega, 17:30 — e é literalmente a reunião de apresentação, com demonstração ao vivo do sistema funcionando** (confirmado pelos organizadores em 03/08, ver [#13](https://github.com/labsitio/nexus-orc-web/issues/13), fechada). Não é prazo de merge de código: é o horário em que alguém vai clicar na tela na frente de todos. Sem prorrogação — o pedido de 30/07 não foi atendido.
+
+A fase de especificação está concluída e o backlog de implementação da Fase 01 está pronto (#37-42) desde o fim de semana. **Ainda não existe código de aplicação** — nem `package.json`, nem projeto Next.js, nem suíte de testes. O andaime ([#35](https://github.com/labsitio/nexus-orc-web/issues/35)) é o próximo passo, e o André está nele agora — travou reclamando de estrutura do projeto, e está resolvendo isso via [#34](https://github.com/labsitio/nexus-orc-web/issues/34) antes de prosseguir.
+
+**Restam ~6 horas (11:33 → 17:30).** Sem software clicável às 17:30, a demonstração não tem o que mostrar — isso pesa mais que qualquer PR mergeado sem funcionar de ponta a ponta.
 
 - **Backlog:** 22 issues abertas. Ver "André — ordem de execução de hoje" abaixo para a Fase 01.
 - **Escopo do produto:** em [`escopo/`](escopo/) (5 arquivos HTML). Resumo e delimitação da fatia de frontend no [CLAUDE.md](CLAUDE.md), seções 1, 1.1 e 1.2.
