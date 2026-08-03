@@ -85,8 +85,15 @@ test('cada workspace de aplicação tem dev, test e build documentados', () => {
 });
 
 test('todo arquivo invocado por node no README existe', () => {
-  for (const [, caminho] of README.matchAll(/node (?:--test )?((?:scripts|apps|shared)\/[\w./-]+)/g)) {
-    assert.ok(existsSync(join(RAIZ, caminho)), `README invoca "${caminho}", que não existe`);
+  // Uma invocação pode listar vários arquivos (`node --test a.mjs b.mjs`), então
+  // casar só o primeiro caminho por linha deixaria os demais sem verificação —
+  // exatamente os que um rename quebraria em silêncio.
+  const caminhos = [...README.matchAll(/(?:scripts|apps|shared)\/[\w./-]+\.(?:mjs|js|ts|tsx)/g)];
+
+  assert.ok(caminhos.length > 0, 'o README não cita nenhum script do repositório');
+
+  for (const [caminho] of caminhos) {
+    assert.ok(existsSync(join(RAIZ, caminho)), `README cita "${caminho}", que não existe`);
   }
 });
 
@@ -128,7 +135,12 @@ test('as seções exigidas pela DoD de projeto estão no README', () => {
 test('a URL publicada está registrada ou a limitação está declarada', () => {
   const secao = README.split('## URL do ambiente')[1]?.split('\n## ')[0] ?? '';
 
-  const temUrl = /https?:\/\/(?!localhost)[\w.-]+/.test(secao);
+  // Link para issue do próprio repositório não conta como URL publicada: a
+  // limitação declarada aponta para a #14, e contá-la deixaria o teste verde
+  // com a declaração apagada — passaria pelo motivo errado.
+  const semLinksInternos = secao.replace(/https?:\/\/(?:www\.)?github\.com\/labsitio\/\S*/g, '');
+
+  const temUrl = /https?:\/\/(?!localhost)[\w.-]+/.test(semLinksInternos);
   const temLimitacao = /não publicada/i.test(secao) && /Limitação declarada/i.test(secao);
 
   assert.ok(

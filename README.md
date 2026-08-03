@@ -58,7 +58,7 @@ O repositório é um **monorepo com npm workspaces**: um único `package-lock.js
 npm ci
 ```
 
-> `npm ci` (não `npm install`) é o comando certo aqui: ele instala exatamente o que está no lockfile. Se o `npm` avisar que há `install scripts not yet covered by allowScripts`, ignore — os dois apps buildam e a suíte passa sem eles.
+> `npm ci` (não `npm install`) é o comando certo aqui: ele instala exatamente o que está no lockfile.
 
 ### Subir cada aplicação
 
@@ -69,7 +69,9 @@ Cada app sobe em porta própria, e são independentes: dá para rodar um, o outr
 | Portal de upload do fornecedor | `npm run dev --workspace=apps/upload` | http://localhost:3000 |
 | Painel do gestor | `npm run dev --workspace=apps/dashboard` | http://localhost:3001 |
 
-O fluxo navegável hoje é o do **portal de upload** (Fase 01). O painel do gestor tem o andaime e a página inicial, mas as telas de acompanhamento são Fase 02 — ver [#43](https://github.com/labsitio/nexus-orc-web/issues/43).
+**O que já dá para ver no navegador, dito com precisão.** No portal de upload: o formulário de envio, com validação de CNPJ/CPF, contato e arquivo acontecendo no navegador, e o tratamento de erro do formato do backend. **O envio em si ainda não sai da tela** — a chamada HTTP de duas etapas é a [#40](https://github.com/labsitio/nexus-orc-web/issues/40), em aberto, então clicar em "Enviar orçamento" com o formulário válido apenas marca o botão como "Enviando..." e para ali. Não há requisição, nem protocolo de confirmação. O painel do gestor tem apenas o andaime e a página inicial; as telas de acompanhamento são Fase 02 — ver [#43](https://github.com/labsitio/nexus-orc-web/issues/43).
+
+Ou seja: o item "fluxo principal navegável de ponta a ponta" da Definition of Done de projeto (**[CLAUDE.md](CLAUDE.md), seção 1.2.1**) **não está cumprido**, e a lacuna é a #40 — não o deploy.
 
 ### Rodar os testes
 
@@ -100,7 +102,7 @@ Cada app é exportado como site estático (`output: 'export'`, conforme o [ADR-0
 
 ## Variáveis de ambiente
 
-**Nenhuma variável é necessária para rodar localmente.** Vale registrar por que, para ninguém procurar um `.env` que não existe: o frontend consome o mock, e o mock atende em caminho relativo (`/v1`), sem host externo.
+**Nenhuma variável é necessária para rodar localmente.** Vale registrar por que, para ninguém procurar um `.env` que não existe: o app em execução não chama API nenhuma ainda (ver a #40 acima), e o mock — que é servido por MSW **apenas sob os testes**, via `msw/node`, não no navegador — atende em caminho relativo (`/v1`), sem host externo.
 
 Duas famílias de variáveis existem no projeto, e elas não se confundem:
 
@@ -118,13 +120,17 @@ Também existe o `GITHUB_MCP_PAT`, que é da **sua máquina** e não da aplicaç
 
 ## Dado de demonstração
 
-Em andamento — [#50](https://github.com/labsitio/nexus-orc-web/issues/50). Hoje o dado que sustenta a demonstração vem das **fixtures determinísticas do mock** (`apps/upload/src/test/mocks.ts`): a mesma chamada devolve sempre a mesma resposta, com um `id` de orçamento fixo. Não é preciso semear banco nem rodar script — subir o app já dá o que mostrar no fluxo de upload.
+Em andamento — [#50](https://github.com/labsitio/nexus-orc-web/issues/50).
+
+O que existe hoje são as **fixtures determinísticas do mock** em `apps/upload/src/test/mocks.ts`: a mesma chamada devolve sempre a mesma resposta, com um `id` de orçamento fixo. Não é preciso semear banco nem rodar script — mas seja claro sobre onde esse dado aparece: **ele alimenta a suíte de testes, não a aplicação no navegador**. Enquanto a #40 não fechar, a demonstração no navegador é a do formulário e da validação; a evidência de que o contrato do backend é atendido está nos testes (`npm run test --workspace=apps/upload -- --run`).
 
 ## Mock e troca pela API real
 
-O frontend **roda contra mock, não contra o backend real** — decisão registrada no [ADR-0005](docs/adr/0005-estrategia-mock.md). O mock não é invenção nossa: deriva do `openapi.yaml` publicado pelo backend, e os campos que eles marcam como PROVISÓRIO estão isolados num único bloco de fixtures, para que uma mudança do lado deles não se espalhe pelo código.
+O frontend **não é exercitado contra o backend real** — decisão registrada no [ADR-0005](docs/adr/0005-estrategia-mock.md). O mock não é invenção nossa: deriva do `openapi.yaml` publicado pelo backend, e os campos que eles marcam como PROVISÓRIO ficam concentrados no bloco `FIXTURES` de `apps/upload/src/test/mocks.ts`.
 
-O plano de troca pela API real, com data, é a [#15](https://github.com/labsitio/nexus-orc-web/issues/15) — em aberto. O ponto de troca é a variável `NEXT_PUBLIC_API_BASE_URL` da tabela acima.
+**Concentrados, não isolados** — a diferença importa para quem for plugar a API real: o shape PROVISÓRIO de `POST /orcamentos/upload-url` aparece hoje em três pontos (o bloco de fixtures, o tipo `GerarUploadUrlRequest` em `apps/upload/src/types/upload.ts` e a montagem do payload em `UploadForm.tsx`). Uma mudança de shape do lado deles alcança os três. Reduzir isso a um ponto único é trabalho a fazer, não estado atual.
+
+O plano de troca pela API real, com data, é a [#15](https://github.com/labsitio/nexus-orc-web/issues/15) — em aberto. O ponto de troca previsto é a variável `NEXT_PUBLIC_API_BASE_URL` da tabela acima.
 
 ---
 
