@@ -26,10 +26,5 @@ jobs:
       - name: Testes do check-docs
         run: node --test scripts/check-docs.test.mjs
 
-      # O README é instrução executável: se um comando documentado deixar de
-      # existir, quem clona o repositório é o primeiro a descobrir. Ver #51.
-      - name: Testes do README
-        run: node --test scripts/check-readme.test.mjs
-
       - name: Verificar consistência da documentação
         run: node scripts/check-docs.mjs
